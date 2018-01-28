@@ -42,7 +42,7 @@ class UserController extends Controller
                 if ($checkPassword) {
                     $resultCode = 4;
                     $message = 'Login Success';
-                    $userKey = base64_encode($auth->email);
+                    $userKey = $auth->user_key;
                 } else {
                     $resultCode = 1;
                     $message = 'Login failed, wrong email or password';
