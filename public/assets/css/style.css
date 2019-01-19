@@ -1,0 +1,14 @@
+.content {
+  padding: 5em 0;
+}
+
+#heroIntro {
+  background-image: url('https://media.napon.id/forest.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}
+
+.bold {
+  font-weight: bold;
+}
