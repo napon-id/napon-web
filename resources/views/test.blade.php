@@ -1,23 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.home')
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>{{ config('app.name') }}</title>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.css') }}">
-  <!-- Bootstrap core CSS -->
-  <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="{{ asset('assets/css/mdb.min.css') }}" rel="stylesheet">
-  <!-- Your custom styles (optional) -->
-  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-</head>
+@section('style')
 
-<body>
+@endsection
 
+@section('content')
   <!-- Start your project here-->
   <div style="height: 100vh">
     <div class="flex-center flex-column">
@@ -29,16 +16,8 @@
     </div>
   </div>
   <!-- /Start your project here-->
+@endsection
 
-  <!-- SCRIPTS -->
-  <!-- JQuery -->
-  <script type="text/javascript" src="{{ asset('assets/js/jquery-3.3.1.min.js') }}"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="{{ asset('assets/js/popper.min.js') }}"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="{{ asset('assets/js/mdb.min.js') }}"></script>
-</body>
+@section('script')
 
-</html>
+@endsection
