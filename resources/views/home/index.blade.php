@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- main layout -->
-<main style="margin-top: 65px;">
+<main id="mainContent">
   <!-- Hero intro -->
   <div class="container-fluid content" id="heroIntro">
     <div class="container">
