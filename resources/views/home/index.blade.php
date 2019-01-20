@@ -35,7 +35,7 @@
             Nabung Pohon ({{ config('app.name') }}) merupakan platform menabung pohon dan bercocok tanam. Portal untuk membantu Anda yang ingin berinvestasi pada pohon tanpa ribet, tanpa lahan, tanpa perawatan namun tetap bisa di pantau secara berkala. {{ config('app.name') }} juga membantu dalam proses penjualan pohon yang sudah layak panen dengan harga real-time.
           </p>
           <a href="#" class="btn btn-outline-light-green waves-effect">
-            Pelajari lebih lanjut <span class="fas fa-leaf"></span>
+            Baca lebih lanjut <span class="fas fa-leaf"></span>
           </a>
         </div>
 
@@ -50,6 +50,128 @@
     </div>
   </div>
 
+  <div class="container-fluid content light-green" id="whyChooseUs">
+    <div class="container">
+      <h2>Mengapa Menabung di {{ config('app.name') }}?</h2>
+      <hr>
+      <div class="row">
+        <div class="col-12">
+          <div class="why-choose-us" style="text-align: center;">
+
+            <div>
+              <span class="fas fa-star fa-5x"></span>
+              <br><br>Platform bagi hasil terbaik
+            </div>
+
+            <div>
+              <span class="fas fa-check fa-5x"></span>
+              <br><br>Mudah dan Terjangkau
+            </div>
+
+            <div>
+              <span class="fas fa-shield-alt fa-5x"></span>
+              <br><br>Aman dan Professional
+            </div>
+
+            <div>
+              <span class="fas fa-users fa-5x"></span>
+              <br><br>Memberi Dampak Sosial
+            </div>
+
+            <div>
+              <span class="fas fa-leaf fa-5x"></span>
+              <br><br>Ramah Lingkungan
+            </div>
+
+            <div>
+              <span class="fas fa-star fa-5x"></span>
+              <br><br>Platform bagi hasil terbaik
+            </div>
+
+            <div>
+              <span class="fas fa-user-friends fa-5x"></span>
+              <br><br>Memberdayakan Petani
+            </div>
+
+          </div> <!-- Carousel -->
+        </div> <!-- col-12 -->
+      </div> <!-- row -->
+    </div> <!-- container -->
+  </div> <!-- fluid container -->
+
+  <div class="container-fluid content" id="howWeWork">
+    <div class="container">
+      <h2 class="text-light-green">Bagaimana {{ config('app.name') }} Bekerja?</h2>
+      <hr>
+
+      <div class="row">
+        <div class="col-sm-2" style="text-align: center;">
+          <span class="fas fa-users fa-7x "></span>
+        </div>
+        <div class="col-sm-10">
+          <h4>Registrasi</h4>
+          <p>
+            Anda dapat mendaftar pada platform {{ config('app.name') }} dengan menekan tombol <a href="{{ url('/register') }}" class="btn btn-light-green peach-gradient">Registrasi</a>
+          </p>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-2" style="text-align: center;">
+          <span class="fas fa-leaf fa-7x "></span>
+        </div>
+        <div class="col-sm-10">
+          <h4>Danai</h4>
+          <p>
+            Anda dapat memulai menabung pohon melalui platform kami setelah melakukan verifikasi alamat email.
+          </p>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-2" style="text-align: center;">
+          <span class="fas fa-users fa-7x "></span>
+        </div>
+        <div class="col-sm-10">
+          <h4>Budidaya</h4>
+          <p>
+            {{ config('app.name') }} bersama mitra petani menjalankan proyek budidaya dengan dana yang Anda tabung.
+          </p>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-2" style="text-align: center;">
+          <span class="fas fa-funnel-dollar fa-7x "></span>
+        </div>
+        <div class="col-sm-10">
+          <h4>Panen</h4>
+          <p>
+            {{ config('app.name') }} bersama mitra petani menjual hasil budidaya ketika musim panen telah tiba.
+          </p>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-2" style="text-align: center;">
+          <span class="fas fa-network-wired fa-7x "></span>
+        </div>
+        <div class="col-sm-10">
+          <h4>Bagi hasil</h4>
+          <p>
+            Setelah panen selesai, Anda dapat menikmati keuntungan dari bagi hasil dengan dana yang Anda tabung.
+          </p>
+        </div>
+      </div>
+
+      <br>
+      <h3 style="text-align: center;">
+        Pelajari <a href="#" class="btn btn-lg btn-info waves-effect blue-gradient">layanan kami <span class="fas fa-star"></span></a> selengkapnya
+      </h3>
+
+    </div>
+  </div>
+
 </main>
 <!-- main layout -->
 @endsection
@@ -57,6 +179,14 @@
 @section('script')
 <script>
 $(document).ready(function(){
+  // Why Choose Us carousel
+  $('.why-choose-us').slick({
+    arrows: false,
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1
+  });
+
   // Add smooth scrolling to all links
   $("a").on('click', function(event) {
 

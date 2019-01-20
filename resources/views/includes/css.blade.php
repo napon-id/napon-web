@@ -8,3 +8,5 @@
 <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 <!-- Google fonts -->
 <link href="https://fonts.googleapis.com/css?family=Pacifico|Ubuntu" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
