@@ -1,20 +1,24 @@
 * {
   font-family: 'Ubuntu', sans-serif;
-  /* font-family: 'Pacifico', cursive; */
 }
 #mainContent {
   margin-top: 55px;
 }
 
-.content {
-  padding: 5em 0;
-}
 
 #heroIntro {
   background-image: url('https://media.napon.id/forest.png');
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
+}
+
+#aboutUs {
+
+}
+
+.content {
+  padding: 5em 0;
 }
 
 .bold {

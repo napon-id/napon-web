@@ -57,20 +57,20 @@
       <!--Second column-->
       <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
         <h6 class="text-uppercase font-weight-bold">
-          <strong>Produk</strong>
+          <strong>Informasi</strong>
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
         <p>
-          <a href="#!">Pohon</a>
+          <a href="#!">Tentang Kami</a>
         </p>
         <p>
-          <a href="#!">Pohon</a>
+          <a href="#!">Layanan</a>
         </p>
         <p>
-          <a href="#!">Pohon</a>
+          <a href="#!">Jenis Pohon</a>
         </p>
         <p>
-          <a href="#!">Pohon</a>
+          <a href="#!">FAQ</a>
         </p>
       </div>
       <!--/.Second column-->
@@ -82,16 +82,16 @@
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
         <p>
-          <a href="#!">Link</a>
+          <a href="#!">Masuk</a>
         </p>
         <p>
-          <a href="#!">Link</a>
+          <a href="#!">Pendaftaran</a>
         </p>
         <p>
-          <a href="#!">Link</a>
+          <a href="#!">Blog <span class="fas fa-window"></span></a>
         </p>
         <p>
-          <a href="#!">Link</a>
+          <a href="#!">Simulasi Menabung</a>
         </p>
       </div>
       <!--/.Third column-->
@@ -99,7 +99,7 @@
       <!--Fourth column-->
       <div class="col-md-4 col-lg-3 col-xl-3">
         <h6 class="text-uppercase font-weight-bold">
-          <strong>Contact</strong>
+          <strong>Hubungi Kami</strong>
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
         <p>
