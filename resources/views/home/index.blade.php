@@ -184,7 +184,9 @@ $(document).ready(function(){
     arrows: false,
     infinite: true,
     slidesToShow: 3,
-    slidesToScroll: 1
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 1500,
   });
 
   // Add smooth scrolling to all links
