@@ -12,7 +12,7 @@
 
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu"
-      aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -25,13 +25,13 @@
           <a class="nav-link" href="#">Tentang Kami</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pilihan Investasi</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Statistik</a>
+          <a class="nav-link" href="#">Layanan</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">FAQ</a>
         </li>
       </ul>
 
@@ -53,7 +53,7 @@
         </li>
         @else
         <li class="nav-item">
-          <a class="nav-link btn btn-light-green" href="{{ url('login') }}">Log in <span class="fas fa-sign-in-alt"></span></a>
+          <a class="nav-link btn btn-light-green" href="{{ url('login') }}">Masuk | Mendaftar <span class="fas fa-sign-in-alt"></span></a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="{{ url('register') }}">Register</a>

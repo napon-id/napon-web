@@ -10,7 +10,9 @@
       <h2>Rajin <span class="bold">MENABUNG</span></h2>
       <h2><span class="bold">POHON</span> Pangkal</h2>
       <h2><span class="light-green">KAYA + BONUS</span></h2>
-      <h2><span class="light-green">alam lestari</span></h2>
+      <br>
+      <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">alam lestari</span></h2>
+      <br>
       <h3>Ayo <span class="peach-gradient">#NabungPohon</span></h3>
       <img src="https://media.napon.id/logo/logo-napon1.png" alt="Napon.ID" style="max-height: 2em;">
       <div style="height: 2em;"></div>
