@@ -59,37 +59,38 @@
           <div class="why-choose-us" style="text-align: center;">
 
             <div>
-              <span class="fas fa-star fa-5x"></span>
+              <img src="https://media.napon.id/icon/platform-bagi-hasil-terbaik.png" alt="Platform Bagi Hasil Terbaik">
+              <!-- <span class="fas fa-star fa-5x"></span> -->
               <br><br>Platform bagi hasil terbaik
             </div>
 
             <div>
-              <span class="fas fa-check fa-5x"></span>
+              <img src="https://media.napon.id/icon/mudah-terjangkau.png" alt="Platform Bagi Hasil Terbaik">
+              <!-- <span class="fas fa-check fa-5x"></span> -->
               <br><br>Mudah dan Terjangkau
             </div>
 
             <div>
-              <span class="fas fa-shield-alt fa-5x"></span>
+              <img src="https://media.napon.id/icon/aman-professional.png" alt="Platform Bagi Hasil Terbaik">
+              <!-- <span class="fas fa-shield-alt fa-5x"></span> -->
               <br><br>Aman dan Professional
             </div>
 
             <div>
-              <span class="fas fa-users fa-5x"></span>
-              <br><br>Memberi Dampak Sosial
+              <img src="https://media.napon.id/icon/memberikan-dampak-sosial.png" alt="Platform Bagi Hasil Terbaik">
+              <!-- <span class="fas fa-users fa-5x"></span> -->
+              <br><br>Memberikan Dampak Sosial
             </div>
 
             <div>
-              <span class="fas fa-leaf fa-5x"></span>
+              <img src="https://media.napon.id/icon/ramah-lingkungan.png" alt="Platform Bagi Hasil Terbaik">
+              <!-- <span class="fas fa-leaf fa-5x"></span> -->
               <br><br>Ramah Lingkungan
             </div>
 
             <div>
-              <span class="fas fa-star fa-5x"></span>
-              <br><br>Platform bagi hasil terbaik
-            </div>
-
-            <div>
-              <span class="fas fa-user-friends fa-5x"></span>
+              <img src="https://media.napon.id/icon/memberdayakan-petani.png" alt="Platform Bagi Hasil Terbaik">
+              <!-- <span class="fas fa-user-friends fa-5x"></span> -->
               <br><br>Memberdayakan Petani
             </div>
 
@@ -106,7 +107,8 @@
 
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <span class="fas fa-users fa-7x "></span>
+          <img src="https://media.napon.id/icon/registrasi.png" alt="Registrasi">
+          <!-- <span class="fas fa-users fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Registrasi</h4>
@@ -118,7 +120,8 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <span class="fas fa-leaf fa-7x "></span>
+          <img src="https://media.napon.id/icon/danai.png" alt="Danai">
+          <!-- <span class="fas fa-leaf fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Danai</h4>
@@ -130,7 +133,8 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <span class="fas fa-users fa-7x "></span>
+          <img src="https://media.napon.id/icon/budidaya.png" alt="Budidaya">
+          <!-- <span class="fas fa-users fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Budidaya</h4>
@@ -142,7 +146,8 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <span class="fas fa-funnel-dollar fa-7x "></span>
+          <img src="https://media.napon.id/icon/panen.png" alt="Panen">
+          <!-- <span class="fas fa-funnel-dollar fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Panen</h4>
@@ -154,7 +159,8 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <span class="fas fa-network-wired fa-7x "></span>
+          <img src="https://media.napon.id/icon/bagi-hasil.png" alt="Bagi Hasil">
+          <!-- <span class="fas fa-network-wired fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Bagi hasil</h4>
