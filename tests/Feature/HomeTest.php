@@ -16,6 +16,6 @@ class HomeTest extends TestCase
     public function testBase()
     {
         $response = $this->get('/');
-        $response->assertSeeText('napon.id');
+        $response->assertStatus(200);
     }
 }
