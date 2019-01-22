@@ -22,16 +22,16 @@
       <!-- Left menu -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Tentang Kami</a>
+          <a class="nav-link" href="{{ route('tentang-kami') }}">Tentang Kami</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Layanan</a>
+          <a class="nav-link" href="{{ route('layanan') }}">Layanan</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Blog</a>
+          <a class="nav-link" href="https://blog.napon.id">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">FAQ</a>
+          <a class="nav-link" href="{{ route('faq') }}">FAQ</a>
         </li>
       </ul>
 

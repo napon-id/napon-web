@@ -25,7 +25,7 @@
 
   <div class="container-fluid content" id="aboutUs">
     <div class="container">
-      <h2 style="color: #8bc34a;">Tentang {{ config('app.name') }}</h2>
+      <h2 class="light-green-text">Tentang {{ config('app.name') }}</h2>
       <hr>
       <br>
       <div class="row">
@@ -102,7 +102,7 @@
 
   <div class="container-fluid content" id="howWeWork">
     <div class="container">
-      <h2 class="text-light-green">Bagaimana {{ config('app.name') }} Bekerja?</h2>
+      <h2 class="light-green-text">Bagaimana {{ config('app.name') }} Bekerja?</h2>
       <hr>
 
       <div class="row">

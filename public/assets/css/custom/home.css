@@ -39,6 +39,10 @@
   padding: 5em 0;
 }
 
+.smaller-content {
+  padding: 1.5em 0;
+}
+
 .bold {
   font-weight: bold;
 }
