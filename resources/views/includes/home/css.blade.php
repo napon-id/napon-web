@@ -5,7 +5,7 @@
 <!-- Material Design Bootstrap -->
 <link href="{{ asset('assets/css/mdb.min.css') }}" rel="stylesheet">
 <!-- Your custom styles (optional) -->
-<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/custom/home.css') }}" rel="stylesheet">
 <!-- Google fonts -->
 <link href="https://fonts.googleapis.com/css?family=Pacifico|Ubuntu" rel="stylesheet">
 

@@ -10,20 +10,20 @@
   <link rel='shortcut icon' type='image/png' href='https://media.napon.id/logo/logo1.png' />
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <title>{{ config('app.name') }} - Platform Menabung Pohon</title>
-  @include('includes.css')
+  @include('includes.home.css')
 
   @yield('style')
 
 </head>
 
 <body>
-  @include('includes.header')
+  @include('includes.home.header')
 
   @yield('content')
 
-  @include('includes.footer')
+  @include('includes.home.footer')
 
-  @include('includes.js')
+  @include('includes.home.js')
 
   @yield('script')
 </body>

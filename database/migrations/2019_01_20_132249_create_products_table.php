@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->decimal('total_price', 16, 2);
             $table->string('time');
+            $table->integer('percentage');
             $table->enum('available', ['yes', 'no'])->default('yes');
             $table->timestamps();
             $table->softDeletes();
