@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             'email' => 'naponindonesia@gmail.com',
             'password' => bcrypt('napon2019'),
             'email_verified_at' => date('Y-m-d G:i:s'),
+            'role' => 'admin',
           ]
         ]);
     }

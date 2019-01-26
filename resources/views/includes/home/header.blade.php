@@ -45,10 +45,7 @@
           </a>
           <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownUserMenu">
             <a class="dropdown-item" href="#">Profil</a>
-            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
+            <a class="dropdown-item" href="{{ url('logout') }}">Keluar</a>
           </div>
         </li>
         @else
