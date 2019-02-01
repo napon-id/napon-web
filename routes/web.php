@@ -19,14 +19,12 @@ Route::get('/tentang-kami', 'HomeController@about')->name('tentang-kami');
 Route::get('/faq', 'HomeController@faq')->name('faq');
 Route::get('/layanan', 'HomeController@service')->name('layanan');
 
-// Route::get('/home', 'HomeController@index')->name('home');
-
 // Admin routes
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', 'AdminController@index');
 });
 
 // User routes
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'user', 'middleware' => ['auth']], function () {
     Route::get('/', 'UserController@index');
 });
