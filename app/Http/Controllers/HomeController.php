@@ -54,6 +54,12 @@ class HomeController extends Controller
 
     public function service()
     {
-        return view('home.service');
+        $tree = \App\Tree::find(1);
+        $products = $tree->products()->get();
+        return view('home.service')
+          ->with([
+            'products' => $products,
+            'tree' => $tree,
+          ]);
     }
 }

@@ -103,7 +103,7 @@
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
         <p>
-          <i class="fa fa-home mr-3"></i> Jl. Pattimura Raya, Ruko komplek Masjid Baitut Taqwa, Mapangan - Ungaran</p>
+          <i class="fa fa-home mr-3"></i> Jl. Pattimura Raya, kompleks ruko Masjid Baitut Taqwa, Mapangan - Ungaran</p>
         <p>
           <i class="fa fa-envelope mr-3"></i> naponindonesia@gmail.com</p>
         <p>
