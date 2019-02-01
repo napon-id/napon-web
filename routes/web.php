@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
+Auth::routes(['verify' => true]);
 Route::get('/logout', 'Auth\LoginController@logout');
 
 // Front pages
@@ -25,6 +25,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 });
 
 // User routes
-Route::group(['prefix' => 'user', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'user'], function () {
     Route::get('/', 'UserController@index');
 });

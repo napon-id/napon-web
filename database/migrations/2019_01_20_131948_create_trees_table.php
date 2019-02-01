@@ -22,6 +22,15 @@ class CreateTreesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        DB::table('trees')->insert([
+          [
+            'name' => 'Sengon Solomon',
+            'description' =>  'Sengon (Albizia chinensis) adalah pohon penghasil kayu. Pohon Sengon Solomon dapat dipanen ketika masuk usia 5 hingga 6 tahun dengan perkiraan tinggi 10-13 meter dan diameter sekitar 25-30cm.',
+            'price' => 300000.00,
+            'available' => 'yes',
+          ]
+        ]);
     }
 
     /**
