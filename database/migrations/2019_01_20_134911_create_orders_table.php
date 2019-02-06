@@ -19,15 +19,20 @@ class CreateOrdersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->unsignedInteger('location_id');
+            $table->unsignedInteger('location_id')->nullable();
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
-            $table->integer('quantity');
+            $table->decimal('selling_price', 16, 2)->default(0);
             $table->ipAddress('ip_address')->nullable();
             $table->enum('status', ['waiting', 'paid', 'investing', 'done'])->default('waiting');
             $table->enum('tree_status', ['waiting', 'planting', 'maintaining', 'selling'])->default('waiting');
             $table->timestamps();
             $table->softDeletes();
         });
+
+        DB::table('orders')->insert([
+          'user_id' => 1,
+          'product_id' => 2,
+        ]);
     }
 
     /**

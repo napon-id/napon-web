@@ -44,7 +44,10 @@
             <span class="fa fa-user"></span> {{ auth()->user()->name }}
           </a>
           <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownUserMenu">
-            <a class="dropdown-item" href="#">Profil</a>
+            @if(auth()->user()->role == 'admin')
+            <a class="dropdown-item" href="{{ url('admin') }}">Admin</a>
+            @endif
+            <a class="dropdown-item" href="{{ url('user') }}">Dashboard {{ auth()->user()->role == 'admin' ? '(sebagai user)' : '' }}</a>
             <a class="dropdown-item" href="{{ url('logout') }}">Keluar</a>
           </div>
         </li>
