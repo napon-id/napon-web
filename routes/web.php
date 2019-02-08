@@ -29,4 +29,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('/', 'UserController@index');
     Route::get('/product', 'UserController@product');
     Route::get('/product/order', 'UserController@order');
+
+    Route::get('product/api', 'UserController@productApi')->name('user.product.api');
+    Route::get('product/api/{status}', 'UserController@productApiStatus')->name('user.product.api.status');
 });
