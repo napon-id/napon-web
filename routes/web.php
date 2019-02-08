@@ -30,6 +30,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('/product', 'UserController@product');
     Route::get('/product/order', 'UserController@order');
 
-    Route::get('product/api', 'UserController@productApi')->name('user.product.api');
-    Route::get('product/api/{status}', 'UserController@productApiStatus')->name('user.product.api.status');
+    // api call
+    Route::get('product/api', 'User\OrderController@productApi')->name('user.product.api');
+    Route::get('product/api/{status}', 'User\OrderController@productApiStatus')->name('user.product.api.status');
 });
