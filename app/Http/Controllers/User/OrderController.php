@@ -25,6 +25,10 @@ class OrderController extends Controller
           ->get();
 
           return DataTables::of($orders)
+            ->addColumn('price', function ($orders) {
+              $price = $orders->tree_price * $orders->product_tree_quantity;
+              return "Rp " . number_format($price, 2, ',', '.');
+            })
             ->addColumn('selling_price', function ($orders) {
               if ($orders->selling_price < 1) {
                 return 'Produk tabungan belum selesai';
@@ -69,6 +73,10 @@ class OrderController extends Controller
           ->get();
 
           return DataTables::of($orders)
+            ->addColumn('price', function ($orders) {
+              $price = $orders->tree_price * $orders->product_tree_quantity;
+              return "Rp " . number_format($price, 2, ',', '.');
+            })
             ->addColumn('selling_price', function ($orders) {
               if ($orders->selling_price < 1) {
                 return 'Produk tabungan belum selesai';

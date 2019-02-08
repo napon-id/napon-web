@@ -33,6 +33,7 @@
               <th>Produk Tabungan</th>
               <th>Nilai Tabungan</th>
               <th>Nilai Akhir</th>
+              <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -74,9 +75,10 @@ function reloadStatus() {
         { data: 'id' },
         { data: 'created_at' },
         { data: 'product_name' },
+        { data: 'price' },
         { data: 'selling_price' },
         { data: 'status' },
-        { data: 'action' }
+        { data: 'action', searchable: false }
       ],
       language: {
         'lengthMenu'  : 'Menampilkan _MENU_ transaksi per halaman',
