@@ -2,15 +2,15 @@
 
 @section('breadcrumbs')
 <ol class="breadcrumb">
-  <ul class="breadcrumb-item">
-    <a href="{{ url('/user') }}">Dashboard</a>
-  </ul>
-  <ul class="breadcrumb-item">
-    <a href="{{ url('/user/product') }}">Product</a>
-  </ul>
-  <ul class="breadcrumb-item active">
+  <li class="breadcrumb-item">
+    <a href="{{ route('user.dashboard') }}">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="{{ route('user.product') }}">Product</a>
+  </li>
+  <li class="breadcrumb-item active">
     Order
-  </ul>
+  </li>
 </ol>
 @endsection
 

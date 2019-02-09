@@ -23,6 +23,26 @@ class UserController extends Controller
         return view('user.index');
     }
 
+    public function edit()
+    {
+        return view('user.edit');
+    }
+
+    public function editUpdate()
+    {
+
+    }
+
+    public function password()
+    {
+        return view('user.password');
+    }
+
+    public function passwordUpdate()
+    {
+        
+    }
+
     public function product()
     {
         $status_select = [

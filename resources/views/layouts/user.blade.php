@@ -43,7 +43,8 @@
             <i class="fas fa-user-circle fa-fw"></i> {{ auth()->user()->name }}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">Pengaturan</a>
+            <a class="dropdown-item" href="{{ route('user.edit') }}">Pengaturan</a>
+            <a class="dropdown-item" href="{{ route('user.password') }}">Ganti kata sandi</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
           </div>
