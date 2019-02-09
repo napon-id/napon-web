@@ -26,7 +26,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 // User routes
 Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], function () {
+    // dashboard
     Route::get('/', 'UserController@index')->name('user.dashboard');
+
+    // user settings
+    Route::get('/edit', 'UserController@edit')->name('user.edit');
+    Route::post('/edit', 'UserController@editUpdate')->name('user.edit.update');
+    Route::get('/edit/password', 'UserController@password')->name('user.password');
+    Route::post('/edit/password', 'UserController@passwordUpdate')->name('user.password.update');
+
+    // product routes
     Route::get('/product', 'UserController@product')->name('user.product');
     Route::get('/product/order', 'UserController@order')->name('user.product.order');
     Route::post('/product/order', 'User\OrderController@order');

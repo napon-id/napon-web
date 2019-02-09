@@ -17,7 +17,7 @@ class CreateBalancesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->decimal('balance', 16, 2);
+            $table->decimal('balance', 16, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
