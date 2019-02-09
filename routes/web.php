@@ -25,12 +25,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 });
 
 // User routes
-Route::group(['prefix' => 'user'], function () {
-    Route::get('/', 'UserController@index');
-    Route::get('/product', 'UserController@product');
-    Route::get('/product/order', 'UserController@order');
+Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], function () {
+    Route::get('/', 'UserController@index')->name('user.dashboard');
+    Route::get('/product', 'UserController@product')->name('user.product');
+    Route::get('/product/order', 'UserController@order')->name('user.product.order');
+    Route::post('/product/order', 'User\OrderController@order');
+    Route::get('/product/checkout/{id}', 'User\OrderController@checkout');
 
     // api call
     Route::get('product/api', 'User\OrderController@productApi')->name('user.product.api');
+    Route::get('product/api/order', 'User\OrderController@productApiOrder')->name('user.product.api.order');
     Route::get('product/api/{status}', 'User\OrderController@productApiStatus')->name('user.product.api.status');
 });

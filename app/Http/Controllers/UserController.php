@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Order;
+use App\Product;
 use App\User;
 use DB;
 
@@ -39,6 +40,11 @@ class UserController extends Controller
 
     public function order()
     {
-        return view('user.order');
+        $products = Product::get();
+
+        return view('user.order')
+          ->with([
+            'products' => $products,
+          ]);
     }
 }

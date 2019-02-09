@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use DataTables;
 use App\Order;
 use App\User;
+use App\Product;
+use Validator;
 use DB;
 
 class OrderController extends Controller
@@ -20,8 +22,6 @@ class OrderController extends Controller
           ->join('trees', 'products.tree_id', '=', 'trees.id')
           ->select('orders.*', 'products.name as product_name', 'tree_quantity as product_tree_quantity', 'products.percentage as product_percentage', 'trees.price as tree_price')
           ->where('orders.user_id', '=', $user_id)
-          ->orderBy('orders.created_at', 'DESC')
-          ->orderBy('orders.status')
           ->get();
 
           return DataTables::of($orders)
@@ -68,8 +68,7 @@ class OrderController extends Controller
           ->select('orders.*', 'products.name as product_name', 'tree_quantity as product_tree_quantity', 'products.percentage as product_percentage', 'trees.price as tree_price')
           ->where('orders.user_id', '=', $user_id)
           ->where('status', $status)
-          ->orderBy('orders.created_at', 'DESC')
-          ->orderBy('orders.status')
+          ->orderBy('orders.created_at', 'ASC')
           ->get();
 
           return DataTables::of($orders)
@@ -106,8 +105,68 @@ class OrderController extends Controller
             ->make(true);
     }
 
-    public function order()
+    public function productApiOrder()
     {
+        if (request()->query('id')) {
+          $product = DB::table('products')
+            ->join('trees', 'products.tree_id', '=', 'trees.id')
+            ->select('products.*', 'trees.name as tree_name', 'trees.price as tree_price')
+            ->where('products.id', request()->query('id'))
+            ->first();
+          // $product = Product::find(request()->query('id'));
+        } else {
+          $product = Product::get();
+        }
 
+        return response()->json([
+          'data' => $product,
+        ]);
+    }
+
+    public function order(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+          'product' => 'required|exists:products,id',
+        ]);
+
+        if ($validator->fails()) {
+          return redirect()->route('user.product.order')
+            ->withErrors($validator)
+            ->withInput();
+        }
+
+        $order = new Order;
+        $order->user_id = auth()->user()->id;
+        $order->product_id = $request->product;
+        $order->save();
+
+        return redirect()->action(
+          'User\OrderController@checkout', ['id' => $order->id]
+        );
+    }
+
+    public function checkout($id)
+    {
+        // $order = DB::table('orders')
+        //   ->join('products', 'orders.product_id', '=', 'products.id')
+        //   ->join('trees', 'products.tree_id', '=', 'trees.id')
+        //   ->select('orders.*', 'products.tree_quantity as product_tree_quantity', 'trees.price as tree_price')
+        //   ->where('orders.id', $id)
+        //   ->first();
+        $order = Order::findOrFail($id);
+        $transaction = $order->transaction()->first();
+
+        if ($order == null || $order->status != 'waiting' || $order->user_id != auth()->user()->id) {
+          return redirect()->action(
+            'UserController@product'
+          );
+        }
+
+
+        return view('user.checkout')
+          ->with([
+            'order' => $order,
+            'transaction' => $transaction,
+          ]);
     }
 }

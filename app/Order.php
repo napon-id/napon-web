@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Event;
 
 class Order extends Model
 {
@@ -28,5 +29,19 @@ class Order extends Model
     public function location()
     {
         return $this->hasOne('App\Location');
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne('App\Transaction');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($order) {
+          Event::fire('order.created', $order);
+        });
     }
 }

@@ -28,11 +28,6 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        DB::table('orders')->insert([
-          'user_id' => 1,
-          'product_id' => 2,
-        ]);
     }
 
     /**
