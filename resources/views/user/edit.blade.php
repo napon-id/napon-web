@@ -10,9 +10,50 @@
 @endsection
 
 @section('content')
-<div class="col-12">
-  <div class="card mb3">
+<div class="row">
+    <div class="col-12">
+        <div class="card mb3">
+            <div class="card-header">
+                Edit informasi User
+            </div>
 
-  </div>
+            <div class="card-body">
+                <form action="{{ route('user.edit.update') }}" method="post">
+                    @csrf
+                    @method('POST')
+
+                    <div class="form-group">
+                        <label for="phone">Nomor ponsel (phone)</label>
+                        <input type="number" name="phone" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" value="{{ $userInformation->phone }}">
+                        @if($errors->has('phone'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('phone') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Alamat lengkap</label>
+                        <textarea name="address" rows="4" cols="80" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}">{{ $userInformation->address }}</textarea>
+                        @if($errors->has('address'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('address') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" name="" value="Perbarui">
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-footer">
+                <a href="{{ route('user.dashboard') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

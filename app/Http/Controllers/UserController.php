@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;
+use Validator;
 use App\Order;
 use App\Product;
+use App\UserInformation;
 use App\User;
 use App\Log;
 use DB;
@@ -27,12 +30,37 @@ class UserController extends Controller
 
     public function edit()
     {
-        return view('user.edit');
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+
+        return view('user.edit')
+            ->with([
+                'userInformation' => $userInformation,
+            ]);
     }
 
-    public function editUpdate()
+    public function editUpdate(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|numeric',
+            'address' => 'required'
+        ]);
 
+        if ($validator->fails()) {
+            return redirect()
+                ->action('UserController@edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+        $userInformation->phone = $request->phone;
+        $userInformation->address = $request->address;
+        $userInformation->save();
+
+        $request->session()->flash('status', 'Informasi user berhasil diperbarui');
+        return redirect()->action('UserController@edit');
     }
 
     public function password()
@@ -42,7 +70,17 @@ class UserController extends Controller
 
     public function passwordUpdate()
     {
+        $this->passwordValidator()->validate();
 
+        \request()->user()->update([
+            'password' => bcrypt( \request('new_password') )
+        ]);
+
+        auth()->logout();
+
+        request()->session()->flash('status', 'Kata sandi berhasil diperbarui. Silakan login kembali');
+
+        return redirect('login');
     }
 
     public function product()
@@ -79,5 +117,21 @@ class UserController extends Controller
             ->with([
                 'logs' => $logs,
             ]);
+    }
+
+    // protected function
+    protected function passwordValidator(): \Illuminate\Contracts\Validation\Validator
+    {
+        return Validator::make(\request()->only(['old_password', 'new_password', 'new_password_confirmation']), [
+            'old_password' => [
+                'required',
+                function($attribute, $value, $fail) {
+                    if (!Hash::check($value, \request()->user()->password)) {
+                        $fail(__("Miss matched old password"));
+                    }
+                }
+            ],
+            'new_password' => 'required|confirmed'
+        ]);
     }
 }

@@ -38,8 +38,6 @@ class UserEvent
 
     public function userCreated(User $user)
     {
-        Log::info('new user registration');
-
         // create new user information
         $userInformation = new \App\UserInformation;
         $userInformation->user_id = $user->id;
