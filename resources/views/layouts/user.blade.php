@@ -96,8 +96,9 @@
 
           <!-- session flash -->
           @if(session('status'))
-          <div class="alert alert-success">
-              {{ $message }}
+          <div class="alert alert-success fade show alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {{ session('status') }}
           </div>
           @endif
 

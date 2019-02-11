@@ -51,7 +51,7 @@
 
       <div class="card-footer">
         Untuk mempercepat konfirmasi pembayaran
-        <br>Pada kolom komentar tuliskan : TRX-{{ $transaction->id }}
+        <br>Pada kolom komentar tuliskan : NPID{{ auth()->user()->id }}TR{{ $transaction->id }}
       </div>
 
     </div>
@@ -62,4 +62,5 @@
 <a href="{{ route('user.product') }}" class="btn btn-info">
   <i class="fas fa-arrow-left"></i> Kembali ke produk
 </a>
+<hr>
 @endsection

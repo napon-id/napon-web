@@ -162,7 +162,7 @@ class OrderController extends Controller
           );
         }
 
-
+        request()->session()->flash('status', 'Proses checkout berhasil');
         return view('user.checkout')
           ->with([
             'order' => $order,
