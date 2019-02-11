@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Order;
-use Log;
+use App\Log;
 
 class OrderEvent
 {
@@ -38,16 +38,23 @@ class OrderEvent
 
     public function orderCreated(Order $order)
     {
-        Log::info('new order placed => ' . $order);
-
         //get product
         $product = \App\Product::find($order->product_id);
         // get tree
         $tree = \App\Tree::find($product->tree_id);
 
+        // create transaction for faster query purpose
         $transaction = new \App\Transaction;
         $transaction->order_id = $order->id;
         $transaction->total = $tree->price * $product->tree_quantity;
         $transaction->save();
+
+        // write to log
+        $log = Log::create([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Memesan produk tabungan dengan ID : ' . $product->id,
+        ]);
+
+        // notify user via email
     }
 }

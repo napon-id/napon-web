@@ -23,6 +23,8 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('dashboard/css/sb-admin.css') }}" rel="stylesheet">
 
+    @yield('style')
+
   </head>
 
   <body id="page-top">
@@ -79,7 +81,7 @@
             <span>Dompet</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#!">
+          <a class="nav-link" href="{{ route('user.activity') }}">
             <i class="fas fa-fw fa-info"></i>
             <span>Log Aktivitas</span></a>
         </li>
@@ -91,6 +93,13 @@
 
           <!-- breadcrumbs -->
           @yield('breadcrumbs')
+
+          <!-- session flash -->
+          @if(session('status'))
+          <div class="alert alert-success">
+              {{ $message }}
+          </div>
+          @endif
 
           <!-- content -->
           @yield('content')

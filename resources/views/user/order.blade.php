@@ -77,7 +77,7 @@ $(document).ready(function () {
         $('#description').append('Jumlah pohon : ' + data.tree_quantity);
         $('#description').append('<br>Tabungan awal : Rp. ' + price + ',00');
         $('#description').append('<br>Lama menabung : ' + data.time);
-        $('#description').append('Keuntungan : ' + data.percentage);
+        $('#description').append('<br>Keuntungan : ' + data.percentage + '%');
       });
     } else {
       $('#description').empty();

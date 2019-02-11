@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use DataTables;
 use App\Order;
 use App\Product;
 use App\User;
+use App\Log;
 use DB;
 
 class UserController extends Controller
@@ -40,7 +42,7 @@ class UserController extends Controller
 
     public function passwordUpdate()
     {
-        
+
     }
 
     public function product()
@@ -66,5 +68,16 @@ class UserController extends Controller
           ->with([
             'products' => $products,
           ]);
+    }
+
+    public function activity()
+    {
+        $user = User::find(auth()->user()->id);
+        $logs = $user->logs()->latest()->paginate(5);
+
+        return view('user.activity')
+            ->with([
+                'logs' => $logs,
+            ]);
     }
 }

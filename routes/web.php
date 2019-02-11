@@ -40,6 +40,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('/product/order', 'UserController@order')->name('user.product.order');
     Route::post('/product/order', 'User\OrderController@order');
     Route::get('/product/checkout/{id}', 'User\OrderController@checkout');
+    Route::get('/activity', 'UserController@activity')->name('user.activity');
 
     // api call
     Route::get('product/api', 'User\OrderController@productApi')->name('user.product.api');
