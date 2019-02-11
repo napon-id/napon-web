@@ -85,6 +85,9 @@ class UserController extends Controller
 
     public function product()
     {
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+
         $status_select = [
           'waiting' => 'Menunggu top-up pembayaran',
           'paid' => 'Pohon sedang ditanam',
@@ -95,23 +98,30 @@ class UserController extends Controller
         return view('user.product')
           ->with([
             'status_select' => $status_select,
+            'userInformation' => $userInformation,
           ]);
     }
 
     public function order()
     {
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+
         $products = Product::get();
 
         return view('user.order')
           ->with([
             'products' => $products,
+            'userInformation' => $userInformation,
           ]);
     }
 
     public function activity()
     {
         $user = User::find(auth()->user()->id);
-        $logs = $user->logs()->latest()->paginate(5);
+        $logs = $user->logs()
+            ->where('user_id', $user->id)
+            ->latest()->paginate(5);
 
         return view('user.activity')
             ->with([

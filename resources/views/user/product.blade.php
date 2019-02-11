@@ -12,39 +12,43 @@
 @endsection
 
 @section('content')
-<div class="card mb3">
-  <div class="row">
-    <div class="col-4">
+@if($userInformation->phone)
+<div class="row">
+    <div class="col-12">
+
+        <div class="table-responsive">
+          <table class="table" id="productTable">
+            <select class="form-control" id="statusFilter" style="max-width: 20%">
+              <option value="">Semua status</option>
+              @foreach($status_select as $indexKey=>$a)
+              <option value="{{ $indexKey }}" {{ request()->query('status') == $indexKey ? 'selected' : '' }}>{{ $a }}</option>
+              @endforeach
+            </select>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Tanggal</th>
+                <th>Produk Tabungan</th>
+                <th>Nilai Tabungan</th>
+                <th>Nilai Akhir</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Ajax Load -->
+            </tbody>
+          </table>
+        </div>
 
     </div>
-    <div class="col-12">
-      <div class="table-responsive">
-        <table class="table" id="productTable">
-          <select class="form-control" id="statusFilter" style="max-width: 20%">
-            <option value="">Semua status</option>
-            @foreach($status_select as $indexKey=>$a)
-            <option value="{{ $indexKey }}" {{ request()->query('status') == $indexKey ? 'selected' : '' }}>{{ $a }}</option>
-            @endforeach
-          </select>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Tanggal</th>
-              <th>Produk Tabungan</th>
-              <th>Nilai Tabungan</th>
-              <th>Nilai Akhir</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Ajax Load -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 </div>
+@else
+    <h5 class="text-center">Sebelum memulai bertransaksi, Anda dimohon untuk melengkapi informasi diri.
+        <br>Klik
+        <a href="{{ route('user.edit') }}">lengkapi informasi diri</a>
+    </h5>
+@endif
 @endsection
 
 

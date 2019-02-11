@@ -20,15 +20,21 @@
             </div>
 
             <div class="card-body">
-                @foreach($logs as $a)
-                <h5>
-                    {{-- refers to product detail --}}
-                    <a href="{{ route('user.product') }}">
-                        {{ $a->created_at->format('d-m-Y h:i:sa') }}
-                    </a>
-                </h5>
-                <p>{{ $a->activity }}</p>
-                @endforeach
+                @if(count($logs) > 0)
+                    @foreach($logs as $a)
+                    <h5>
+                        {{-- refers to product detail --}}
+                        <a href="{{ route('user.product') }}">
+                            {{ $a->created_at->format('d-m-Y h:i:sa') }}
+                        </a>
+                    </h5>
+                    <p>{{ $a->activity }}</p>
+                    @endforeach
+                @else
+                    <p>
+                        Anda belum melakukan aktivitas apapun pada platform {{ config('app.name') }}
+                    </p>
+                @endif
             </div>
 
             <div class="card-footer">

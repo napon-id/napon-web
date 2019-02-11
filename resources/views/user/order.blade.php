@@ -15,6 +15,7 @@
 @endsection
 
 @section('content')
+@if($userInformation->phone)
 <div class="col-12">
   <div class="card mb3">
     <div class="card-header">
@@ -52,6 +53,12 @@
     </div>
   </div>
 </div>
+@else
+    <h5 class="text-center">Sebelum memulai bertransaksi, Anda dimohon untuk melengkapi informasi diri.
+        <br>Klik
+        <a href="{{ route('user.edit') }}">lengkapi informasi diri</a>
+    </h5>
+@endif
 @endsection
 
 @section('script')
