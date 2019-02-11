@@ -25,6 +25,12 @@ class UserController extends Controller
 
     public function index()
     {
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+
+        if (!$userInformation->phone) {
+            request()->session()->flash('status', 'Silahkan lengkapi data diri Anda <a href="'.route('user.edit').'">disini</a>');
+        }
         return view('user.index');
     }
 
