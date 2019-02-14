@@ -51,7 +51,7 @@ class OrderEvent
 
         // write to log
         $log = Log::create([
-            'user_id' => auth()->user()->id,
+            'user_id' => $order->user_id,
             'activity' => 'Memesan produk tabungan dengan ID : ' . $product->id,
         ]);
 

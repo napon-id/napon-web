@@ -63,10 +63,12 @@
       <h2 class="light-green-text">Tentang {{ config('app.name') }}</h2>
       <hr>
       @foreach($faqs_about as $faq)
-      <button class="accordion">{{ $faq->question }}</button>
-      <div class="panel">
-        <p>{{ $faq->answer }}</p>
-      </div>
+        @if ($faq->answer)
+            <button class="accordion">{{ $faq->question }}</button>
+            <div class="panel">
+                <p>{{ $faq->answer }}</p>
+            </div>
+        @endif
       @endforeach
     </div> <!-- container -->
   </div> <!-- container fluid -->
@@ -77,24 +79,12 @@
       <h2 class="light-green-text">Member {{ config('app.name') }}</h2>
       <hr>
       @foreach($faqs_user as $faq)
-      <button class="accordion">{{ $faq->question }}</button>
-      <div class="panel">
-        <p>{{ $faq->answer }}</p>
-      </div>
-      @endforeach
-    </div> <!-- container -->
-  </div> <!-- container fluid -->
-
-  <!-- faq about Investor -->
-  <div class="container-fluid smaller-content" id="faqInvestor">
-    <div class="container">
-      <h2 class="light-green-text">Investor Lahan</h2>
-      <hr>
-      @foreach($faqs_investor as $faq)
-      <button class="accordion">{{ $faq->question }}</button>
-      <div class="panel">
-        <p>{{ $faq->answer }}</p>
-      </div>
+          @if ($faq->answer)
+              <button class="accordion">{{ $faq->question }}</button>
+              <div class="panel">
+                  <p>{{ $faq->answer }}</p>
+              </div>
+          @endif
       @endforeach
     </div> <!-- container -->
   </div> <!-- container fluid -->
@@ -105,10 +95,12 @@
       <h2 class="light-green-text">Lain-lain</h2>
       <hr>
       @foreach($faqs_misc as $faq)
-      <button class="accordion">{{ $faq->question }}</button>
-      <div class="panel">
-        <p>{{ $faq->answer }}</p>
-      </div>
+          @if ($faq->answer)
+              <button class="accordion">{{ $faq->question }}</button>
+              <div class="panel">
+                  <p>{{ $faq->answer }}</p>
+              </div>
+          @endif
       @endforeach
     </div> <!-- container -->
   </div> <!-- container fluid -->

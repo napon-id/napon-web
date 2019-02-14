@@ -140,33 +140,25 @@ class OrderController extends Controller
         $order->product_id = $request->product;
         $order->save();
 
-        return redirect()->action(
-          'User\OrderController@checkout', ['id' => $order->id]
-        );
+        return redirect()
+            ->route('user.product.checkout', ['id' => $order->id]);
     }
 
     public function checkout($id)
     {
-        // $order = DB::table('orders')
-        //   ->join('products', 'orders.product_id', '=', 'products.id')
-        //   ->join('trees', 'products.tree_id', '=', 'trees.id')
-        //   ->select('orders.*', 'products.tree_quantity as product_tree_quantity', 'trees.price as tree_price')
-        //   ->where('orders.id', $id)
-        //   ->first();
         $order = Order::findOrFail($id);
         $transaction = $order->transaction()->first();
 
         if ($order == null || $order->status != 'waiting' || $order->user_id != auth()->user()->id) {
-          return redirect()->action(
-            'UserController@product'
-          );
+            return redirect()
+                ->route('user.product');
         }
 
-        request()->session()->flash('status', 'Proses checkout berhasil');
         return view('user.checkout')
-          ->with([
-            'order' => $order,
-            'transaction' => $transaction,
-          ]);
+            ->with([
+                'order' => $order,
+                'transaction' => $transaction,
+                'status' => 'Proses checkout berhasil',
+            ]);
     }
 }
