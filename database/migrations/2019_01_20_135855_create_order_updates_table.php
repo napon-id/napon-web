@@ -15,11 +15,12 @@ class CreateOrderUpdatesTable extends Migration
     {
         Schema::create('order_updates', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
             $table->unsignedInteger('order_id');
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }

@@ -8,7 +8,7 @@ use Event;
 class Order extends Model
 {
     protected $fillable = [
-      'user_id', 'token', 'product_id', 'location_id', 'quantity', 'ip_address', 'status', 'tree_status'
+      'user_id', 'token', 'product_id', 'location_id', 'quantity', 'ip_address', 'status',
     ];
 
     public function product()
@@ -42,6 +42,10 @@ class Order extends Model
 
         static::created(function ($order) {
           Event::fire('order.created', $order);
+        });
+
+        static::updated(function ($order) {
+            Event::fire('order.updated', $order);
         });
     }
 }

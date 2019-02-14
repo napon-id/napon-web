@@ -49,7 +49,7 @@
               <p class="card-text">
                 Jumlah pohon : {{ $product->tree_quantity }}
                 <br>
-                Tabungan : Rp {{ number_format($product->tree_quantity * $tree->price, 2, ',', '.') }}
+                Tabungan : Rp {{ formatCurrency($product->tree_quantity * $tree->price) }}
                 <br>
                 Lama menabung : {{ $product->time }}
                 <br>

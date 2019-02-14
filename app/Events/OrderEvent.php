@@ -10,6 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Order;
+use App\OrderUpdate;
 use App\Log;
 
 class OrderEvent
@@ -56,5 +57,33 @@ class OrderEvent
         ]);
 
         // notify user via email
+    }
+
+    public function orderUpdated(Order $order)
+    {
+        // get product
+        $product = $order->product()->first();
+
+        if ($order->status == 'paid') {
+            OrderUpdate::create([
+                'order_id' => $order->id,
+                'title' => 'Deposit berhasil',
+                'description' => 'Selamat. Produk tabungan '.$product->name.' anda telah mulai berjalan. Saat ini kami sedang menanam pohon Anda.'
+            ]);
+        } else if ($order->status == 'investing') {
+            OrderUpdate::create([
+                'order_id' => $order->id,
+                'title' => 'Proses penanaman telah selesai dilakukan',
+                'description' => 'Pohon anda telah selesai kami tanam. Kami akan memberikan laporan rutin pohon Anda disini.'
+            ]);
+        } else if ($order->status == 'done') {
+            OrderUpdate::create([
+                'order_id' => $order->id,
+                'title' => 'Pohon telah siap dijual',
+                'description' => 'Selamat. Pohon Anda telah memasuki masa panen. Tahap selanjutnya adalah tahap penjualan pohon. Kami akan tetap memberikan perkembangan informasi disini.'
+            ]);
+        } else {
+            \Log::info('order update for ' . $order->id . ' fired');
+        }
     }
 }

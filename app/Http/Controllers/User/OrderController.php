@@ -90,9 +90,9 @@ class OrderController extends Controller
     public function checkout($token)
     {
         $order = Order::where('token', $token)
-            ->first();
+            ->firstOrFail();
 
-        $transaction = $order->transaction()->first();
+        $transaction = $order->transaction()->firstOrFail();
 
         if ($order == null || $order->status != 'waiting' || $order->user_id != auth()->user()->id) {
             return redirect()
@@ -104,6 +104,33 @@ class OrderController extends Controller
                 'order' => $order,
                 'transaction' => $transaction,
                 'status' => 'Proses checkout berhasil',
+            ]);
+    }
+
+    public function detail($token)
+    {
+        $order = Order::where('token', $token)
+            ->where('user_id', auth()->user()->id)
+            ->firstOrFail();
+
+        $product = $order->product()->first();
+
+        $tree = $product->tree()->first();
+
+        $orderUpdates = $order->updates()
+            ->orderBy('order_updates.created_at', 'DESC')
+            ->get();
+
+        if ($order->status == 'waiting') {
+            return redirect()->route('user.product');
+        }
+
+        return view('user.detail')
+            ->with([
+                'order' => $order,
+                'product' => $product,
+                'tree' => $tree,
+                'orderUpdates' => $orderUpdates,
             ]);
     }
 }

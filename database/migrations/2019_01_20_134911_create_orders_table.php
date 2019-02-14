@@ -22,7 +22,6 @@ class CreateOrdersTable extends Migration
             $table->decimal('selling_price', 16, 2)->default(0);
             $table->ipAddress('ip_address')->nullable();
             $table->enum('status', ['waiting', 'paid', 'investing', 'done'])->default('waiting');
-            $table->enum('tree_status', ['waiting', 'planting', 'maintaining', 'selling'])->default('waiting');
             $table->timestamps();
             $table->softDeletes();
 
