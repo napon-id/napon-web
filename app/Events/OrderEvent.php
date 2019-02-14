@@ -52,7 +52,7 @@ class OrderEvent
         // write to log
         $log = Log::create([
             'user_id' => $order->user_id,
-            'activity' => 'Memesan produk tabungan dengan ID : ' . $product->id,
+            'activity' => 'Memesan produk tabungan : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
         ]);
 
         // notify user via email

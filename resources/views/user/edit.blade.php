@@ -14,7 +14,7 @@
     <div class="col-12">
         <div class="card mb3">
             <div class="card-header">
-                Edit informasi User
+                {{ __('Edit informasi User') }}
             </div>
 
             <div class="card-body">
@@ -23,8 +23,18 @@
                     @method('POST')
 
                     <div class="form-group">
-                        <label for="phone">Nomor ponsel (phone)</label>
-                        <input type="number" name="phone" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" value="{{ $userInformation->phone }}">
+                        <label for="phone">{{ __('Nomor KTP') }}</label>
+                        <input type="number" name="ktp" class="form-control {{ $errors->has('ktp') ? 'is-invalid' : '' }}" value="{{ $userInformation->ktp }}" placeholder="16 digit nomor KTP">
+                        @if($errors->has('ktp'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('ktp') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">{{ __('Nomor telepon') }}</label>
+                        <input type="number" name="phone" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" value="{{ $userInformation->phone }}" placeholder="08xxxxxxxxx">
                         @if($errors->has('phone'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('phone') }}</strong>

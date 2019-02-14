@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\OrderDataTable;
 use DataTables;
 use App\Order;
 use App\User;
@@ -13,6 +14,8 @@ use DB;
 
 class OrderController extends Controller
 {
+    use OrderDataTable;
+
     public function productApi()
     {
         $user_id = auth()->user()->id;
@@ -24,38 +27,7 @@ class OrderController extends Controller
           ->where('orders.user_id', '=', $user_id)
           ->get();
 
-          return DataTables::of($orders)
-            ->addColumn('price', function ($orders) {
-              $price = $orders->tree_price * $orders->product_tree_quantity;
-              return "Rp " . number_format($price, 2, ',', '.');
-            })
-            ->addColumn('selling_price', function ($orders) {
-              if ($orders->selling_price < 1) {
-                return 'Produk tabungan belum selesai';
-              } else {
-                return 'Rp ' . number_format($orders->selling_price, 2, ',', '.');
-              }
-            })
-            ->addColumn('status', function ($orders) {
-              if ($orders->status == 'waiting') {
-                return "<p class='badge badge-dark'>Menunggu top-up pembayaran</p>";
-              } else if ($orders->status == 'paid') {
-                return "<p class='badge badge-warning'>Pohon sedang ditanam</p>";
-              } else if ($orders->status == 'investing') {
-                return "<p class='badge badge-info'>Pohon telah ditanam</p>";
-              } else if ($orders->status == 'done') {
-                "<p class='badge badge-success'>Produk tabungan telah selesai</p>";
-              }
-            })
-            ->addColumn('action', function ($orders) {
-              if ($orders->status == 'done') {
-                return "<a class='btn btn-info' href='#!'>Lihat Detail</a>";
-              } else {
-                return "<a class='btn btn-info' href='#!'><i class='fas fa-eye'></i> Lihat Detail</a>";
-              }
-            })
-            ->rawColumns(['status', 'action'])
-            ->make(true);
+          return $this->generateOrderDatatable($orders, 'all');
     }
 
     public function productApiStatus($status)
@@ -71,38 +43,8 @@ class OrderController extends Controller
           ->orderBy('orders.created_at', 'ASC')
           ->get();
 
-          return DataTables::of($orders)
-            ->addColumn('price', function ($orders) {
-              $price = $orders->tree_price * $orders->product_tree_quantity;
-              return "Rp " . number_format($price, 2, ',', '.');
-            })
-            ->addColumn('selling_price', function ($orders) {
-              if ($orders->selling_price < 1) {
-                return 'Produk tabungan belum selesai';
-              } else {
-                return 'Rp ' . number_format($orders->selling_price, 2, ',', '.');
-              }
-            })
-            ->addColumn('status', function ($orders) {
-              if ($orders->status == 'waiting') {
-                return "<p class='badge badge-dark'>Menunggu top-up pembayaran</p>";
-              } else if ($orders->status == 'paid') {
-                return "<p class='badge badge-warning'>Pohon sedang ditanam</p>";
-              } else if ($orders->status == 'investing') {
-                return "<p class='badge badge-info'>Pohon telah ditanam</p>";
-              } else if ($orders->status == 'done') {
-                "<p class='badge badge-success'>Produk tabungan telah selesai</p>";
-              }
-            })
-            ->addColumn('action', function ($orders) {
-              if ($orders->status == 'done') {
-                return "<a class='btn btn-info' href='#!'>Lihat Detail</a>";
-              } else {
-                return "<a class='btn btn-info' href='#!'><i class='fas fa-eye'></i> Lihat Detail</a>";
-              }
-            })
-            ->rawColumns(['status', 'action'])
-            ->make(true);
+        return $this->generateOrderDatatable($orders, $status);
+
     }
 
     public function productApiOrder()
@@ -137,16 +79,19 @@ class OrderController extends Controller
 
         $order = new Order;
         $order->user_id = auth()->user()->id;
+        $order->token = base64_encode(now());
         $order->product_id = $request->product;
         $order->save();
 
         return redirect()
-            ->route('user.product.checkout', ['id' => $order->id]);
+            ->route('user.product.checkout', ['token' => $order->token]);
     }
 
-    public function checkout($id)
+    public function checkout($token)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::where('token', $token)
+            ->first();
+
         $transaction = $order->transaction()->first();
 
         if ($order == null || $order->status != 'waiting' || $order->user_id != auth()->user()->id) {

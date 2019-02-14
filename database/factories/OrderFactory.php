@@ -11,9 +11,10 @@ $factory->define(App\Order::class, function (Faker $faker) {
 
     // set order status
     $statuses = ['waiting', 'paid'];
-    
+
     return [
         'user_id' => $faker->randomElement($users_id),
+        'token' => base64_encode(now()),
         'product_id' => $faker->randomElement($products_id),
         'status' => $faker->randomElement($statuses),
     ];

@@ -28,7 +28,7 @@ class UserController extends Controller
         $user = User::find(auth()->user()->id);
         $userInformation = $user->userInformation()->first();
 
-        if (!$userInformation->phone) {
+        if (!$userInformation->ktp || !$userInformation->phone || !$userInformation->address) {
             request()->session()->flash('status', 'Silahkan lengkapi data diri Anda <a href="'.route('user.edit').'">disini</a>');
         }
         return view('user.index');
@@ -48,25 +48,28 @@ class UserController extends Controller
     public function editUpdate(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'ktp' => 'required|numeric|digits:16',
             'phone' => 'required|numeric',
             'address' => 'required'
         ]);
 
         if ($validator->fails()) {
             return redirect()
-                ->action('UserController@edit')
+                ->back()
                 ->withErrors($validator)
                 ->withInput();
         }
 
         $user = User::find(auth()->user()->id);
         $userInformation = $user->userInformation()->first();
+        $userInformation->ktp = $request->ktp;
         $userInformation->phone = $request->phone;
         $userInformation->address = $request->address;
         $userInformation->save();
 
         $request->session()->flash('status', 'Informasi user berhasil diperbarui');
-        return redirect()->action('UserController@edit');
+        return redirect()
+            ->route('user.edit', ['userInformation' => $userInformation]);
     }
 
     public function password()
@@ -94,17 +97,16 @@ class UserController extends Controller
         $user = User::find(auth()->user()->id);
         $userInformation = $user->userInformation()->first();
 
-        $status_select = [
-          'waiting' => 'Menunggu top-up pembayaran',
-          'paid' => 'Pohon sedang ditanam',
-          'investing' => 'Pohon telah ditanam',
-          'done' => 'Produk tabungan telah selesai',
-        ];
+        $orderCount = Order::where('user_id', auth()->user()->id)
+            ->count();
+
+        $status_select = config('treestatus');
 
         return view('user.product')
           ->with([
             'status_select' => $status_select,
             'userInformation' => $userInformation,
+            'orderCount' => $orderCount,
           ]);
     }
 

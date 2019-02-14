@@ -15,7 +15,7 @@
 @endsection
 
 @section('content')
-@if($userInformation->phone)
+@if($userInformation->ktp && $userInformation->phone && $userInformation->address)
 <div class="col-12">
   <div class="card mb3">
     <div class="card-header">
