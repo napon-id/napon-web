@@ -68,8 +68,12 @@
         </div>
 
         <div class="card-footer">
-
+            {{ $accounts->links() }}
         </div>
     </div>
 </div>
+
+<hr>
+
+
 @endsection

@@ -22,7 +22,7 @@ class WalletController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $balance = $user->balance()->first();
-        $accounts = $user->accounts()->get();
+        $accounts = $user->accounts()->paginate(5);
 
         return view('user.wallet')
             ->with([
@@ -76,46 +76,6 @@ class WalletController extends Controller
             ->route('user.wallet');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $account = Account::findOrFail($id);
@@ -123,5 +83,10 @@ class WalletController extends Controller
 
         return redirect()
             ->route('user.wallet');
+    }
+
+    public function withdraw()
+    {
+        abort(403, 'Fitur withdraw dapat digunakan setelah tabungan selesai berjalan');
     }
 }
