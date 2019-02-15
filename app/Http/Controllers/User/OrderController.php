@@ -133,4 +133,17 @@ class OrderController extends Controller
                 'orderUpdates' => $orderUpdates,
             ]);
     }
+
+    public function update($token, $id)
+    {
+        $order = Order::where('token', $token)
+            ->first();
+        $orderUpdate = $order->updates()->find($id);
+
+        return view('user.update')
+            ->with([
+                'order' => $order,
+                'orderUpdate' => $orderUpdate,
+            ]);
+    }
 }

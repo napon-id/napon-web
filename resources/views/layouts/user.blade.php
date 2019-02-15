@@ -66,17 +66,17 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Tabungan</span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+          <div class="dropdown-menu" aria-labelledby="productDropdown">
             <a class="dropdown-item" href="{{ url('/user/product') }}">Produk Tabungan</a>
             <a class="dropdown-item" href="{{ url('/user/product/order') }}"><i class="fas fa-plus"></i> Order</a>
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#!">
+          <a class="nav-link" href="{{ route('user.wallet') }}">
             <i class="fas fa-fw fa-credit-card"></i>
             <span>Dompet</span></a>
         </li>

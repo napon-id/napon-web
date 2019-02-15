@@ -42,6 +42,14 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('/product/checkout/{token}', 'User\OrderController@checkout')->name('user.product.checkout');
     Route::get('/activity', 'UserController@activity')->name('user.activity');
     Route::get('/product/detail/{token}', 'User\OrderController@detail')->name('user.product.detail');
+    Route::get('/product/detail/{token}/{id}', 'User\OrderController@update')->name('user.product.update');
+
+    // Wallet routes
+    Route::get('/wallet', 'User\WalletController@index')->name('user.wallet');
+    Route::get('/wallet/withdraw', 'User\WalletController@withdraw')->name('user.wallet.withdraw');
+    Route::get('/wallet/add', 'User\WalletController@create')->name('user.wallet.add');
+    Route::post('/wallet/add', 'User\WalletController@store');
+    Route::delete('/wallet/{id}', 'User\WalletController@destroy');
 
     // api call
     Route::get('product/api', 'User\OrderController@productApi')->name('user.product.api');

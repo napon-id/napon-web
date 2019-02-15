@@ -111,7 +111,7 @@
                 @foreach($orderUpdates as $a)
                 <h5>
                     {{-- refers to product detail --}}
-                    <a href="{{ route('user.product') }}">
+                    <a href="{{ route('user.product.update', ['token' => $order->token, 'id' => $a->id]) }}">
                         {{ $a->title }}
                     </a>
                 </h5>
