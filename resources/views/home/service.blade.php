@@ -36,7 +36,7 @@
           <div class="card">
             <!-- Card image -->
             <div class="view overlay">
-              <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Card image cap">
+              <img class="card-img-top mx-auto d-block" style="max-width: 12em; max-height: 12em;" src="{{ $product->img }}" alt="Card image cap">
               <a href="#!">
                 <div class="mask rgba-white-slight"></div>
               </a>
@@ -60,7 +60,7 @@
                 @endif
               </p>
               <!-- Button -->
-              <a href="#" class="btn btn-light-green">Pesan <i class="fas fa-leaf"></i></a>
+              <a href="{{ route('user.product.order') }}" class="btn btn-light-green">Pesan <i class="fas fa-leaf"></i></a>
             </div>
           </div> <!-- Card -->
           <br>
@@ -75,7 +75,7 @@
     <div class="container">
       <h2 class="light-green-text">Ilustrasi Return</h2>
       <hr>
-      <p>
+      <!-- <p>
         Sebagai ilustrasi, pada tahun 2019 harga pohon sengon solomon dengan tinggi 10-13 meter dan diameter 25-30cm adalah <u>Rp. 750.000,00 </u>
         <br><br>
         Anda menabung dengan memilih paket HUTANKU, maka anda memiliki 100 pohon dengan nilai tabungan <u>Rp 30.000.000,00 </u> (Rp. 300.000,00 per pohon).
@@ -93,7 +93,14 @@
         Dalam tempo waktu 5-6 tahun Anda mendapatkan keuntungan sebesar <u>112,5%</u> dari modal Anda.
         <br><br>
         <i>Harga jual pohon sengon solomon tahun ini, saat di panen 5-6 tahun ke depan tentu akan berbeda. Terjadi kenaikan harga jual setiap tahunnya. Potensi keuntungan semakin besar yang didapatkan.</i>
-      </p>
+      </p> -->
+      <div class="view overlay">
+        <img src="https://media.napon.id/img/simulate.jpg" class="img-fluid" alt="Sample image with waves effect.">
+        <a href="https://media.napon.id/img/simulate.jpg">
+          <div class="mask waves-effect waves-light rgba-white-slight"></div>
+        </a>
+      </div> <!-- view overlay -->
+
     </div> <!-- container -->
   </div> <!-- container fluid -->
 </main>
