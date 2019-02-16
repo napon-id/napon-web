@@ -16,19 +16,19 @@
         <!--Grid column-->
         <div class="col-md-6 col-lg-7 text-center text-md-right">
           <!--Facebook-->
-          <a class="fb-ic ml-0">
+          <!-- <a class="fb-ic ml-0">
             <i class="fab fa-facebook white-text mr-4"> </i>
-          </a>
+          </a> -->
           <!--Twitter-->
-          <a class="tw-ic">
+          <!-- <a class="tw-ic">
             <i class="fab fa-twitter white-text mr-4"> </i>
-          </a>
+          </a> -->
           <!--Linkedin-->
-          <a class="li-ic">
+          <!-- <a class="li-ic">
             <i class="fab fa-linkedin white-text mr-4"> </i>
-          </a>
+          </a> -->
           <!--Instagram-->
-          <a class="ins-ic">
+          <a class="ins-ic" href="https://instagram.com/naponinvestamaindonesia">
             <i class="fab fa-instagram white-text mr-lg-4"> </i>
           </a>
         </div>
@@ -61,16 +61,16 @@
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
         <p>
-          <a href="#!">Tentang Kami</a>
+          <a href="{{ route('tentang-kami') }}">Tentang Kami</a>
         </p>
         <p>
-          <a href="#!">Layanan</a>
+          <a href="{{ route('layanan') }}">Layanan</a>
         </p>
-        <p>
+        <!-- <p>
           <a href="#!">Jenis Pohon</a>
-        </p>
+        </p> -->
         <p>
-          <a href="#!">FAQ</a>
+          <a href="{{ route('faq') }}">FAQ</a>
         </p>
       </div>
       <!--/.Second column-->
@@ -82,16 +82,16 @@
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
         <p>
-          <a href="#!">Masuk</a>
+          <a href="{{ route('login') }}">Masuk</a>
         </p>
         <p>
-          <a href="#!">Pendaftaran</a>
+          <a href="{{ route('register') }}">Pendaftaran</a>
         </p>
         <p>
-          <a href="#!">Blog <span class="fas fa-window"></span></a>
+          <a href="{{ url('https://blog.napon.id') }}" target="_blank">Blog <span class="fas fa-window"></span></a>
         </p>
         <p>
-          <a href="#!">Simulasi Menabung</a>
+          <a href="{{ route('layanan') }}#serviceSimulation">Simulasi Menabung</a>
         </p>
       </div>
       <!--/.Third column-->

@@ -115,7 +115,7 @@
           <img src="https://media.napon.id/icon/danai.png" alt="Danai">
         </div>
         <div class="col-sm-10">
-          <h4>Danai</h4>
+          <h4>Menabung</h4>
           <p>
             Anda dapat memulai menabung pohon melalui platform kami setelah melakukan verifikasi alamat email.
           </p>
