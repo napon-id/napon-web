@@ -17,9 +17,9 @@
         <div class="card-body-icon">
           <i class="fas fa-fw fa-money-bill"></i>
         </div>
-        <div class="mr-5">Saldo <br>Rp. 000</div>
+        <div class="mr-5">Saldo <br>{{ formatCurrency($user->balance()->first()->balance) }}</div>
       </div>
-      <a class="card-footer text-white clearfix small z-1" href="#">
+      <a class="card-footer text-white clearfix small z-1" href="{{ route('user.wallet') }}">
         <span class="float-left">Lihat Detail</span>
         <span class="float-right">
           <i class="fas fa-angle-right"></i>
@@ -33,9 +33,9 @@
         <div class="card-body-icon">
           <i class="fas fa-fw fa-shopping-cart"></i>
         </div>
-        <div class="mr-5">5 Produk Tabungan <br>Berjalan</div>
+        <div class="mr-5">{{ $user->orders()->where('status', 'paid')->orWhere('status', 'investing')->count() }} Produk Tabungan <br>Berjalan</div>
       </div>
-      <a class="card-footer text-white clearfix small z-1" href="#">
+      <a class="card-footer text-white clearfix small z-1" href="{{ route('user.product') }}">
         <span class="float-left">Lihat Detail</span>
         <span class="float-right">
           <i class="fas fa-angle-right"></i>
@@ -49,7 +49,7 @@
         <div class="card-body-icon">
           <i class="fas fa-fw fa-list"></i>
         </div>
-        <div class="mr-5">10 Produk Tabungan <br>Selesai</div>
+        <div class="mr-5">{{ $user->orders()->where('status', 'done')->count() }} Produk Tabungan <br>Selesai</div>
       </div>
       <a class="card-footer text-white clearfix small z-1" href="#">
         <span class="float-left">Lihat Detail</span>

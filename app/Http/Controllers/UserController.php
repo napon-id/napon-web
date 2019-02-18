@@ -31,7 +31,10 @@ class UserController extends Controller
         if (!$userInformation->ktp || !$userInformation->phone || !$userInformation->address) {
             request()->session()->flash('status', 'Silahkan lengkapi data diri Anda <a href="'.route('user.edit').'">disini</a>');
         }
-        return view('user.index');
+        return view('user.index')
+            ->with([
+                'user' => $user,
+            ]);
     }
 
     public function edit()
