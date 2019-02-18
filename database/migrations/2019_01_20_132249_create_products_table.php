@@ -18,13 +18,14 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('tree_id');
             $table->string('name');
             $table->integer('tree_quantity');
+            $table->string('img');
             $table->text('description')->nullable();
             $table->string('time');
             $table->integer('percentage');
             $table->enum('available', ['yes', 'no'])->default('yes');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->foreign('tree_id')->references('id')->on('trees')->onDelete('cascade');
         });
     }

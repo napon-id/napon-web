@@ -6,7 +6,6 @@
   <!-- Hero intro -->
   <div class="container-fluid content" id="heroIntro">
     <div class="container">
-      <!-- <h1 class="bold" style="font-size: 3.5em">Napon.ID</h1> -->
       <h2>Rajin <span class="bold">MENABUNG</span></h2>
       <h2><span class="bold">POHON</span> Pangkal</h2>
       <h2><span class="light-green">KAYA + BONUS</span></h2>
@@ -60,37 +59,31 @@
 
             <div>
               <img src="https://media.napon.id/icon/platform-bagi-hasil-terbaik.png" alt="Platform Bagi Hasil Terbaik">
-              <!-- <span class="fas fa-star fa-5x"></span> -->
               <br><br>Platform bagi hasil terbaik
             </div>
 
             <div>
               <img src="https://media.napon.id/icon/mudah-terjangkau.png" alt="Platform Bagi Hasil Terbaik">
-              <!-- <span class="fas fa-check fa-5x"></span> -->
               <br><br>Mudah dan Terjangkau
             </div>
 
             <div>
               <img src="https://media.napon.id/icon/aman-professional.png" alt="Platform Bagi Hasil Terbaik">
-              <!-- <span class="fas fa-shield-alt fa-5x"></span> -->
               <br><br>Aman dan Professional
             </div>
 
             <div>
               <img src="https://media.napon.id/icon/memberikan-dampak-sosial.png" alt="Platform Bagi Hasil Terbaik">
-              <!-- <span class="fas fa-users fa-5x"></span> -->
               <br><br>Memberikan Dampak Sosial
             </div>
 
             <div>
               <img src="https://media.napon.id/icon/ramah-lingkungan.png" alt="Platform Bagi Hasil Terbaik">
-              <!-- <span class="fas fa-leaf fa-5x"></span> -->
               <br><br>Ramah Lingkungan
             </div>
 
             <div>
               <img src="https://media.napon.id/icon/memberdayakan-petani.png" alt="Platform Bagi Hasil Terbaik">
-              <!-- <span class="fas fa-user-friends fa-5x"></span> -->
               <br><br>Memberdayakan Petani
             </div>
 
@@ -108,7 +101,6 @@
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
           <img src="https://media.napon.id/icon/registrasi.png" alt="Registrasi">
-          <!-- <span class="fas fa-users fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Registrasi</h4>
@@ -121,10 +113,9 @@
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
           <img src="https://media.napon.id/icon/danai.png" alt="Danai">
-          <!-- <span class="fas fa-leaf fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
-          <h4>Danai</h4>
+          <h4>Menabung</h4>
           <p>
             Anda dapat memulai menabung pohon melalui platform kami setelah melakukan verifikasi alamat email.
           </p>
@@ -134,7 +125,6 @@
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
           <img src="https://media.napon.id/icon/budidaya.png" alt="Budidaya">
-          <!-- <span class="fas fa-users fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Budidaya</h4>
@@ -147,7 +137,6 @@
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
           <img src="https://media.napon.id/icon/panen.png" alt="Panen">
-          <!-- <span class="fas fa-funnel-dollar fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Panen</h4>
@@ -160,7 +149,6 @@
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
           <img src="https://media.napon.id/icon/bagi-hasil.png" alt="Bagi Hasil">
-          <!-- <span class="fas fa-network-wired fa-7x "></span> -->
         </div>
         <div class="col-sm-10">
           <h4>Bagi hasil</h4>

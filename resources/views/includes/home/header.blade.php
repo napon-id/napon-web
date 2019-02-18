@@ -28,7 +28,7 @@
           <a class="nav-link" href="{{ route('layanan') }}">Layanan</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://blog.napon.id">Blog</a>
+          <a class="nav-link" href="https://blog.napon.id" target="_blank">Blog</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('faq') }}">FAQ</a>
