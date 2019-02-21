@@ -19,9 +19,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('location_id')->nullable();
-            $table->decimal('selling_price', 16, 2)->default(0);
+            $table->decimal('selling_price', 25, 2)->default(0);
             $table->ipAddress('ip_address')->nullable();
-            $table->enum('status', ['waiting', 'paid', 'investing', 'done'])->default('waiting');
+            $table->string('status')->default('waiting');
             $table->timestamps();
             $table->softDeletes();
 

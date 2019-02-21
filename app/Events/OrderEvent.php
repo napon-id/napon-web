@@ -12,6 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Order;
 use App\OrderUpdate;
 use App\Log;
+use Mail;
 
 class OrderEvent
 {
@@ -43,6 +44,8 @@ class OrderEvent
         $product = \App\Product::find($order->product_id);
         // get tree
         $tree = \App\Tree::find($product->tree_id);
+        //get user
+        $user = \App\User::find($order->user_id);
 
         // create transaction for faster query purpose
         $transaction = new \App\Transaction;
@@ -50,19 +53,22 @@ class OrderEvent
         $transaction->total = $tree->price * $product->tree_quantity;
         $transaction->save();
 
-        // write to log
         $log = Log::create([
             'user_id' => $order->user_id,
             'activity' => 'Memesan produk tabungan : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
         ]);
 
-        // notify user via email
+        $mail = new \App\Mail\OrderCreatedMail($order, $user);
+        Mail::to($user->email)
+            ->queue($mail);
     }
 
     public function orderUpdated(Order $order)
     {
         // get product
         $product = $order->product()->first();
+        // get user
+        $user = \App\User::find($order->user_id);
 
         if ($order->status == 'paid') {
             OrderUpdate::create([
@@ -85,5 +91,10 @@ class OrderEvent
         } else {
             \Log::info('order update for ' . $order->id . ' fired');
         }
+
+
+        $mail = new \App\Mail\OrderUpdatedMail($order, $user);
+        Mail::to($user->email)
+            ->queue($mail);
     }
 }

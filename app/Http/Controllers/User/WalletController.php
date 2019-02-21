@@ -54,7 +54,7 @@ class WalletController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => array('required'),
             'rekening' => array('required', Rule::in(array_keys($banks))),
-            'nomor' => array('required', 'numeric'),
+            'nomor' => array('required', 'numeric', 'digits_between:10,15'),
         ]);
 
         if ($validator->fails()) {

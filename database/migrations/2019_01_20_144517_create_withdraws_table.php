@@ -17,7 +17,7 @@ class CreateWithdrawsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('account_id');
-            $table->enum('status', ['waiting', 'approved', 'rejected', 'done'])->default('waiting');
+            $table->string('status')->default('waiting');
             $table->timestamps();
             $table->softDeletes();
 

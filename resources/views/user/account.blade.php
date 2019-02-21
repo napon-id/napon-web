@@ -57,7 +57,7 @@
 
                     <div class="form-group">
                         <label for="nomor">Nomor Rekening</label>
-                        <input type="number" class="form-control {{ $errors->has('nomor') ? 'is-invalid' : '' }}" name="nomor" value="{{ old('nomor') }}">
+                        <input type="text" class="form-control {{ $errors->has('nomor') ? 'is-invalid' : '' }}" name="nomor" value="{{ old('nomor') }}">
                         @if ($errors->has('nomor'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('nomor') }}</strong>

@@ -102,7 +102,6 @@ class OrderController extends Controller
         return view('user.checkout')
             ->with([
                 'order' => $order,
-                'transaction' => $transaction,
                 'status' => 'Proses checkout berhasil',
             ]);
     }
@@ -113,9 +112,7 @@ class OrderController extends Controller
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();
 
-        $product = $order->product()->first();
-
-        $tree = $product->tree()->first();
+        // $tree = $product->tree()->first();
 
         $orderUpdates = $order->updates()
             ->orderBy('order_updates.created_at', 'DESC')
@@ -128,8 +125,6 @@ class OrderController extends Controller
         return view('user.detail')
             ->with([
                 'order' => $order,
-                'product' => $product,
-                'tree' => $tree,
                 'orderUpdates' => $orderUpdates,
             ]);
     }

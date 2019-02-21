@@ -16,10 +16,10 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_id');
-            $table->decimal('total', 16, 2)->default(0);
-            $table->enum('status', ['paid', 'waiting'])->default('waiting');
+            $table->decimal('total', 25, 2)->default(0);
+            $table->string('status')->default('waiting');
             $table->timestamps();
-            
+
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }

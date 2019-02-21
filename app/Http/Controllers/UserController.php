@@ -19,8 +19,8 @@ class UserController extends Controller
 
     public function __construct()
     {
-      $this->middleware('auth');
-      $this->middleware('verified');
+        $this->middleware('auth');
+        $this->middleware('verified');
     }
 
     public function index()
@@ -50,8 +50,11 @@ class UserController extends Controller
 
     public function editUpdate(Request $request)
     {
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+
         $validator = Validator::make($request->all(), [
-            'ktp' => 'required|numeric|digits:16',
+            'ktp' => 'required|numeric|digits:16|unique:user_informations,ktp,' . $userInformation->id,
             'phone' => 'required|numeric',
             'address' => 'required'
         ]);
@@ -62,17 +65,17 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        $userInformation->update([
+            'ktp' => $request->ktp,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
 
-        $user = User::find(auth()->user()->id);
-        $userInformation = $user->userInformation()->first();
-        $userInformation->ktp = $request->ktp;
-        $userInformation->phone = $request->phone;
-        $userInformation->address = $request->address;
-        $userInformation->save();
-
-        $request->session()->flash('status', 'Informasi user berhasil diperbarui');
         return redirect()
-            ->route('user.edit', ['userInformation' => $userInformation]);
+            ->route('user.edit', ['userInformation' => $userInformation])
+            ->with([
+                'status' => 'Informasi user berhasil diperbarui',
+            ]);
     }
 
     public function password()
@@ -106,11 +109,11 @@ class UserController extends Controller
         $status_select = config('treestatus');
 
         return view('user.product')
-          ->with([
-            'status_select' => $status_select,
-            'userInformation' => $userInformation,
-            'orderCount' => $orderCount,
-          ]);
+            ->with([
+                'status_select' => $status_select,
+                'userInformation' => $userInformation,
+                'orderCount' => $orderCount,
+            ]);
     }
 
     public function order()
@@ -121,10 +124,10 @@ class UserController extends Controller
         $products = Product::get();
 
         return view('user.order')
-          ->with([
-            'products' => $products,
-            'userInformation' => $userInformation,
-          ]);
+            ->with([
+                'products' => $products,
+                'userInformation' => $userInformation,
+            ]);
     }
 
     public function activity()

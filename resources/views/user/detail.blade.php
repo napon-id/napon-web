@@ -59,7 +59,7 @@
                     <tr>
                         <td>Nilai Tabungan Awal</td>
                         <td>
-                            {{ formatCurrency($product->tree_quantity * $tree->price) }}
+                            {{ formatCurrency($order->transaction()->first()->total) }}
                         </td>
                     </tr>
                 </table>
@@ -77,19 +77,19 @@
                 <table class="table table-hover">
                     <tr>
                         <td>Paket Menabung</td>
-                        <td>{{ $product->name }}</td>
+                        <td>{{ $order->product()->first()->name }}</td>
                     </tr>
                     <tr>
                         <td>Banyak Pohon</td>
-                        <td>{{ $product->tree_quantity }}</td>
+                        <td>{{ $order->product()->first()->tree_quantity }}</td>
                     </tr>
                     <tr>
                         <td>Jenis Pohon</td>
-                        <td>{{ $tree->name }}</td>
+                        <td>{{ $order->product()->first()->tree()->first()->name }}</td>
                     </tr>
                     <tr>
                         <td>Harga per pohon</td>
-                        <td>{{ formatCurrency($tree->price) }}</td>
+                        <td>{{ formatCurrency($order->product()->first()->tree()->first()->price) }}</td>
                     </tr>
                 </table>
             </div>
@@ -108,7 +108,7 @@
 
             <div class="card-body">
 
-                @foreach($orderUpdates as $a)
+                @foreach($order->updates()->get() as $a)
                 <h5>
                     {{-- refers to product detail --}}
                     <a href="{{ route('user.product.update', ['token' => $order->token, 'id' => $a->id]) }}">

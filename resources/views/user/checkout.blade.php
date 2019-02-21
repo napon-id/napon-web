@@ -31,9 +31,9 @@
       </div> <!-- card body -->
 
       <div class="card-footer">
-        Jumlah Transfer : Rp. {{ number_format($transaction->total, 2, ',', '.') }}
-        <br>Kode unik : {{ $transaction->id }}
-        <br>Total : Rp. {{ number_format($transaction->total + $transaction->id, 2, ',', '.') }}
+        Jumlah Transfer : Rp. {{ number_format($order->transaction()->first()->total, 2, ',', '.') }}
+        <br>Kode unik : {{ $order->transaction()->first()->id }}
+        <br>Total : Rp. {{ number_format($order->transaction()->first()->total + $order->transaction()->first()->id, 2, ',', '.') }}
       </div> <!-- card footer -->
     </div> <!-- card -->
   </div> <!-- col -->
@@ -51,7 +51,7 @@
 
       <div class="card-footer">
         Untuk mempercepat konfirmasi pembayaran
-        <br>Pada kolom komentar tuliskan : NPID{{ auth()->user()->id }}TR{{ $transaction->id }}
+        <br>Pada kolom komentar tuliskan : NPID{{ auth()->user()->id }}TR{{ $order->transaction()->first()->id }}
       </div>
 
     </div>
