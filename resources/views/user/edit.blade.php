@@ -24,7 +24,7 @@
 
                     <div class="form-group">
                         <label for="phone">{{ __('Nomor KTP') }}</label>
-                        <input type="number" name="ktp" class="form-control {{ $errors->has('ktp') ? 'is-invalid' : '' }}" value="{{ $userInformation->ktp }}" placeholder="16 digit nomor KTP">
+                        <input type="text" name="ktp" class="form-control {{ $errors->has('ktp') ? 'is-invalid' : '' }}" value="{{ old('ktp') ?? $userInformation->ktp }}" placeholder="16 digit nomor KTP">
                         @if($errors->has('ktp'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('ktp') }}</strong>
@@ -34,7 +34,7 @@
 
                     <div class="form-group">
                         <label for="phone">{{ __('Nomor telepon') }}</label>
-                        <input type="number" name="phone" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" value="{{ $userInformation->phone }}" placeholder="08xxxxxxxxx">
+                        <input type="text" name="phone" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" value="{{ old('phone') ?? $userInformation->phone }}" placeholder="08xxxxxxxxx">
                         @if($errors->has('phone'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('phone') }}</strong>
@@ -44,7 +44,7 @@
 
                     <div class="form-group">
                         <label for="phone">Alamat lengkap</label>
-                        <textarea name="address" rows="4" cols="80" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}">{{ $userInformation->address }}</textarea>
+                        <textarea name="address" rows="4" cols="80" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}">{{ old('address') ?? $userInformation->address }}</textarea>
                         @if($errors->has('address'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('address') }}</strong>

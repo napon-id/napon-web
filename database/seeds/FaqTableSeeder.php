@@ -14,7 +14,7 @@ class FaqTableSeeder extends Seeder
         DB::table('faqs')->insert([
             'question' => 'Jenis pohon apa saja yang ditanam di Napon Investama Indonesia ?',
             'category' => 'about',
-            'answer' => 'Untuk saat ini portal yang ada adalah “Pohon Sengon Salomon” . Sengon salomon merupakan jenis varian pohon sengon yang berasal dari kepulauan salomon dan memiliki keistimewaan dengan pertumbuhan yang sangat cepat hingga 2 kali lebih cepat dari sengon biasa. Jika sengon pada umumnya pada usia 6-7 tahun maksimal hanya mampu memperoleh diameter pohon sekitar 15-25 cm, sedangkan sengon salomon dalam 6-7 tahun dapat memiliki diameter minimal 30-45 cm.'
+            'answer' => 'Untuk saat ini portal yang ada adalah “Pohon Sengon Solomon” . Sengon Solomon merupakan jenis varian pohon sengon yang berasal dari kepulauan Solomon dan memiliki keistimewaan dengan pertumbuhan yang sangat cepat hingga 2 kali lebih cepat dari sengon biasa. Jika sengon pada umumnya pada usia 6-7 tahun maksimal hanya mampu memperoleh diameter pohon sekitar 15-25 cm, sedangkan sengon Solomon dalam 6-7 tahun dapat memiliki diameter minimal 30-45 cm.'
         ]);
 
         DB::table('faqs')->insert([
@@ -63,7 +63,7 @@ class FaqTableSeeder extends Seeder
         DB::table('faqs')->insert([
             'question' => 'Kapan saya bisa menjual pohon di Napon Investama Indonesia ?',
             'category' => 'user',
-            'answer' => 'Untuk mendapatkan harga terbaik maka team Napon Investama Indonesia akan menjual pohon dari user ketika sudah mencpaia diameter sekitar 30-35 cm dan itu untuk sengon salomon berumur 5-6 tahun.'
+            'answer' => 'Untuk mendapatkan harga terbaik maka team Napon Investama Indonesia akan menjual pohon dari user ketika sudah mencpaia diameter sekitar 30-35 cm dan itu untuk sengon Solomon berumur 5-6 tahun.'
         ]);
 
         DB::table('faqs')->insert([
