@@ -59,6 +59,11 @@ class User extends Authenticatable  implements MustVerifyEmail
         return $this->hasMany('App\Log');
     }
 
+    public function withdraws()
+    {
+        return $this->hasMany('App\Withdraw');
+    }
+
     public static function boot()
     {
         parent::boot();

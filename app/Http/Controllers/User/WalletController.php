@@ -26,7 +26,7 @@ class WalletController extends Controller
 
         return view('user.wallet')
             ->with([
-                'balance' => $balance,
+                'user' => $user,
                 'accounts' => $accounts,
             ]);
     }
@@ -87,6 +87,61 @@ class WalletController extends Controller
 
     public function withdraw()
     {
-        abort(403, 'Fitur withdraw dapat digunakan setelah tabungan selesai berjalan');
+        $user = User::find(auth()->user()->id);
+
+        return view('user.withdraw')
+            ->with([
+                'user' => $user,
+            ]);
+    }
+
+    public function withdrawStore(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+
+        $validator = Validator::make($request->all(), [
+            'number' => array(
+                'required',
+                Rule::exists('accounts')->where(function ($query) {
+                    $query->where('user_id', auth()->user()->id);
+                }),
+            ),
+            'amount' => array(
+                'required',
+                'numeric',
+                'max:' . $user->balance()->first()->balance,
+                'min:0'
+            ),
+        ],
+        [
+            'number.required' => 'Anda belum memilih rekening',
+            'number.exists' => 'Rekening yang Anda pilih tidak sesuai',
+            'amount.required' => 'Jumlah pencairan dibutuhkan',
+            'amount.numeric' => 'Jumlah saldo yang dicairkan harus dalam bentuk nominal angka',
+            'amount.min' => 'Minimal saldo yang dapat dicairkan adalah Rp :min',
+            'amount.max' => 'Maksimal saldo yang dapat dicairkan adalah Rp :max',
+        ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $account = $user->accounts()->where('number', $request->number)->first();
+
+        Withdraw::create([
+            'user_id' => $user->id,
+            'account_id' => $account->id,
+            'amount' => $request->amount,
+        ]);
+
+        return redirect()
+            ->route('user.wallet')
+            ->with([
+                'status' =>'Pencairan saldo telah diproses'
+            ]);
     }
 }

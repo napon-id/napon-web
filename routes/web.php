@@ -47,6 +47,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     // Wallet routes
     Route::get('/wallet', 'User\WalletController@index')->name('user.wallet');
     Route::get('/wallet/withdraw', 'User\WalletController@withdraw')->name('user.wallet.withdraw');
+    Route::post('/wallet/withdraw', 'User\WalletController@withdrawStore')->name('user.wallet.withdraw.store');
     Route::get('/wallet/add', 'User\WalletController@create')->name('user.wallet.add');
     Route::post('/wallet/add', 'User\WalletController@store');
     Route::delete('/wallet/{id}', 'User\WalletController@destroy');

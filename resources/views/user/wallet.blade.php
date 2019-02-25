@@ -22,7 +22,7 @@
             <div class="card-body text-center">
                 <table class="table table-hover">
                     <h5>Saldo</h5>
-                    <h2>{{ formatCurrency($balance->balance) }}</h2>
+                    <h2>{{ formatCurrency($user->balance()->first()->balance) }}</h2>
                 </table>
             </div>
 
