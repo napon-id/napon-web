@@ -8,7 +8,7 @@ use Event;
 class Order extends Model
 {
     protected $fillable = [
-      'user_id', 'token', 'product_id', 'location_id', 'quantity', 'ip_address', 'status',
+      'user_id', 'token', 'product_id', 'location_id', 'quantity', 'ip_address', 'status', 'selling_price',
     ];
 
     public function product()

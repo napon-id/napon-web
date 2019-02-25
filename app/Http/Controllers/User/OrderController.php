@@ -112,12 +112,6 @@ class OrderController extends Controller
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();
 
-        // $tree = $product->tree()->first();
-
-        $orderUpdates = $order->updates()
-            ->orderBy('order_updates.created_at', 'DESC')
-            ->get();
-
         if ($order->status == 'waiting') {
             return redirect()->route('user.product');
         }
@@ -125,7 +119,6 @@ class OrderController extends Controller
         return view('user.detail')
             ->with([
                 'order' => $order,
-                'orderUpdates' => $orderUpdates,
             ]);
     }
 

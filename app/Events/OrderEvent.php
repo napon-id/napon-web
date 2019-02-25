@@ -76,11 +76,21 @@ class OrderEvent
                 'title' => 'Deposit berhasil',
                 'description' => 'Selamat. Produk tabungan '.$product->name.' anda telah mulai berjalan. Saat ini kami sedang menanam pohon Anda.'
             ]);
+
+            $log = Log::create([
+                'user_id' => $order->user_id,
+                'activity' => 'Deposit telah diterima : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
+            ]);
         } else if ($order->status == 'investing') {
             OrderUpdate::create([
                 'order_id' => $order->id,
                 'title' => 'Proses penanaman telah selesai dilakukan',
                 'description' => 'Pohon anda telah selesai kami tanam. Kami akan memberikan laporan rutin pohon Anda disini.'
+            ]);
+
+            $log = Log::create([
+                'user_id' => $order->user_id,
+                'activity' => 'Pohon telah ditanam : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
             ]);
         } else if ($order->status == 'done') {
             OrderUpdate::create([
@@ -88,10 +98,18 @@ class OrderEvent
                 'title' => 'Pohon telah siap dijual',
                 'description' => 'Selamat. Pohon Anda telah memasuki masa panen. Tahap selanjutnya adalah tahap penjualan pohon. Kami akan tetap memberikan perkembangan informasi disini.'
             ]);
+
+            $log = Log::create([
+                'user_id' => $order->user_id,
+                'activity' => 'Produk tabungan selesai : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
+            ]);
+
+            $user->balance()->first()->update([
+                'balance' => $user->balance()->first()->balance + $order->selling_price,
+            ]);
         } else {
             \Log::info('order update for ' . $order->id . ' fired');
         }
-
 
         $mail = new \App\Mail\OrderUpdatedMail($order, $user);
         Mail::to($user->email)

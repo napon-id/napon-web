@@ -29,7 +29,7 @@ trait OrderDataTable
                 } else if ($orders->status == 'investing') {
                     return "<p class='badge badge-info'>Pohon telah ditanam</p>";
                 } else if ($orders->status == 'done') {
-                    "<p class='badge badge-success'>Produk tabungan telah selesai</p>";
+                    return "<p class='badge badge-success'>Produk tabungan telah selesai</p>";
                 }
             })
             ->addColumn('action', function ($orders) {

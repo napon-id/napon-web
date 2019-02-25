@@ -52,7 +52,7 @@
                             @if ($order->selling_price > 0)
                                 {{ formatCurrency($order->selling_price) }}
                             @else
-                                Pohon belum siap dijual
+                                {{ __('Pohon belum siap dijual') }}
                             @endif
                         </td>
                     </tr>
@@ -108,7 +108,7 @@
 
             <div class="card-body">
 
-                @foreach($order->updates()->get() as $a)
+                @foreach($order->updates()->latest()->get() as $a)
                 <h5>
                     {{-- refers to product detail --}}
                     <a href="{{ route('user.product.update', ['token' => $order->token, 'id' => $a->id]) }}">
