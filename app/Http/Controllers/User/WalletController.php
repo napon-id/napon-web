@@ -21,13 +21,14 @@ class WalletController extends Controller
     public function index()
     {
         $user = User::find(auth()->user()->id);
-        $balance = $user->balance()->first();
-        $accounts = $user->accounts()->paginate(5);
+        $accounts = $user->accounts()->paginate(5, ['*'], 'banks');
+        $withdraws = $user->withdraws()->latest()->paginate(10, ['*'], 'withdraws');
 
         return view('user.wallet')
             ->with([
                 'user' => $user,
                 'accounts' => $accounts,
+                'withdraws' => $withdraws,
             ]);
     }
 

@@ -26,7 +26,13 @@ class EventServiceProvider extends ServiceProvider
         ],
         'user.created' => [
             'App\Events\UserEvent@userCreated',
-        ]
+        ],
+        'withdraw.created' => [
+            'App\Events\WithdrawEvent@withdrawCreated',
+        ],
+        'withdraw.updated' => [
+            'App\Events\WithdrawEvent@withdrawUpdated',
+        ],
     ];
 
     /**
