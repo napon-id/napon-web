@@ -14,7 +14,7 @@ Auth::routes(['verify' => true]);
 Route::get('/logout', 'Auth\LoginController@logout');
 
 // Front pages
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/tentang-kami', 'HomeController@about')->name('tentang-kami');
 Route::get('/faq', 'HomeController@faq')->name('faq');
 Route::get('/layanan', 'HomeController@service')->name('layanan');
