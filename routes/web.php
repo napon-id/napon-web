@@ -21,7 +21,10 @@ Route::get('/layanan', 'HomeController@service')->name('layanan');
 
 // Admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
-    Route::get('/', 'AdminController@index');
+    Route::get('/', 'AdminController@index')->name('admin.dashboard');
+    Route::get('user', 'Admin\UserController@index')->name('admin.user');
+    Route::get('user/table', 'Admin\UserController@table')->name('admin.user.table');
+    Route::get('user/detail', 'Admin\UserController@detail')->name('admin.user.detail');
 });
 
 // User routes
