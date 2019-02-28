@@ -13,7 +13,7 @@
       <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">alam lestari</span></h2>
       <br>
       <h3>Ayo <span class="peach-gradient">#NabungPohon</span></h3>
-      <img src="https://media.napon.id/logo/logo-napon1.png" alt="Napon.ID" style="max-height: 2em;">
+      <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
       <div style="height: 2em;"></div>
       <br>
       <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
@@ -58,32 +58,32 @@
           <div class="why-choose-us" style="text-align: center;">
 
             <div>
-              <img src="https://media.napon.id/icon/platform-bagi-hasil-terbaik.png" alt="Platform Bagi Hasil Terbaik">
+              <img src="{{ asset('images/media/icon/platform-bagi-hasil-terbaik.png') }}" alt="Platform Bagi Hasil Terbaik">
               <br><br>Platform bagi hasil terbaik
             </div>
 
             <div>
-              <img src="https://media.napon.id/icon/mudah-terjangkau.png" alt="Platform Bagi Hasil Terbaik">
+              <img src="{{ asset('images/media/icon/mudah-terjangkau.png') }}" alt="Platform Bagi Hasil Terbaik">
               <br><br>Mudah dan Terjangkau
             </div>
 
             <div>
-              <img src="https://media.napon.id/icon/aman-professional.png" alt="Platform Bagi Hasil Terbaik">
+              <img src="{{ asset('images/media/icon/aman-professional.png') }}" alt="Platform Bagi Hasil Terbaik">
               <br><br>Aman dan Professional
             </div>
 
             <div>
-              <img src="https://media.napon.id/icon/memberikan-dampak-sosial.png" alt="Platform Bagi Hasil Terbaik">
+              <img src="{{ asset('images/media/icon/memberikan-dampak-sosial.png') }}" alt="Platform Bagi Hasil Terbaik">
               <br><br>Memberikan Dampak Sosial
             </div>
 
             <div>
-              <img src="https://media.napon.id/icon/ramah-lingkungan.png" alt="Platform Bagi Hasil Terbaik">
+              <img src="{{ asset('images/media/icon/ramah-lingkungan.png') }}" alt="Platform Bagi Hasil Terbaik">
               <br><br>Ramah Lingkungan
             </div>
 
             <div>
-              <img src="https://media.napon.id/icon/memberdayakan-petani.png" alt="Platform Bagi Hasil Terbaik">
+              <img src="{{ asset('images/media/icon/memberdayakan-petani.png') }}" alt="Platform Bagi Hasil Terbaik">
               <br><br>Memberdayakan Petani
             </div>
 
@@ -100,7 +100,7 @@
 
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <img src="https://media.napon.id/icon/registrasi.png" alt="Registrasi">
+          <img src="{{ asset('images/media/icon/registrasi.png') }}" alt="Registrasi">
         </div>
         <div class="col-sm-10">
           <h4>Registrasi</h4>
@@ -112,7 +112,7 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <img src="https://media.napon.id/icon/danai.png" alt="Danai">
+          <img src="{{ asset('images/media/icon/danai.png') }}" alt="Danai">
         </div>
         <div class="col-sm-10">
           <h4>Menabung</h4>
@@ -124,7 +124,7 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <img src="https://media.napon.id/icon/budidaya.png" alt="Budidaya">
+          <img src="{{ asset('images/media/icon/budidaya.png') }}" alt="Budidaya">
         </div>
         <div class="col-sm-10">
           <h4>Budidaya</h4>
@@ -136,7 +136,7 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <img src="https://media.napon.id/icon/panen.png" alt="Panen">
+          <img src="{{ asset('images/media/icon/panen.png') }}" alt="Panen">
         </div>
         <div class="col-sm-10">
           <h4>Panen</h4>
@@ -148,7 +148,7 @@
       <br>
       <div class="row">
         <div class="col-sm-2" style="text-align: center;">
-          <img src="https://media.napon.id/icon/bagi-hasil.png" alt="Bagi Hasil">
+          <img src="{{ asset('images/media/icon/bagi-hasil.png') }}" alt="Bagi Hasil">
         </div>
         <div class="col-sm-10">
           <h4>Bagi hasil</h4>

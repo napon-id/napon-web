@@ -15,10 +15,10 @@
 
         <!--Grid column-->
         <div class="col-md-6 col-lg-7 text-center text-md-right">
-          <!--Facebook-->
-          <!-- <a class="fb-ic ml-0">
+          <!-- Facebook-->
+          <a class="fb-ic ml-0" href="">
             <i class="fab fa-facebook white-text mr-4"> </i>
-          </a> -->
+          </a>
           <!--Twitter-->
           <!-- <a class="tw-ic">
             <i class="fab fa-twitter white-text mr-4"> </i>
@@ -28,7 +28,7 @@
             <i class="fab fa-linkedin white-text mr-4"> </i>
           </a> -->
           <!--Instagram-->
-          <a class="ins-ic" href="https://instagram.com/naponinvestamaindonesia">
+          <a class="ins-ic" href="https://instagram.com/napon.id" target="_blank">
             <i class="fab fa-instagram white-text mr-lg-4"> </i>
           </a>
         </div>
@@ -117,7 +117,7 @@
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© {{ date('Y') }} Copyright:
-    <a href="{{ config('app.url') }}"> {{ config('app.name') }}</a>
+    <a href="{{ route('home') }}"> {{ config('app.name') }}</a>
   </div>
   <!-- Copyright -->
 
