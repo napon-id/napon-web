@@ -13,8 +13,31 @@
   color: white;
 }
 
-#aboutUs {
+#aboutUsHero {
+  padding: 5em;
+  background-image: url("https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/4p9r2Jdtlik3ltjkx/abstract-blurred-background-trees-and-grass-inpark_bptmq23i__F0000.png");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
+#serviceHero {
+  padding: 5em;
+  background-image: url("https://nationalzoo.com.au/wp-content/uploads/2017/01/tiger-background.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#faqHero {
+  padding: 5em;
+  background-image: url("https://backgroundcheckall.com/wp-content/uploads/2017/12/blurred-background-images-6.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #whyChooseUs {

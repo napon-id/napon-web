@@ -4,7 +4,7 @@
 <!-- main layout -->
 <main id="mainContent">
   <!-- hero intro -->
-  <div class="container-fluid content light-green white-text text-center" id="aboutUsHero">
+  <div class="container-fluid content white-text text-center" id="aboutUsHero">
     <div class="container">
       <h1>Tentang Kami</h1>
     </div> <!-- container -->

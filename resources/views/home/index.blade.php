@@ -24,7 +24,7 @@
 
   <div class="container-fluid content" id="aboutUs">
     <div class="container">
-      <h2 class="light-green-text">Tentang {{ config('app.name') }}</h2>
+      <h2><span style="font-weight: bold;">Tentang <span class="light-green-text">{{ config('app.name') }}</span></h2>
       <hr>
       <br>
       <div class="row">
