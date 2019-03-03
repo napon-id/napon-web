@@ -73,8 +73,8 @@
   <!-- simulation -->
   <div class="container-fluid smaller-content" id="serviceSimulation">
     <div class="container">
-      <h2 class="light-green-text">Ilustrasi Return</h2>
-      <hr>
+      <!-- <h2 class="light-green-text">Ilustrasi Return</h2> -->
+      <!-- <hr> -->
       <div class="view overlay">
         <img src="https://media.napon.id/img/simulate.jpg" class="img-fluid" alt="Sample image with waves effect.">
         <a href="https://media.napon.id/img/simulate.jpg">

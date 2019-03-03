@@ -58,6 +58,10 @@
   margin: -15px auto 0;
 }
 
+#serviceSimulation {
+  background-color: #5dc12a;
+}
+
 .content {
   padding: 5em 0;
 }
