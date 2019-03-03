@@ -79,7 +79,8 @@ $(document).ready(function () {
 
         $('#description').empty();
         $('#description').append('<br><hr><h4>'+data.name+'</h4>');
-        $('#description').append('<p>'+data.description+'</p><br>');
+        $('#description').append('<p>'+data.description+'</p>');
+        $('#description').append('<img src="'+data.img+'" class="img-fluid" style="max-width: 15em;">');
         $('#description').append('<h5>Detail</h5>');
         $('#description').append('Jumlah pohon : ' + data.tree_quantity);
         $('#description').append('<br>Tabungan awal : Rp. ' + price + ',00');
