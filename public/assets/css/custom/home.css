@@ -5,12 +5,16 @@
   margin-top: 55px;
 }
 
+.hero {
+    margin-top: -80px;
+}
 
-#heroIntro {
+#heroIntro1 {
   background-image: url('https://media.napon.id/img/forest-bg.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
+  padding: 5em 0;
 }
 
 #aboutUsHero {

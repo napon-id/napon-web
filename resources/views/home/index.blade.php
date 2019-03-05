@@ -4,22 +4,76 @@
 <!-- main layout -->
 <main id="mainContent">
   <!-- Hero intro -->
-  <div class="container-fluid content" id="heroIntro">
-    <div class="container">
-      <h2>Rajin <span class="bold">MENABUNG</span></h2>
-      <h2><span class="bold">POHON</span> Pangkal</h2>
-      <h2><span class="light-green">KAYA + BONUS</span></h2>
-      <br>
-      <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">alam lestari</span></h2>
-      <br>
-      <h3>Ayo <span class="peach-gradient">#NabungPohon</span></h3>
-      <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
-      <div style="height: 2em;"></div>
-      <br>
-      <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
-        CARI TAU LEBIH <span class="fas fa-arrow-right"></span>
-      </a>
-    </div>
+  <div class="container-fluid content">
+      <div class="hero">
+        <div id="heroIntro1">
+            <div class="container">
+
+                <p class="float-right">
+                    <!-- <span class="fas fa-arrow-left"></span> -->
+                    <span class="fas fa-hand-paper" data-toggle="tooltip" data-placement="top" title="swipe"></span>
+                    <span class="fas fa-arrow-right"></span>
+                </p>
+                <h2>Rajin <span class="bold">MENABUNG</span></h2>
+                <h2><span class="bold">POHON</span> Pangkal</h2>
+                <h2><span class="light-green">KAYA + BONUS</span></h2>
+                <br>
+                <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">alam lestari</span></h2>
+                <br>
+                <h3>Ayo <span class="peach-gradient">#NabungPohon</span></h3>
+                <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
+                <div style="height: 2em;"></div>
+                <br>
+                <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
+                    CARI TAU LEBIH <span class="fas fa-arrow-right"></span>
+                </a>
+            </div>
+        </div>
+        <div id="heroIntro1">
+            <div class="container">
+                <p class="float-right">
+                    <span class="fas fa-arrow-left"></span>
+                    <span class="fas fa-hand-paper" data-toggle="tooltip" data-placement="top" title="swipe"></span>
+                    <span class="fas fa-arrow-right"></span>
+                </p>
+                <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">setiap yang</span></h2>
+                <h2>KITA <span class="bold underlined">TANAM</span> </h2>
+                <h2><span class="light-green">AKAN KITA</span></h2>
+                <br>
+                <h2><span class="bold">TUAI</span> HASILNYA</h2>
+                <br>
+                <h3><span class="peach-gradient">#NabungPohon</span> Sekarang</h3>
+                <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
+                <div style="height: 2em;"></div>
+                <br>
+                <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
+                    CARI TAU LEBIH <span class="fas fa-arrow-right"></span>
+                </a>
+            </div>
+        </div>
+        <div id="heroIntro1">
+            <div class="container">
+                <p class="float-right">
+                    <span class="fas fa-arrow-left"></span>
+                    <span class="fas fa-hand-paper" data-toggle="tooltip" data-placement="top" title="swipe"></span>
+                    <!-- <span class="fas fa-arrow-right"></span> -->
+                </p>
+                <h2>DEMI </h2>
+                <h2><span class="light-green">MASA DEPAN</span></h2>
+                <h2><span class="bold">YANG</span></h2>
+                <br>
+                <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">lebih cerah</span></h2>
+                <br>
+                <h3>Mulai <span class="peach-gradient">#NabungPohon</span></h3>
+                <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
+                <div style="height: 2em;"></div>
+                <br>
+                <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
+                    CARI TAU LEBIH <span class="fas fa-arrow-right"></span>
+                </a>
+            </div>
+        </div>
+      </div> <!-- Carousel -->
   </div>
 
   <div class="container-fluid content" id="aboutUs">
@@ -181,6 +235,16 @@ $(document).ready(function(){
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
+  });
+
+  // hero carousel
+  $('.hero').slick({
+      arrows: false,
+      infinite: false,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
   });
 
   // Add smooth scrolling to all links
