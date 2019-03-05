@@ -16,7 +16,7 @@
       <h2 class="light-green-text">Tentang {{ config('app.name') }}</h2>
       <hr>
       <p>
-        {{ config('app.name') }} merupakan platform menabung pohon dan bercocok tanam. Portal untuk membantu Anda yang ingin berinvestasi pada pohon tanpa ribet, tanpa lahan, tanpa perawatan namun tetap bisa di pantau secara berkala. Napon.ID juga membantu dalam proses penjualan pohon yang sudah layak panen dengan harga real-time. Saat ini kami berfokus pada penanaman pohon sengon solomon.
+        PT. Napon Investama Indonesia ({{ config('app.name') }}) merupakan platform menabung pohon dan bercocok tanam. Portal untuk membantu Anda yang ingin berinvestasi pada pohon tanpa ribet, tanpa lahan, tanpa perawatan namun tetap bisa di pantau secara berkala. Napon.ID juga membantu dalam proses penjualan pohon yang sudah layak panen dengan harga real-time. Saat ini kami berfokus pada penanaman pohon sengon solomon.
       </p>
     </div> <!-- container -->
   </div> <!-- container fluid -->

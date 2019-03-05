@@ -21,6 +21,7 @@ class ProductTableSeeder extends Seeder
             'time' => '5-6 tahun',
             'percentage' => 85,
             'available' => 'yes',
+            'has_certificate' => false,
         ]);
 
         Product::create([
@@ -32,6 +33,7 @@ class ProductTableSeeder extends Seeder
             'time' => '5-6 tahun',
             'percentage' => 85,
             'available' => 'yes',
+            'has_certificate' => true,
         ]);
 
         Product::create([
@@ -44,6 +46,7 @@ class ProductTableSeeder extends Seeder
             'time' => '5-6 tahun',
             'percentage' => 85,
             'available' => 'yes',
+            'has_certificate' => true,
         ]);
 
         Product::create([
@@ -55,6 +58,7 @@ class ProductTableSeeder extends Seeder
             'time' => '5-6 tahun',
             'percentage' => 85,
             'available' => 'yes',
+            'has_certificate' => true,
         ]);
 
         Product::create([
@@ -66,6 +70,7 @@ class ProductTableSeeder extends Seeder
             'time' => '5-6 tahun',
             'percentage' => 85,
             'available' => 'yes',
+            'has_certificate' => true,
         ]);
     }
 }

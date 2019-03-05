@@ -46,7 +46,7 @@
               <!-- Title -->
               <h4 class="card-title">{{ $product->name }}</h4>
               <!-- Text -->
-              <p class="card-text">
+              <p class="card-text" style="font-weight: bold;">
                 Jumlah pohon : {{ $product->tree_quantity }}
                 <br>
                 Tabungan : Rp {{ formatCurrency($product->tree_quantity * $tree->price) }}
@@ -55,7 +55,7 @@
                 <br>
                 Keuntungan : {{ $product->percentage }} %
                 <br>
-                @if($product->name != 'AKARKU')
+                @if($product->has_certificate == true)
                 Sertifikat kepemilikan
                 @endif
               </p>

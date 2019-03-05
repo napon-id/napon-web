@@ -16,7 +16,7 @@
         <!--Grid column-->
         <div class="col-md-6 col-lg-7 text-center text-md-right">
           <!-- Facebook-->
-          <a class="fb-ic ml-0" href="">
+          <a class="fb-ic ml-0" href="https://www.facebook.com/Napon-Investama-Indonesia-322320371960074/" target="_blank">
             <i class="fab fa-facebook white-text mr-4"> </i>
           </a>
           <!--Twitter-->
@@ -50,7 +50,9 @@
           <strong>{{ config('app.name') }}</strong>
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-        <p>Platform yang membantu Anda menabung pohon tanpa ribet, tanpa memikirkan lahan, tanpa memikiran perawatan namun selalu bisa dipantau secara berkala.</p>
+        <p>
+            Platform yang membantu Anda menabung pohon tanpa ribet, tanpa memikirkan lahan, tanpa memikiran perawatan namun selalu bisa dipantau secara berkala.
+        </p>
       </div>
       <!--/.First column-->
 
@@ -102,6 +104,9 @@
           <strong>Hubungi Kami</strong>
         </h6>
         <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+            PT. Napon Investama Indonesia
+        </p>
         <p>
           <i class="fa fa-home mr-3"></i> Jl. Pattimura Raya, kompleks ruko Masjid Baitut Taqwa, Mapangan - Ungaran</p>
         <p>
