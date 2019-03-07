@@ -22,9 +22,19 @@ Route::get('/layanan', 'HomeController@service')->name('layanan');
 // Admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
-    Route::get('user', 'Admin\UserController@index')->name('admin.user');
-    Route::get('user/table', 'Admin\UserController@table')->name('admin.user.table');
-    Route::get('user/detail', 'Admin\UserController@detail')->name('admin.user.detail');
+    Route::get('/invest', 'AdminController@invest')->name('admin.invest');
+    // User prefixed
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', 'Admin\UserController@index')->name('admin.user');
+        Route::get('/table', 'Admin\UserController@table')->name('admin.user.table');
+        Route::get('/detail', 'Admin\UserController@detail')->name('admin.user.detail');
+    });
+    // Invest
+    Route::group(['prefix' => 'invest'], function () {
+        Route::resource('trees', 'Admin\TreeController')->except(['show']);
+        Route::get('products/tree/{tree}', 'Admin\ProductController@index')->name('products.index');
+        Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
+    });
 });
 
 // User routes
