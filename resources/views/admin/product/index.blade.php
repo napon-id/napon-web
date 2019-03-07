@@ -23,7 +23,7 @@
         <div class="card mb-3">
             <div class="card-header">
                 {{ __('Products') }}
-                <a href="{{ route('products.create') }}" class="btn btn-info float-right">
+                <a href="{{ route('products.create', ['tree' => $tree]) }}" class="btn btn-info float-right">
                     <i class="fas fa-plus-square"></i> Add new Product
                 </a>
             </div> <!-- card-header -->
@@ -37,6 +37,7 @@
                         <th>img</th>
                         <th>Percentage</th>
                         <th>Available</th>
+                        <th>Has certificate</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -48,8 +49,18 @@
                             <td><a href="{{ $product->img }}" target="_blank">{{ $product->img }}</a></td>
                             <td>{{ $product->percentage }}%</td>
                             <td>{{ $product->available }}</td>
+                            <td>{{ $product->has_certificate ? 'yes' : 'no' }}</td>
                             <td>
-                                <a href="{{ route('products.edit', [$product]) }}">Edit</a>
+                                <a class="btn" href="{{ route('products.edit', [$product, 'tree' => $tree]) }}">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                                <form action="{{ route('products.destroy', [$product]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-link" onclick="return confirm('Are you sure?')">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

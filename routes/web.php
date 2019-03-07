@@ -33,7 +33,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::group(['prefix' => 'invest'], function () {
         Route::resource('trees', 'Admin\TreeController')->except(['show']);
         Route::get('products/tree/{tree}', 'Admin\ProductController@index')->name('products.index');
-        Route::resource('products', 'Admin\ProductController')->except(['show']);
+        Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
     });
 });
 

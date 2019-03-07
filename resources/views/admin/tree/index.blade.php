@@ -52,7 +52,7 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                                <a class="btn btn-dark" href="{{ route('{tree}.index', [$tree]) }}">
+                                <a class="btn btn-dark" href="{{ route('products.index', ['tree' => $tree]) }}">
                                     <i class="fas fa-list"></i> Products
                                 </a>
                             </td>
