@@ -149,7 +149,9 @@
 
   <div class="container-fluid content" id="howWeWork">
     <div class="container">
-      <h2 class="light-green-text">Bagaimana {{ config('app.name') }} Bekerja?</h2>
+      <h2>
+          <span class="light-green-text">Bagaimana</span> <span class="bold">{{ config('app.name') }}</span> <span class="light-green-text">Bekerja?</span>
+      </h2>
       <hr>
 
       <div class="row">
