@@ -11,6 +11,7 @@
 |
 */
 Auth::routes(['verify' => true]);
+Route::get('/home', 'HomeController@index');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 // Front pages
