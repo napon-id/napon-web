@@ -31,9 +31,27 @@
       </div> <!-- card body -->
 
       <div class="card-footer">
-        Jumlah Transfer : Rp. {{ number_format($order->transaction()->first()->total, 2, ',', '.') }}
-        <br>Kode unik : {{ $order->transaction()->first()->id }}
-        <br>Total : Rp. {{ number_format($order->transaction()->first()->total + $order->transaction()->first()->id, 2, ',', '.') }}
+          <h4>
+              Jumlah Transfer :
+              <span class="badge badge-info">
+                  Rp. {{ number_format($order->transaction()->first()->total, 2, ',', '.') }}
+              </span>
+          </h4>
+          <h4>
+              Kode unik :
+              <span class="badge badge-info">
+                  {{ $order->transaction()->first()->id }}
+              </span>
+          </h4>
+          <h4>
+              Total :
+              <span id="totalPrice" class="badge badge-success">
+                  Rp. {{ number_format($order->transaction()->first()->total + $order->transaction()->first()->id, 2, ',', '.') }}
+              </span>
+              <button onclick="copyToClipboard('totalPrice')" class="btn btn-xs btn-dark" data-toggle="popover" data-placement="right" data-content="copied" data-trigger="focus">
+                  <i class="far fa-copy"></i>
+              </button>
+          </h4>
       </div> <!-- card footer -->
     </div> <!-- card -->
   </div> <!-- col -->
@@ -51,7 +69,16 @@
 
       <div class="card-footer">
         Untuk mempercepat konfirmasi pembayaran
-        <br>Pada kolom komentar tuliskan : NPID{{ auth()->user()->id }}TR{{ $order->transaction()->first()->id }}
+        <br>Pada kolom berita tuliskan :
+        <br>
+        <h4>
+            <span id="information" class="badge badge-success">
+                NPID{{ auth()->user()->id }}TR{{ $order->transaction()->first()->id }}
+            </span>
+            <button type="button" onclick="copyToClipboard('information')" class="btn btn-dark" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="copied">
+                <i class="far fa-copy"></i>
+            </button>
+        </h4>
       </div>
 
     </div>

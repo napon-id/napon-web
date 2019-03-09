@@ -52164,7 +52164,11 @@ __webpack_require__(/*! startbootstrap-sb-admin/vendor/datatables/dataTables.boo
 __webpack_require__(/*! startbootstrap-sb-admin/js/sb-admin.min */ "./node_modules/startbootstrap-sb-admin/js/sb-admin.min.js"); // components
 
 
-__webpack_require__(/*! ./dashboard/datatables */ "./resources/js/dashboard/datatables.js"); // ajaxSetup
+__webpack_require__(/*! ./global */ "./resources/js/global.js");
+
+__webpack_require__(/*! ./dashboard/datatables */ "./resources/js/dashboard/datatables.js");
+
+__webpack_require__(/*! ./dashboard/copyToClipboard */ "./resources/js/dashboard/copyToClipboard.js"); // ajaxSetup
 
 
 __webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxSetup.js");
@@ -52185,6 +52189,28 @@ __webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxS
         'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
       }
     });
+  });
+})(jQuery);
+
+/***/ }),
+
+/***/ "./resources/js/dashboard/copyToClipboard.js":
+/*!***************************************************!*\
+  !*** ./resources/js/dashboard/copyToClipboard.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  $(function () {
+    window.copyToClipboard = function (elementId) {
+      var aux = document.createElement("input");
+      aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+      document.body.appendChild(aux);
+      aux.select();
+      document.execCommand("copy");
+      document.body.removeChild(aux);
+    };
   });
 })(jQuery);
 
@@ -52219,6 +52245,24 @@ __webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxS
       columns: columns,
       order: [[0, order]]
     });
+  });
+})(jQuery);
+
+/***/ }),
+
+/***/ "./resources/js/global.js":
+/*!********************************!*\
+  !*** ./resources/js/global.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  $(function () {
+    // popover
+    $('[data-toggle="popover"]').popover(); // tooltip
+
+    $('[data-toggle="tooltip"]').tooltip();
   });
 })(jQuery);
 
