@@ -11,19 +11,7 @@
 
     <title>Dashboard - {{ config('app.name') }}</title>
 
-    <!-- Bootstrap core CSS-->
-    <link href="{{ asset('dashboard/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Custom fonts for this template-->
-    <link href="{{ asset('dashboard/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-
-    <!-- Page level plugin CSS-->
-    <link href="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="{{ asset('dashboard/css/sb-admin.css') }}" rel="stylesheet">
-
-    @yield('style')
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
   </head>
 

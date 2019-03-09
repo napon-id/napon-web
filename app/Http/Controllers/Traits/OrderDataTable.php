@@ -34,11 +34,11 @@ trait OrderDataTable
             })
             ->addColumn('action', function ($orders) {
                 if ($orders->status == 'done') {
-                    return "<a class='btn btn-success' href='". route('user.product.detail', ['token' => $orders->token]) ."'>Lihat Detail</a>";
+                    return "<a class='btn btn-sm btn-success' href='". route('user.product.detail', ['token' => $orders->token]) ."'>Lihat Detail</a>";
                 } else if ($orders->status == 'waiting') {
-                    return "<a class='btn btn-warning' href='". route('user.product.checkout', ['token' => $orders->token]) ."'><i class='fas fa-eye'></i> Lihat tagihan</a>";
+                    return "<a class='btn btn-sm btn-warning' href='". route('user.product.checkout', ['token' => $orders->token]) ."'><i class='fas fa-eye'></i> Lihat tagihan</a>";
                 } else {
-                    return "<a class='btn btn-info' href='". route('user.product.detail', ['token' => $orders->token]) ."'>Pantau Tabungan</a>";
+                    return "<a class='btn btn-sm btn-info' href='". route('user.product.detail', ['token' => $orders->token]) ."'>Pantau Tabungan</a>";
                 }
             })
             ->rawColumns(['status', 'action'])
