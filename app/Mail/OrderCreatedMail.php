@@ -11,17 +11,16 @@ class OrderCreatedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $order, $user;
+    public $order;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($order, $user)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->user = $user;
     }
 
     /**
@@ -31,6 +30,10 @@ class OrderCreatedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.order.created');
+        return $this->subject(__('Pemesanan Produk Tabungan'))
+            ->markdown('mails.order.created')
+            ->with([
+                'order' => $this->order,
+            ]);
     }
 }

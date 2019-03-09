@@ -83,3 +83,9 @@ Route::get('withdraw-updated', function () {
 
     return new App\Mail\WithdrawUpdatedMail($wd);
 });
+
+Route::get('order-created', function () {
+    $order = App\Order::find(3);
+
+    return new App\Mail\OrderCreatedMail($order);
+});
