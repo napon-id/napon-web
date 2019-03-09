@@ -1,7 +1,7 @@
 <?php
 return [
     'waiting' => 'waiting for admin approval',
-    'approved' => 'admin approved your request. Wait for the money',
-    'rejected' => 'Your request is rejected by admin',
-    'done' => 'withdrawal process done',
+    'approved' => 'Proses pencairan saldo anda telah disetujui',
+    'rejected' => 'Proses pencairan saldo anda ditolak',
+    'done' => 'Proses pencairan saldo selesai',
 ];

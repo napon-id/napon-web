@@ -31,6 +31,11 @@ class WithdrawUpdatedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject(__('(Update) Pencairan Saldo Tabungan'))->view('mails.withdraw.updated');
+        return $this->subject(__('(Update) Pencairan Saldo Tabungan'))
+            ->markdown('mails.withdraw.updated')
+            ->with([
+                'withdraw' => $this->withdraw,
+                'status' => config('withdraws'),
+            ]);
     }
 }

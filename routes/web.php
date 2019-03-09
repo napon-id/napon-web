@@ -77,3 +77,9 @@ Route::get('withdraw-created', function () {
 
     return new App\Mail\WithdrawCreatedMail($wd);
 });
+
+Route::get('withdraw-updated', function () {
+    $wd = App\Withdraw::find(12);
+
+    return new App\Mail\WithdrawUpdatedMail($wd);
+});
