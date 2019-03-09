@@ -24,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         'order.updated' => [
             'App\Events\OrderEvent@orderUpdated',
         ],
+        'order.updating' => [
+            'App\Events\OrderEvent@orderUpdating',
+        ],
         'user.created' => [
             'App\Events\UserEvent@userCreated',
         ],

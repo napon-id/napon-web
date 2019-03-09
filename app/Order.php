@@ -47,5 +47,9 @@ class Order extends Model
         static::updated(function ($order) {
             Event::fire('order.updated', $order);
         });
+
+        static::updating(function ($order) {
+            Event::fire('order.updating', $order);
+        });
     }
 }
