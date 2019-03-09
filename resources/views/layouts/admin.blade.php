@@ -4,6 +4,7 @@
   <head>
 
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -11,19 +12,7 @@
 
     <title>Admin - {{ config('app.name') }}</title>
 
-    <!-- Bootstrap core CSS-->
-    <link href="{{ asset('dashboard/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Custom fonts for this template-->
-    <link href="{{ asset('dashboard/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-
-    <!-- Page level plugin CSS-->
-    <link href="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="{{ asset('dashboard/css/sb-admin.css') }}" rel="stylesheet">
-
-    @yield('style')
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
   </head>
 
@@ -156,27 +145,8 @@
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('dashboard/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{{ asset('dashboard/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Page level plugin JavaScript-->
-    <script src="{{ asset('dashboard/vendor/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/datatables/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{{ asset('dashboard/js/sb-admin.min.js') }}"></script>
-
-    <!-- Demo scripts for this page-->
-    <script src="{{ asset('dashboard/js/demo/datatables-demo.js') }}"></script>
-    <script src="{{ asset('dashboard/js/demo/chart-area-demo.js') }}"></script>
-
+    <script src="{{ asset('js/dashboard.js') }}"></script>
     @yield('script')
-
   </body>
 
 </html>

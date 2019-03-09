@@ -14,15 +14,15 @@
 @section('content')
 <div class="row">
     <div class="col-12">
-        <table class="table table-display" id="userTable">
+        <table class="datatable table table-display" data-url="{{ route('admin.user.table') }}" id="userTable">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Register date</th>
-                    <th>Verified</th>
-                    <th>Detail</th>
+                    <th data-field="id">ID</th>
+                    <th data-field="name">Name</th>
+                    <th data-field="email">Email</th>
+                    <th data-field="created_at">Register date</th>
+                    <th data-field="verified">Verified</th>
+                    <th data-field="detail">Detail</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,12 +32,12 @@
     </div>
 </div>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="userDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="userDetail" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
+        <h5 class="modal-title">
             Detail
         </h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -71,29 +71,6 @@
 @section('script')
 <script>
 $(document).ready(function () {
-  // Datatable
-  var productTable = $('#userTable').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: "{{ route('admin.user.table') }}",
-    columns: [
-        { data: 'id' },
-        { data: 'name' },
-        { data: 'email' },
-        { data: 'created_at' },
-        { data: 'verified' },
-        { data: 'detail' },
-    ],
-    language: {
-        'lengthMenu'  : 'Menampilkan _MENU_ user per halaman',
-        'zeroRecords' : 'Belum terdapat data user',
-        'info'        : 'Menampilkan halaman _PAGE_ dari _PAGES_',
-        'infoEmpty'   : 'Tidak terdapat data',
-        'infoFiltered': '(disaring dari _MAX_ data user)',
-        'search'      : 'Cari:'
-    }
-  });
-
   $('#userTable').on('click', '.detail', function ()  {
       var id = $(this).data('id');
       $.ajax({
