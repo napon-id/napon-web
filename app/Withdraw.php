@@ -16,6 +16,11 @@ class Withdraw extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
     public static function boot()
     {
         parent::boot();

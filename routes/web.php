@@ -71,3 +71,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('product/api/order', 'User\OrderController@productApiOrder')->name('user.product.api.order');
     Route::get('product/api/{status}', 'User\OrderController@productApiStatus')->name('user.product.api.status');
 });
+
+Route::get('withdraw-created', function () {
+    $wd = App\Withdraw::find(1);
+
+    return new App\Mail\WithdrawCreatedMail($wd);
+});

@@ -31,6 +31,8 @@ class WithdrawCreatedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject(__('Pencairan Saldo Tabungan'))->view('mails.withdraw.created');
+        return $this->subject(__('Pencairan Saldo Tabungan'))
+            ->markdown('mails.withdraw.created')
+            ->with('withdraw', $this->withdraw);
     }
 }
