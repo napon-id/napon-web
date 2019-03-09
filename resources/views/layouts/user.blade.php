@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-    <meta name="token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -147,31 +147,7 @@
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('dashboard/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{{ asset('dashboard/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Page level plugin JavaScript-->
-    <script src="{{ asset('dashboard/vendor/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/datatables/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{{ asset('dashboard/js/sb-admin.min.js') }}"></script>
-
-    <!-- Demo scripts for this page-->
-    <script src="{{ asset('dashboard/js/demo/datatables-demo.js') }}"></script>
-    <script src="{{ asset('dashboard/js/demo/chart-area-demo.js') }}"></script>
-    <script>
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
-          }
-      });
-    </script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
     @yield('script')
   </body>
 
