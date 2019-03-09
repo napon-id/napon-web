@@ -81,6 +81,9 @@ class OrderEvent
                 'user_id' => $order->user_id,
                 'activity' => 'Deposit telah diterima : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
             ]);
+
+            $transaction = $order->transaction()->first()->update(['status' => 'paid']);
+
         } else if ($order->status == 'investing') {
             OrderUpdate::create([
                 'order_id' => $order->id,
