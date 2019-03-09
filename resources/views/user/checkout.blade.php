@@ -18,7 +18,7 @@
 @section('content')
 <div class="row">
   <div class="col-sm-6 col-md-6">
-    <div class="card mb3">
+    <div class="card mb-3">
       <div class="card-header">
         <h5>Terima Kasih</h5>
       </div> <!-- card header -->
@@ -45,10 +45,11 @@
           </h4>
           <h4>
               Total :
+              <br>
               <span id="totalPrice" class="badge badge-success">
                   Rp. {{ number_format($order->transaction()->first()->total + $order->transaction()->first()->id, 2, ',', '.') }}
               </span>
-              <button onclick="copyToClipboard('totalPrice')" class="btn btn-xs btn-dark" data-toggle="popover" data-placement="right" data-content="copied" data-trigger="focus">
+              <button onclick="copyToClipboard('totalPrice')" class="btn btn-xs btn-dark" data-toggle="popover" data-placement="right" data-content="copied">
                   <i class="far fa-copy"></i>
               </button>
           </h4>
@@ -57,7 +58,7 @@
   </div> <!-- col -->
 
   <div class="col-sm-6 col-md-6">
-    <div class="card mb3">
+    <div class="card mb-3">
       <div class="card-header">
         <h5>Informasi Transfer</h5>
       </div> <!-- card header -->
@@ -75,7 +76,7 @@
             <span id="information" class="badge badge-success">
                 NPID{{ auth()->user()->id }}TR{{ $order->transaction()->first()->id }}
             </span>
-            <button type="button" onclick="copyToClipboard('information')" class="btn btn-dark" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="copied">
+            <button type="button" onclick="copyToClipboard('information')" class="btn btn-dark" data-toggle="popover" data-placement="right" data-content="copied">
                 <i class="far fa-copy"></i>
             </button>
         </h4>
