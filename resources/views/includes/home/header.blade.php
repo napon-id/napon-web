@@ -7,7 +7,7 @@
 
     <!-- Navbar brand -->
     <a class="navbar-brand" href="{{ url('/') }}">
-      <img src="https://media.napon.id/logo/logo-napon2.png" alt="{{ config('app.name') }}" style="max-height: 25px">
+      <img src="{{ asset('images/media/icon/napon2.png') }}" alt="{{ config('app.name') }}" style="max-height: 25px">
     </a>
 
     <!-- Collapse button -->
