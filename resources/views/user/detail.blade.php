@@ -40,7 +40,7 @@
                         <td>Lokasi Pohon</td>
                         <td>
                             @if ($order->location_id)
-                                {{ $order->location_id }}
+                                {{ $order->location()->first()->address }} - {{ $order->location()->first()->location }}
                             @else
                                 Lokasi penanaman belum ditentukan
                             @endif

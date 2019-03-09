@@ -18,10 +18,9 @@ class OrderUpdatedMail extends Mailable
      *
      * @return void
      */
-    public function __construct($order, $user)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->user = $user;
     }
 
     /**
@@ -31,6 +30,11 @@ class OrderUpdatedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.order.updated');
+        return $this->subject(__('(Update) Pemesanan Produk Tabungan'))
+            ->markdown('mails.order.updated')
+            ->with([
+                'order' => $this->order,
+                'status' => config('orders'),
+            ]);
     }
 }

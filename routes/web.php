@@ -89,3 +89,9 @@ Route::get('order-created', function () {
 
     return new App\Mail\OrderCreatedMail($order);
 });
+
+Route::get('order-updated', function () {
+    $order = App\Order::find(3);
+
+    return new App\Mail\OrderUpdatedMail($order);
+});

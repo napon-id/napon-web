@@ -1,7 +1,7 @@
 <?php
 return [
-    'waiting' => 'Your order is waiting for deposit/payment',
-    'paid' => 'Your order is paid. Wait for planting progress',
-    'investing' => 'It is investing time. Be patient',
-    'done' => 'yeay it is done.',
+    'waiting' => 'Menunggu deposit',
+    'paid' => 'Deposit anda telah kami terima. Kami akan mulai menanam pohon anda',
+    'investing' => 'Proses penanaman telah selesai kami lakukan',
+    'done' => 'Tabungan anda telah selesai',
 ];
