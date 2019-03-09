@@ -10,7 +10,7 @@
   <link rel='shortcut icon' type='image/png' href='https://media.napon.id/logo/logo1.png' />
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <title>{{ config('app.name') }} - Platform Menabung Pohon</title>
-  @include('includes.home.css')
+  <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 
   @yield('style')
 
