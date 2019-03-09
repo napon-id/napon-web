@@ -76,8 +76,8 @@
       <!-- <h2 class="light-green-text">Ilustrasi Return</h2> -->
       <!-- <hr> -->
       <div class="view overlay">
-        <img src="https://media.napon.id/img/simulate.jpg" class="img-fluid" alt="Sample image with waves effect.">
-        <a href="https://media.napon.id/img/simulate.jpg">
+        <img src="{{ asset('images/media/img/simulate.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
+        <a href="#!">
           <div class="mask waves-effect waves-light rgba-white-slight"></div>
         </a>
       </div> <!-- view overlay -->

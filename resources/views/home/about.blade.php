@@ -26,7 +26,7 @@
     <div class="container">
       <h2 class="light-green-text">{{ config('app.name') }} Hadir Untuk Anda</h2>
       <hr>
-      <img class="img-fluid" src="https://media.napon.id/img/scheme.png" alt="Skema {{ config('app.name') }}">
+      <img class="img-fluid" src="{{ asset('images/media/img/scheme.png') }}" alt="Skema {{ config('app.name') }}">
     </div> <!-- container -->
   </div> <!-- container fluid -->
 </main>

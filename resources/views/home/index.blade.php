@@ -216,7 +216,7 @@
 
       <br>
       <h3 style="text-align: center;">
-        Pelajari <a href="#" class="btn btn-lg btn-info waves-effect blue-gradient">layanan kami <span class="fas fa-star"></span></a> selengkapnya
+        Pelajari <a href="{{ route('layanan') }}" class="btn btn-lg btn-info waves-effect blue-gradient">layanan kami <span class="fas fa-star"></span></a> selengkapnya
       </h3>
 
     </div>
@@ -224,53 +224,4 @@
 
 </main>
 <!-- main layout -->
-@endsection
-
-@section('script')
-<script>
-$(document).ready(function(){
-  // Why Choose Us carousel
-  $('.why-choose-us').slick({
-    arrows: false,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 1500,
-  });
-
-  // hero carousel
-  $('.hero').slick({
-      arrows: false,
-      infinite: false,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 2000,
-  });
-
-  // Add smooth scrolling to all links
-  $("a").on('click', function(event) {
-
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 800, function(){
-
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-});
-</script>
 @endsection
