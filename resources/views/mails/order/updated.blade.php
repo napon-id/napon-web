@@ -24,6 +24,9 @@ Detail tabungan {{ $order->product()->first()->name }} anda:
 | Keuntungan      | {{ $order->product()->first()->percentage }}%                            |
 | Status          | {{ $status_translation[$order->status] }}                                |
 | Lokasi          | {{ $order->location()->first()->address ?? 'Lokasi belum ditentukan' }}  |
+@if($order->status == 'done')
+|Harga jual       | {{ formatCurrency($order->selling_price) }}                              |
+@endif
 @endcomponent
 
 Terima kasih,<br>
