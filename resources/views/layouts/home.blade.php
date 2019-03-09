@@ -23,9 +23,7 @@
 
   @include('includes.home.footer')
 
-  @include('includes.home.js')
-
-  @yield('script')
+  <script src="{{ asset('js/home.js') }}"></script>
 </body>
 
 </html>
