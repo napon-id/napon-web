@@ -52260,9 +52260,13 @@ __webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxS
 (function ($) {
   $(function () {
     // popover
-    $('[data-toggle="popover"]').popover(); // tooltip
+    $('body').popover({
+      selector: '[data-toggle="popover"]'
+    }); // tooltip
 
-    $('[data-toggle="tooltip"]').tooltip();
+    $('body').tooltip({
+      selector: '[data-toggle="tooltip"]'
+    });
   });
 })(jQuery);
 

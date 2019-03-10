@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Order;
 use DataTables;
 
 class UserController extends Controller
@@ -22,9 +23,14 @@ class UserController extends Controller
             })
             ->addColumn('detail', function ($user) {
                 return '
-                    <button class="btn detail" data-id="'.$user->id.'">
-                        <span class="fas fa-fw fa-eye" data-toggle="modal" data-target="#userDetail"></span>
-                    </button>
+                    <div class="btn-group">
+                        <button class="btn detail" data-id="'.$user->id.'" data-toggle="tooltip" data-placement="bottom" title="Detail">
+                            <span class="fas fa-fw fa-eye" data-toggle="modal" data-target="#userDetail"></span>
+                        </button>
+                        <a class="btn" href="'.route('admin.user.order', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Orders">
+                            <i class="fas fa-list"></i>
+                        </a>
+                    </div>
                 ';
             })
             ->addColumn('verified', function ($user){
@@ -38,5 +44,81 @@ class UserController extends Controller
     {
         $id = request()->get('id');
         return User::findOrFail($id)->userInformation()->first();
+    }
+
+    public function order(User $user)
+    {
+        return view('admin.user.order')
+            ->with('user', $user);
+    }
+
+    public function orderTable(User $user)
+    {
+        return DataTables::of($user->orders()->get())
+            ->addColumn('date', function ($order) {
+                return $order->created_at->format('d-m-Y h:i:sa');
+            })
+            ->addColumn('last_update', function ($order) {
+                return $order->updated_at->format('d-m-Y h:i:sa');
+            })
+            ->addColumn('status', function ($order) {
+                switch ($order->status) {
+                    case 'waiting':
+                        return '<span class="badge badge-warning">Waiting</span>';
+                        break;
+                    case 'paid':
+                        return '<span class="badge badge-info">Paid</span>';
+                        break;
+                    case 'investing':
+                        return '<span class="badge badge-primary">Investing</span>';
+                        break;
+                    case 'done':
+                        return '<span class="badge badge-success">Done</span>';
+                        break;
+                    default:
+                        return $order->status;
+                        break;
+                }
+            })
+            ->addColumn('product_name', function ($order) {
+                return $order->product()->first()->name;
+            })
+            ->addColumn('location', function ($order) {
+                return $order->location()->first()->address ?? '-';
+            })
+            ->addColumn('trees', function ($order) {
+                return $order->product()->first()->tree_quantity;
+            })
+            ->addColumn('price', function ($order) {
+                return formatCurrency($order->transaction()->first()->total);
+            })
+            ->addColumn('selling_price', function ($order) {
+                return formatCurrency($order->selling_price);
+            })
+            ->addColumn('details', function ($order) {
+                return '
+                <button class="btn updates" data-id="'.$order->id.'" data-toggle="modal" data-target="#updatesModal">
+                    <i class="fas fa-eye"></i>
+                </button>';
+            })
+            ->rawColumns([
+                'status', 'details'
+            ])
+            ->make(true);
+    }
+
+    public function orderUpdates()
+    {
+        if (request()->has('id')) {
+            $order = Order::find(request()->get('id'));
+            $updates = $order->updates()->latest()->get();
+            return response()->json([
+                'order' => $order,
+                'updates' => $updates,
+            ]);
+        } else {
+            return response()->json('nothing found');
+        }
+        // return response()->json($order->updates()->get());
     }
 }
