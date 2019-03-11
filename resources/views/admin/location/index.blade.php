@@ -42,13 +42,15 @@
                             <a class="btn" href="{{ route('locations.edit', [$location]) }}" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <form action="{{ route('locations.destroy', [$location]) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn" onclick="return confirm('Are you sure?')" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                    <i class="far fa-trash-alt"></i>
-                                </button>
-                            </form>
+                            @if($location->orders()->count() == 0)
+                                <form action="{{ route('locations.destroy', [$location]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn" onclick="return confirm('Are you sure?')" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

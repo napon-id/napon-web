@@ -14,4 +14,9 @@ class Location extends Model
       'lng',
       'description',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
 }

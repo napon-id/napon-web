@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Location;
+use Validator;
+use DB;
 
 class LocationController extends Controller
 {
@@ -28,7 +30,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.location.form');
     }
 
     /**
@@ -39,7 +41,40 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [
+                'location' => 'required|max:255',
+                'address' => 'required',
+                'lat' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+                'lng' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+            }
+
+            $location = Location::create([
+                'location' => $request->location,
+                'address' => $request->address,
+                'lat' => $request->lat ?? NULL,
+                'lng' => $request->lng ?? NULL,
+                'description' => $request->description ?? NULL,
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('locations.index')
+                ->with('status', 'Location added : ' . $location);
+
+        } catch (\Exception $e) {
+            abort(402, $e);
+        }
+
     }
 
     /**
@@ -61,7 +96,10 @@ class LocationController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.location.form')
+            ->with([
+                'location' => Location::find($id),
+            ]);
     }
 
     /**
@@ -73,7 +111,38 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [
+                'location' => 'required|max:255',
+                'address' => 'required',
+                'lat' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+                'lng' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+            }
+            $location = Location::find($id)->update([
+                'location' => $request->location,
+                'address' => $request->address,
+                'lat' => $request->lat ?? NULL,
+                'lng' => $request->lng ?? NULL,
+                'description' => $request->description ?? NULL,
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('locations.index')
+                ->with('status', 'Location edited : ' . $location);
+
+        } catch (\Exception $e) {
+            abort(402, $e);
+        }
     }
 
     /**
@@ -84,9 +153,27 @@ class LocationController extends Controller
      */
     public function destroy($id)
     {
-        Location::findOrFail($id)->delete();
-        return redirect()
-            ->route('locations.index')
-            ->with('status', 'Location ' . $id .' deleted');
+        DB::beginTransaction();
+        try {
+            $location = Location::findOrFail($id);
+
+            if ($location->orders()->count() > 0) {
+                return redirect()
+                    ->route('locations.index')
+                    ->with('status', 'Delete is prohibited because it will cascade other data(s)');
+            } else {
+                $location->delete();
+                DB::commit();
+
+                return redirect()
+                ->route('locations.index')
+                ->with('status', 'Location ' . $id .' deleted');
+            }
+
+
+        } catch (\Exception $e) {
+            abort(402, $e);
+        }
+
     }
 }
