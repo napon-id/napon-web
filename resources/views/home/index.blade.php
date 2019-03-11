@@ -6,7 +6,7 @@
   <!-- Hero intro -->
   <div class="container-fluid content">
       <div class="hero">
-        <div id="heroIntro1">
+        <div id="heroIntro1" class="hero-page">
             <div class="container">
 
                 <p class="float-right">
@@ -29,7 +29,7 @@
                 </a>
             </div>
         </div>
-        <div id="heroIntro1">
+        <div id="heroIntro2" class="hero-page">
             <div class="container">
                 <p class="float-right">
                     <span class="fas fa-arrow-left"></span>
@@ -51,7 +51,7 @@
                 </a>
             </div>
         </div>
-        <div id="heroIntro1">
+        <div id="heroIntro3" class="hero-page">
             <div class="container">
                 <p class="float-right">
                     <span class="fas fa-arrow-left"></span>

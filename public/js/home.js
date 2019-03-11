@@ -36683,6 +36683,37 @@ __webpack_require__(/*! ./home/slick */ "./resources/js/home/slick.js");
 
 __webpack_require__(/*! ./home/scroll */ "./resources/js/home/scroll.js");
 
+__webpack_require__(/*! ./home/faq */ "./resources/js/home/faq.js");
+
+/***/ }),
+
+/***/ "./resources/js/home/faq.js":
+/*!**********************************!*\
+  !*** ./resources/js/home/faq.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  $(function () {
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  });
+})(jQuery);
+
 /***/ }),
 
 /***/ "./resources/js/home/scroll.js":

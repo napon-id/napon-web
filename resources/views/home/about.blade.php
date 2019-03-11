@@ -6,7 +6,7 @@
   <!-- hero intro -->
   <div class="container-fluid content white-text text-center" id="aboutUsHero">
     <div class="container">
-      <h1>Tentang Kami</h1>
+      <h1>Tentang <span class="badge light-green">{{ config('app.name') }}</span> </h1>
     </div> <!-- container -->
   </div> <!-- container fluid -->
 

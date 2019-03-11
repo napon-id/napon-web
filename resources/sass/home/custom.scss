@@ -2,55 +2,51 @@
   font-family: 'Ubuntu', sans-serif;
 }
 #mainContent {
-  margin-top: 55px;
+    margin-top: 55px;
 }
 
 .hero {
     margin-top: -80px;
 }
 
+.hero-page {
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    padding: 5em;
+}
+
 #heroIntro1 {
-  background-image: url('/images/media/img/forest-bg.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: white;
-  padding: 5em 0;
+    background-image: url('/images/media/img/bg-first.jpg');
+}
+
+#heroIntro2 {
+    background-image: url('/images/media/img/bg-second.jpg');
+}
+
+#heroIntro3 {
+    background-image: url('/images/media/img/bg-third.jpg');
 }
 
 #aboutUsHero {
-  padding: 5em;
-  background-image: url("/images/media/img/forest-bg.jpg");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    background-image: url("/images/media/img/bg-about.jpg");
 }
 
 #serviceHero {
-  padding: 5em;
-  background-image: url("/images/media/img/forest-bg.jpg");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    background-image: url("/images/media/img/bg-service.jpg");
 }
 
 #faqHero {
-  padding: 5em;
-  background-image: url("/images/media/img/forest-bg.jpg");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    background-image: url("/images/media/img/bg-faq.jpg");
 }
 
 #whyChooseUs {
-  color: white;
+    color: white;
 }
 
 #whyChooseUs img {
-  margin: 0 auto -20px;
-  max-height: 100px;
+    margin: 0 auto -20px;
+    max-height: 100px;
 }
 
 #howWeWork {
@@ -58,22 +54,22 @@
 }
 
 #howWeWork img {
-  max-height: 10em;
-  margin: -15px auto 0;
+    max-height: 10em;
+    margin: -15px auto 0;
 }
 
 #serviceSimulation {
-  background-color: #dfdfdf;
+    background-color: #dfdfdf;
 }
 
 .content {
-  padding: 5em 0;
+    padding: 5em 0;
 }
 
 .smaller-content {
-  padding: 1.5em 0;
+    padding: 1.5em 0;
 }
 
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }

@@ -11,8 +11,6 @@
   <title>{{ config('app.name') }} - Platform Menabung Pohon</title>
   <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 
-  @yield('style')
-
 </head>
 
 <body>

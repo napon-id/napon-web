@@ -10,3 +10,4 @@ require('slick-carousel/slick/slick.min');
 // components
 require('./home/slick');
 require('./home/scroll');
+require('./home/faq');

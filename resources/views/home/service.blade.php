@@ -5,14 +5,14 @@
   <!-- Service hero -->
   <div class="container-fluid content light-green white-text text-center" id="serviceHero">
     <div class="container">
-      <h1>Layanan Kami</h1>
+      <h1>Layanan <span class="badge light-green">{{ config('app.name') }}</span> </h1>
     </div> <!-- container -->
   </div> <!-- container fluid -->
 
   <!-- trees -->
   <div class="container-fluid smaller-content" id="serviceTrees">
     <div class="container">
-      <h2 class="light-green-text">Pohon yang dapat ditabung</h2>
+      <h2>Pohon <span class="light-green-text">yang dapat ditabung</span></h2>
       <hr>
       <p>
         Saat ini, Anda dapat menabung pohon Sengon Solomon pada {{ config('app.name') }}.
@@ -27,7 +27,7 @@
   <!-- products -->
   <div class="container-fluid smaller-content" id="serviceProduct">
     <div class="container">
-      <h2 class="light-green-text">Paket Menabung Pohon Sengon Solomon</h2>
+      <h2><span class="light-green-text">Paket Menabung Pohon</span> Sengon Solomon</h2>
       <hr>
       <div class="row">
         @foreach($products as $product)
@@ -46,21 +46,32 @@
               <!-- Title -->
               <h4 class="card-title">{{ $product->name }}</h4>
               <!-- Text -->
-              <p class="card-text" style="font-weight: bold;">
-                Jumlah pohon : {{ $product->tree_quantity }}
-                <br>
-                Tabungan : Rp {{ formatCurrency($product->tree_quantity * $tree->price) }}
-                <br>
-                Lama menabung : {{ $product->time }}
-                <br>
-                Keuntungan : {{ $product->percentage }} %
-                <br>
-                @if($product->has_certificate == true)
-                Sertifikat kepemilikan
-                @endif
-              </p>
+              <div class="card-text">
+                <h5>
+                    Jumlah pohon : {{ $product->tree_quantity }}
+                </h5>
+                <h5>
+                    Tabungan : Rp {{ formatCurrency($product->tree_quantity * $tree->price) }}
+                </h5>
+                <h5>
+                    Lama menabung : {{ $product->time }}
+                </h5>
+                <h5>
+                    Keuntungan : {{ $product->percentage }} %
+                </h5>
+                <h5>
+                    @if($product->has_certificate == true)
+                        <span class="badge light-green">Sertifikat kepemilikan</span>
+                    @else
+                        <span class="badge badge-danger">Tanpa Sertifikat</span>
+                    @endif
+                </h5>
+            </div>
               <!-- Button -->
-              <a href="{{ route('user.product.order') }}" class="btn btn-light-green">Pesan <i class="fas fa-leaf"></i></a>
+              <div class="text-center">
+
+                  <a href="{{ route('user.product.order') }}" class="btn btn-light-green">Pesan <i class="fas fa-leaf"></i></a>
+              </div>
             </div>
           </div> <!-- Card -->
           <br>
