@@ -146,9 +146,26 @@ class TreeController extends Controller
      */
     public function destroy($id)
     {
-        Tree::findOrFail($id)->delete();
-        return redirect()
-            ->route('trees.index')
-            ->with('status', 'Tree ' .$id. ' deleted');
+        DB::beginTransaction();
+        try {
+            $tree = Tree::findOrFail($id);
+            if ($tree->products()->count() == 0) {
+                $tree->delete();
+                DB::commit();
+
+                return redirect()
+                    ->route('trees.index')
+                    ->with('status', 'Tree ' .$id. ' deleted');
+            } else {
+                return redirect()
+                    ->route('trees.index')
+                    ->with('status', 'Delete is prohibited because it will cascade other data(s)');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            abort(402, $e);
+        }
+
     }
 }

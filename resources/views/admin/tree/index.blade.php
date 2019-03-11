@@ -42,19 +42,24 @@
                             <td>{{ formatCurrency($tree->price) }}</td>
                             <td>{{ $tree->available }}</td>
                             <td>
-                                <a href="{{ route('trees.edit', [$tree]) }}" class="btn btn-link">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('trees.destroy', [$tree]) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-link" onclick="return confirm('Are you sure to delete this?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                                <a class="btn btn-dark" href="{{ route('products.index', ['tree' => $tree]) }}">
-                                    <i class="fas fa-list"></i> Products
-                                </a>
+                                <div class="btn-group">
+
+                                    <a href="{{ route('trees.edit', [$tree]) }}" class="btn">
+                                        <i class="fas fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
+                                    </a>
+                                    @if($tree->products()->count() == 0)
+                                        <form action="{{ route('trees.destroy', [$tree]) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn" onclick="return confirm('Are you sure to delete this?')">
+                                                <i class="fas fa-trash" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <a class="btn" href="{{ route('products.index', ['tree' => $tree]) }}">
+                                        <i class="fas fa-list" data-toggle="tooltip" data-placement="bottom" title="Products"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         @endforeach

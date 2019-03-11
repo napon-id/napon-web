@@ -51,16 +51,20 @@
                             <td>{{ $product->available }}</td>
                             <td>{{ $product->has_certificate ? 'yes' : 'no' }}</td>
                             <td>
-                                <a class="btn" href="{{ route('products.edit', [$product, 'tree' => $tree]) }}">
-                                    <i class="far fa-edit"></i>
-                                </a>
-                                <form action="{{ route('products.destroy', [$product]) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-link" onclick="return confirm('Are you sure?')">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </form>
+                                <div class="btn-group">
+                                    <a class="btn" href="{{ route('products.edit', [$product, 'tree' => $tree]) }}">
+                                        <i class="far fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
+                                    </a>
+                                    @if($product->orders()->count() == 0)
+                                        <form action="{{ route('products.destroy', [$product]) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn" onclick="return confirm('Are you sure?')">
+                                                <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                         @endforeach

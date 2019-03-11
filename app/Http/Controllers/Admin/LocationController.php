@@ -72,6 +72,7 @@ class LocationController extends Controller
                 ->with('status', 'Location added : ' . $location);
 
         } catch (\Exception $e) {
+            DB::rollback();
             abort(402, $e);
         }
 
@@ -141,6 +142,7 @@ class LocationController extends Controller
                 ->with('status', 'Location edited : ' . $location);
 
         } catch (\Exception $e) {
+            DB::rollback();
             abort(402, $e);
         }
     }
@@ -172,6 +174,7 @@ class LocationController extends Controller
 
 
         } catch (\Exception $e) {
+            DB::rollback();
             abort(402, $e);
         }
 
