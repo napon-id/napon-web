@@ -10,17 +10,16 @@
             <div class="container">
 
                 <p class="float-right">
-                    <!-- <span class="fas fa-arrow-left"></span> -->
                     <span class="fas fa-hand-paper" data-toggle="tooltip" data-placement="top" title="swipe"></span>
                     <span class="fas fa-arrow-right"></span>
                 </p>
                 <h2>Rajin <span class="bold">MENABUNG</span></h2>
                 <h2><span class="bold">POHON</span> Pangkal</h2>
-                <h2><span class="light-green">KAYA + BONUS</span></h2>
+                <h2><span class="badge light-green">KAYA + BONUS</span></h2>
                 <br>
-                <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">alam lestari</span></h2>
+                <h2><span class="badge aqua-gradient" style="font-family: 'Pacifico', cursive !important;">alam lestari</span></h2>
                 <br>
-                <h3>Ayo <span class="peach-gradient">#NabungPohon</span></h3>
+                <h3>Ayo <span class="badge peach-gradient">#NabungPohon</span></h3>
                 <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
                 <div style="height: 2em;"></div>
                 <br>
@@ -36,19 +35,16 @@
                     <span class="fas fa-hand-paper" data-toggle="tooltip" data-placement="top" title="swipe"></span>
                     <span class="fas fa-arrow-right"></span>
                 </p>
-                <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">setiap yang</span></h2>
-                <h2>KITA <span class="bold underlined">TANAM</span> </h2>
-                <h2><span class="light-green">AKAN KITA</span></h2>
+                <h2><span style="font-family: 'Pacifico', cursive !important;">Setiap Yang</span></h2>
+                <h2>KITA <span class="badge purple-gradient bold underlined">TANAM</span> </h2>
+                <h2><span class="badge purple-gradient">AKAN</span> KITA</h2>
                 <br>
-                <h2><span class="bold">TUAI</span> HASILNYA</h2>
+                <h2><span class="badge light-blue">TUAI</span></h2>
+                <h2><span class="badge cyan">HASILNYA</span></h2>
                 <br>
-                <h3><span class="peach-gradient">#NabungPohon</span> Sekarang</h3>
-                <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
+                <h3><span class="badge blue-gradient">#NabungPohon</span> <span class="bold">Sekarang</span></h3>
                 <div style="height: 2em;"></div>
-                <br>
-                <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
-                    CARI TAU LEBIH <span class="fas fa-arrow-right"></span>
-                </a>
+                <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
             </div>
         </div>
         <div id="heroIntro3" class="hero-page">
@@ -56,21 +52,18 @@
                 <p class="float-right">
                     <span class="fas fa-arrow-left"></span>
                     <span class="fas fa-hand-paper" data-toggle="tooltip" data-placement="top" title="swipe"></span>
-                    <!-- <span class="fas fa-arrow-right"></span> -->
                 </p>
-                <h2>DEMI </h2>
-                <h2><span class="light-green">MASA DEPAN</span></h2>
-                <h2><span class="bold">YANG</span></h2>
+                <h3><span class="bold badge purple">HUTAN</span></h3>
+                <h2><span class="badge purple">LESTARI <i class="fab fa-pagelines"></i></span></h2>
                 <br>
-                <h2><span class="light-green" style="font-family: 'Pacifico', cursive !important;">lebih cerah</span></h2>
+                <h2><span class="badge pink">ANAK</span> <span class="badge pink">CUCU</span> <span class="badge pink"><i class="fas fa-child"></i></span></h2>
                 <br>
-                <h3>Mulai <span class="peach-gradient">#NabungPohon</span></h3>
+                <h2><span class="badge bold purple-gradient"><i class="fas fa-check-circle"></i> TERJAMIN</span></h2>
+                <br>
+                <h2><span class="badge aqua-gradient">AYO</span> <span class="badge purple-gradient">#NabungPohon</span></h2>
+                <br>
                 <img src="{{ asset('images/media/icon/napon.png') }}" alt="Napon.ID" style="max-height: 2em;">
                 <div style="height: 2em;"></div>
-                <br>
-                <a href="#aboutUs" class="bt btn-lg btn-light-green" style="padding: 1em;">
-                    CARI TAU LEBIH <span class="fas fa-arrow-right"></span>
-                </a>
             </div>
         </div>
       </div> <!-- Carousel -->
