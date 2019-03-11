@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Tree;
+use App\Location;
 use Validator;
 use DB;
 
-class TreeController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class TreeController extends Controller
      */
     public function index()
     {
-        return view('admin.tree.index')
+        return view('admin.location.index')
             ->with([
-                'trees' => Tree::all(),
+                'locations' => Location::all(),
             ]);
     }
 
@@ -30,7 +30,7 @@ class TreeController extends Controller
      */
     public function create()
     {
-        return view('admin.tree.form');
+        return view('admin.location.form');
     }
 
     /**
@@ -44,33 +44,38 @@ class TreeController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required|numeric',
+                'location' => 'required|max:255',
+                'address' => 'required',
+                'lat' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+                'lng' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
             ]);
 
             if ($validator->fails()) {
                 return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
             }
 
-            $tree = Tree::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
-                'available' => $request->available ? 'yes' : 'no',
+            $location = Location::create([
+                'location' => $request->location,
+                'address' => $request->address,
+                'lat' => $request->lat ?? NULL,
+                'lng' => $request->lng ?? NULL,
+                'description' => $request->description ?? NULL,
             ]);
 
             DB::commit();
+
             return redirect()
-                ->route('trees.index')
-                ->with('status', 'Tree created => ' . $tree);
+                ->route('locations.index')
+                ->with('status', 'Location added : ' . $location);
 
         } catch (\Exception $e) {
+            DB::rollback();
             abort(402, $e);
         }
+
     }
 
     /**
@@ -92,8 +97,10 @@ class TreeController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.tree.form')
-            ->with('tree', Tree::findOrFail($id));
+        return view('admin.location.form')
+            ->with([
+                'location' => Location::find($id),
+            ]);
     }
 
     /**
@@ -108,29 +115,31 @@ class TreeController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required|numeric',
+                'location' => 'required|max:255',
+                'address' => 'required',
+                'lat' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+                'lng' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
             ]);
 
             if ($validator->fails()) {
                 return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
             }
-
-            $tree = Tree::find($id);
-            $tree->name = $request->name;
-            $tree->description = $request->description;
-            $tree->price = $request->price;
-            $tree->available = $request->available ? 'yes' : 'no';
-            $tree->update();
+            $location = Location::find($id)->update([
+                'location' => $request->location,
+                'address' => $request->address,
+                'lat' => $request->lat ?? NULL,
+                'lng' => $request->lng ?? NULL,
+                'description' => $request->description ?? NULL,
+            ]);
 
             DB::commit();
+
             return redirect()
-                ->route('trees.index')
-                ->with('status', 'Tree updated => ' . $tree);
+                ->route('locations.index')
+                ->with('status', 'Location edited : ' . $location);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -148,19 +157,21 @@ class TreeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $tree = Tree::findOrFail($id);
-            if ($tree->products()->count() == 0) {
-                $tree->delete();
+            $location = Location::findOrFail($id);
+
+            if ($location->orders()->count() > 0) {
+                return redirect()
+                    ->route('locations.index')
+                    ->with('status', 'Delete is prohibited because it will cascade other data(s)');
+            } else {
+                $location->delete();
                 DB::commit();
 
                 return redirect()
-                    ->route('trees.index')
-                    ->with('status', 'Tree ' .$id. ' deleted');
-            } else {
-                return redirect()
-                    ->route('trees.index')
-                    ->with('status', 'Delete is prohibited because it will cascade other data(s)');
+                ->route('locations.index')
+                ->with('status', 'Location ' . $id .' deleted');
             }
+
 
         } catch (\Exception $e) {
             DB::rollback();

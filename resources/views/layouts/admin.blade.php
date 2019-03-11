@@ -56,7 +56,8 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.user') }}">
-                <i class="fas fa-fw fa-user-alt"></i> User
+                <i class="fas fa-fw fa-user-alt"></i>
+                <span>User</span>
             </a>
         </li>
         <li class="nav-item dropdown">
@@ -66,7 +67,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="tabunganDropdown">
             <a class="dropdown-item" href="{{ route('trees.index') }}">Tree</a>
-            <a class="dropdown-item" href="register.html">Register</a>
+            <a class="dropdown-item" href="{{ route('locations.index') }}">Location</a>
             <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Other Pages:</h6>

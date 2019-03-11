@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('products/tree/{tree}', 'Admin\ProductController@index')->name('products.index');
         Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
     });
+    Route::resource('locations', 'Admin\LocationController');
 });
 
 // User routes

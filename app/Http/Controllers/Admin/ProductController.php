@@ -187,9 +187,25 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        Product::findOrFail($id)->delete();
-        return redirect()
-            ->back()
-            ->with('status', 'Product ' . $id . ' deleted');
+        DB::beginTransaction();
+        try {
+            $product = Product::findOrFail($id);
+            if ($product->orders()->count() == 0) {
+                $product->delete();
+                DB::commit();
+
+                return redirect()
+                    ->back()
+                    ->with('status', 'Product ' .$id. ' deleted');
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('status', 'Delete is prohibited because it will cascade other data(s)');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            abort(402, $e);
+        }
+
     }
 }
