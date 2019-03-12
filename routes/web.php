@@ -24,6 +24,7 @@ Route::get('/layanan', 'HomeController@service')->name('layanan');
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::get('/invest', 'AdminController@invest')->name('admin.invest');
+
     // User prefixed
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', 'Admin\UserController@index')->name('admin.user');
@@ -33,12 +34,21 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/order/{user}', 'Admin\UserController@order')->name('admin.user.order');
         Route::get('/order/{user}/table', 'Admin\UserController@orderTable')->name('admin.user.order.table');
     });
+
     // Invest
     Route::group(['prefix' => 'invest'], function () {
         Route::resource('trees', 'Admin\TreeController')->except(['show']);
         Route::get('products/tree/{tree}', 'Admin\ProductController@index')->name('products.index');
         Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
     });
+
+    // Withdraw
+    Route::group(['prefix' => 'withdraw'], function () {
+        Route::get('/', 'Admin\WithdrawController@index')->name('admin.withdraw.index');
+        Route::get('table', 'Admin\WithdrawController@table')->name('admin.withdraw.table');
+        Route::get('change-status', 'Admin\WithdrawController@changeStatus')->name('admin.withdraw.change_status');
+    });
+
     Route::resource('locations', 'Admin\LocationController');
 });
 

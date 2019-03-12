@@ -7,10 +7,11 @@ require('startbootstrap-sb-admin/vendor/datatables/jquery.dataTables.min');
 require('startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.min');
 require('startbootstrap-sb-admin/js/sb-admin.min');
 
+// ajaxSetup
+require('./dashboard/ajaxSetup');
+
 // components
 require('./global');
 require('./dashboard/datatables');
 require('./dashboard/copyToClipboard');
-
-// ajaxSetup
-require('./dashboard/ajaxSetup');
+require('./dashboard/withdrawStatus');

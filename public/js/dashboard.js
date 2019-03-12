@@ -52161,17 +52161,19 @@ __webpack_require__(/*! startbootstrap-sb-admin/vendor/datatables/jquery.dataTab
 
 __webpack_require__(/*! startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.min */ "./node_modules/startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.min.js");
 
-__webpack_require__(/*! startbootstrap-sb-admin/js/sb-admin.min */ "./node_modules/startbootstrap-sb-admin/js/sb-admin.min.js"); // components
+__webpack_require__(/*! startbootstrap-sb-admin/js/sb-admin.min */ "./node_modules/startbootstrap-sb-admin/js/sb-admin.min.js"); // ajaxSetup
+
+
+__webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxSetup.js"); // components
 
 
 __webpack_require__(/*! ./global */ "./resources/js/global.js");
 
 __webpack_require__(/*! ./dashboard/datatables */ "./resources/js/dashboard/datatables.js");
 
-__webpack_require__(/*! ./dashboard/copyToClipboard */ "./resources/js/dashboard/copyToClipboard.js"); // ajaxSetup
+__webpack_require__(/*! ./dashboard/copyToClipboard */ "./resources/js/dashboard/copyToClipboard.js");
 
-
-__webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxSetup.js");
+__webpack_require__(/*! ./dashboard/withdrawStatus */ "./resources/js/dashboard/withdrawStatus.js");
 
 /***/ }),
 
@@ -52246,6 +52248,33 @@ __webpack_require__(/*! ./dashboard/ajaxSetup */ "./resources/js/dashboard/ajaxS
       order: [[0, order]]
     });
   });
+})(jQuery);
+
+/***/ }),
+
+/***/ "./resources/js/dashboard/withdrawStatus.js":
+/*!**************************************************!*\
+  !*** ./resources/js/dashboard/withdrawStatus.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  window.withdrawStatus = function (id, url, next) {
+    var appendedURL = url + '?id=' + id + '&next=' + next;
+    $.ajax({
+      url: appendedURL,
+      dataType: 'JSON',
+      type: 'GET',
+      success: function success(data) {
+        console.log(data);
+
+        if ($('.datatable').length > 0) {
+          $('.datatable').DataTable().draw(false);
+        }
+      }
+    });
+  };
 })(jQuery);
 
 /***/ }),
