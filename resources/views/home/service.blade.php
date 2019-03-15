@@ -84,14 +84,47 @@
   <!-- simulation -->
   <div class="container-fluid smaller-content" id="serviceSimulation">
     <div class="container">
-      <!-- <h2 class="light-green-text">Ilustrasi Return</h2> -->
-      <!-- <hr> -->
-      <div class="view overlay">
-        <img src="{{ asset('images/media/img/simulate.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
-        <a href="#!">
-          <div class="mask waves-effect waves-light rgba-white-slight"></div>
-        </a>
-      </div> <!-- view overlay -->
+      <h2>Ilustrasi <span class="light-green-text">Return</span></h2>
+      <hr>
+      <div class="row">
+
+          <div class="col-md-3 mx-auto">
+              <div class="view overlay">
+                <a href="{{ asset('images/media/img/simulasi-akarku.jpg') }}" data-toggle="lightbox">
+                    <img src="{{ asset('images/media/img/simulasi-akarku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
+                  <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                </a>
+              </div>
+          </div>
+
+          <div class="col-md-3 mx-auto">
+              <div class="view overlay">
+                <a href="{{ asset('images/media/img/simulasi-batangku.jpg') }}" data-toggle="lightbox">
+                    <img src="{{ asset('images/media/img/simulasi-batangku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
+                  <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                </a>
+              </div>
+          </div>
+
+          <div class="col-md-3 mx-auto">
+              <div class="view overlay">
+                <a href="{{ asset('images/media/img/simulasi-daunku.jpg') }}" data-toggle="lightbox">
+                    <img src="{{ asset('images/media/img/simulasi-daunku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
+                  <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                </a>
+              </div>
+          </div>
+
+          <div class="col-md-3 mx-auto">
+              <div class="view overlay">
+                <a href="{{ asset('images/media/img/simulasi-hutanku.jpg') }}" data-toggle="lightbox">
+                    <img src="{{ asset('images/media/img/simulasi-hutanku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
+                  <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                </a>
+              </div>
+          </div>
+
+      </div>
 
     </div> <!-- container -->
   </div> <!-- container fluid -->
