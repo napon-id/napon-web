@@ -88,7 +88,7 @@
       <hr>
       <div class="row">
 
-          <div class="col-md-3 mx-auto">
+          <div class="col-md-3 mb-3 mx-auto">
               <div class="view overlay">
                 <a href="{{ asset('images/media/img/simulasi-akarku.jpg') }}" data-toggle="lightbox">
                     <img src="{{ asset('images/media/img/simulasi-akarku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
@@ -97,7 +97,7 @@
               </div>
           </div>
 
-          <div class="col-md-3 mx-auto">
+          <div class="col-md-3 mb-3 mx-auto">
               <div class="view overlay">
                 <a href="{{ asset('images/media/img/simulasi-batangku.jpg') }}" data-toggle="lightbox">
                     <img src="{{ asset('images/media/img/simulasi-batangku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
@@ -106,7 +106,7 @@
               </div>
           </div>
 
-          <div class="col-md-3 mx-auto">
+          <div class="col-md-3 mb-3 mx-auto">
               <div class="view overlay">
                 <a href="{{ asset('images/media/img/simulasi-daunku.jpg') }}" data-toggle="lightbox">
                     <img src="{{ asset('images/media/img/simulasi-daunku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
@@ -115,7 +115,7 @@
               </div>
           </div>
 
-          <div class="col-md-3 mx-auto">
+          <div class="col-md-3 mb-3 mx-auto">
               <div class="view overlay">
                 <a href="{{ asset('images/media/img/simulasi-hutanku.jpg') }}" data-toggle="lightbox">
                     <img src="{{ asset('images/media/img/simulasi-hutanku.jpg') }}" class="img-fluid" alt="Sample image with waves effect.">
