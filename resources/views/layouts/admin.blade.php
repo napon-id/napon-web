@@ -66,9 +66,9 @@
             <span>Invest</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="tabunganDropdown">
-            <a class="dropdown-item" href="{{ route('trees.index') }}">Tree</a>
-            <a class="dropdown-item" href="{{ route('locations.index') }}">Location</a>
-            <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+            <a class="dropdown-item" href="{{ route('trees.index') }}">Trees</a>
+            <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
+            <a class="dropdown-item" href="{{ route('admin.withdraw.index') }}">Withdraws</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Other Pages:</h6>
             <a class="dropdown-item" href="404.html">404 Page</a>

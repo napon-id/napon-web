@@ -33,6 +33,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/order/updates', 'Admin\UserController@orderUpdates')->name('admin.user.order.updates');
         Route::get('/order/{user}', 'Admin\UserController@order')->name('admin.user.order');
         Route::get('/order/{user}/table', 'Admin\UserController@orderTable')->name('admin.user.order.table');
+        Route::get('/balance/{user}/table', 'Admin\BalanceController@table')->name('admin.user.balance.table');
+        Route::get('/balance/{user}', 'Admin\BalanceController@index')->name('admin.user.balance');
     });
 
     // Invest

@@ -30,6 +30,9 @@ class UserController extends Controller
                         <a class="btn" href="'.route('admin.user.order', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Orders">
                             <i class="fas fa-list"></i>
                         </a>
+                        <a class="btn" href="'.route('admin.user.balance', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Balance">
+                            <i class="fas fa-money-bill"></i>
+                        </a>
                     </div>
                 ';
             })
