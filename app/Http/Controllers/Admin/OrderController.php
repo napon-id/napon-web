@@ -16,7 +16,10 @@ class OrderController extends Controller
 
     public function table()
     {
-        return DataTables::of(Order::all())
+        return DataTables::eloquent(Order::query()->orderBy('created_at', 'desc'))
+            ->addColumn('date', function ($order) {
+                return $order->created_at;
+            })
             ->addColumn('product', function ($order) {
                 return $order->product()->first()->name;
             })
@@ -43,9 +46,34 @@ class OrderController extends Controller
                 }
             })
             ->addColumn('action', function ($order) {
-                return 'this will pop up modal';
+                return '
+                    <button class="btn order-update-modal" data-toggle="modal" data-target="#orderUpdateModal" data-url="'.route('admin.order.edit', [$order->id]).'" data-post="'.route('admin.order.update', [$order->id]).'">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                ';
             })
             ->rawColumns(['status', 'action'])
-            ->make(true);
+            ->toJson();
+    }
+
+    public function edit($id)
+    {
+        return response()->json(Order::find($id));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::find($id);
+        // if ($request->selling_price) {
+        //     $order->selling_price = $request->selling_price;
+        // }
+        if ($request->status) {
+            $order->status = $request->status;
+        }
+        $order->save();
+
+        return response()->json([
+            'order' => $order,
+        ]);
     }
 }

@@ -1,7 +1,6 @@
 (function ($) {
     $(function () {
         var columns = [];
-        var order = 'asc';
         $.each($('.datatable th'), function (key, val) {
             var tmp = $(val).data('field');
             if ($(val).data('order') == 'desc') {
@@ -17,7 +16,6 @@
             serverSide: true,
             ajax: $('.datatable').data('url'),
             columns: columns,
-            order: [ [0, order] ],
         })
 
     })

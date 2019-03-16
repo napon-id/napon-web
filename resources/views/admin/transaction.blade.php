@@ -22,6 +22,7 @@
                 <table class="table table-responsive table-hover table-striped">
                     <thead>
                         <tr>
+                            <th>Date</th>
                             <th>ID</th>
                             <th>Product</th>
                             <th>User</th>
@@ -31,6 +32,7 @@
                     <tbody>
                         @foreach($transactions as $transaction)
                         <tr>
+                            <td>{{ $transaction->created_at }}</td>
                             <td>{{ $transaction->id }}</td>
                             <td>{{ $transaction->order()->first()->product()->first()->name }}</td>
                             <td>{{ $transaction->order()->first()->user()->first()->email }}</td>

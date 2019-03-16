@@ -56,6 +56,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::group(['prefix' => 'order'], function () {
         Route::get('/table', 'Admin\OrderController@table')->name('admin.order.table');
         Route::get('/', 'Admin\OrderController@index')->name('admin.order.index');
+        Route::get("edit/{id}", 'Admin\OrderController@edit')->name('admin.order.edit');
+        Route::post("update/{id}", 'Admin\OrderController@update')->name('admin.order.update');
     });
 
     Route::resource('locations', 'Admin\LocationController');
