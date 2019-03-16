@@ -66,13 +66,14 @@
             <span>Invest</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="tabunganDropdown">
+            <h6 class="dropdown-header">Admin based</h6>
             <a class="dropdown-item" href="{{ route('trees.index') }}">Trees</a>
             <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
             <a class="dropdown-item" href="{{ route('admin.withdraw.index') }}">Withdraws</a>
             <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Other Pages:</h6>
-            <a class="dropdown-item" href="404.html">404 Page</a>
-            <a class="dropdown-item" href="blank.html">Blank Page</a>
+            <h6 class="dropdown-header">User based</h6>
+            <a class="dropdown-item" href="{{ route('admin.transaction') }}">Transactions</a>
+            <a class="dropdown-item" href="#">Orders</a>
           </div>
         </li>
         <li class="nav-item">

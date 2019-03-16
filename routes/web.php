@@ -24,6 +24,7 @@ Route::get('/layanan', 'HomeController@service')->name('layanan');
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::get('/invest', 'AdminController@invest')->name('admin.invest');
+    Route::get('/transactions', 'AdminController@transaction')->name('admin.transaction');
 
     // User prefixed
     Route::group(['prefix' => 'user'], function () {
