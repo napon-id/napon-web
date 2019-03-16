@@ -52,6 +52,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('change-status', 'Admin\WithdrawController@changeStatus')->name('admin.withdraw.change_status');
     });
 
+    // Order
+    Route::group(['prefix' => 'order'], function () {
+        Route::get('/table', 'Admin\OrderController@table')->name('admin.order.table');
+        Route::get('/', 'Admin\OrderController@index')->name('admin.order.index');
+    });
+
     Route::resource('locations', 'Admin\LocationController');
 });
 

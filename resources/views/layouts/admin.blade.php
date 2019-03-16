@@ -73,7 +73,7 @@
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">User based</h6>
             <a class="dropdown-item" href="{{ route('admin.transaction') }}">Transactions</a>
-            <a class="dropdown-item" href="#">Orders</a>
+            <a class="dropdown-item" href="{{ route('admin.order.index') }}">Orders</a>
           </div>
         </li>
         <li class="nav-item">
