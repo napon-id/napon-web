@@ -47,9 +47,14 @@ class OrderController extends Controller
             })
             ->addColumn('action', function ($order) {
                 return '
-                    <button class="btn order-update-modal" data-toggle="modal" data-target="#orderUpdateModal" data-url="'.route('admin.order.edit', [$order->id]).'" data-post="'.route('admin.order.update', [$order->id]).'">
+                    <div class="btn-group">
+                        <button class="btn order-update-modal" data-toggle="modal" data-target="#orderUpdateModal" data-url="'.route('admin.order.edit', [$order->id]).'" data-post="'.route('admin.order.update', [$order->id]).'">
                         <i class="fas fa-pencil-alt"></i>
-                    </button>
+                        </button>
+                        <a href="'.route('admin.order.update.index', [$order]).'" class="btn" data-toggle="tooltip" data-placement="bottom" title="order updates" target="_blank">
+                            <i class="fas fa-list-ol"></i>
+                        </a>
+                    </div>
                 ';
             })
             ->rawColumns(['status', 'action'])

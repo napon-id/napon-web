@@ -115,7 +115,7 @@
                         {{ $a->title }}
                     </a>
                 </h5>
-                <p>{{ $a->description }}</p>
+                <p>{!! str_limit($a->description, 200) !!}</p>
                 @endforeach
 
             </div>
