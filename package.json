@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
-    "ckeditor": "^4.11.3",
     "ekko-lightbox": "^5.3.0",
     "mdbootstrap": "^4.7.4",
     "slick-carousel": "^1.8.1",
