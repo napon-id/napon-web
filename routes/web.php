@@ -14,6 +14,11 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index');
 Route::get('/logout', 'Auth\LoginController@logout');
 
+
+Route::get('/test', function () {
+    return view('test');
+});
+
 // Front pages
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/tentang-kami', 'HomeController@about')->name('tentang-kami');
@@ -95,28 +100,4 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('product/api', 'User\OrderController@productApi')->name('user.product.api');
     Route::get('product/api/order', 'User\OrderController@productApiOrder')->name('user.product.api.order');
     Route::get('product/api/{status}', 'User\OrderController@productApiStatus')->name('user.product.api.status');
-});
-
-Route::get('withdraw-created', function () {
-    $wd = App\Withdraw::find(1);
-
-    return new App\Mail\WithdrawCreatedMail($wd);
-});
-
-Route::get('withdraw-updated', function () {
-    $wd = App\Withdraw::find(12);
-
-    return new App\Mail\WithdrawUpdatedMail($wd);
-});
-
-Route::get('order-created', function () {
-    $order = App\Order::find(3);
-
-    return new App\Mail\OrderCreatedMail($order);
-});
-
-Route::get('order-updated', function () {
-    $order = App\Order::find(3);
-
-    return new App\Mail\OrderUpdatedMail($order);
 });
