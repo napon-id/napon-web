@@ -93,7 +93,7 @@
           <a href="{{ url('https://blog.napon.id') }}" target="_blank">Blog <span class="fas fa-window"></span></a>
         </p>
         <p>
-          <a href="{{ route('layanan') }}#serviceSimulation">Simulasi Menabung</a>
+          <a href="{{ route('layanan') }}">Simulasi Menabung</a>
         </p>
       </div>
       <!--/.Third column-->
