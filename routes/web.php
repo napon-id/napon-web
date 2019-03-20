@@ -14,7 +14,6 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index');
 Route::get('/logout', 'Auth\LoginController@logout');
 
-
 Route::get('/test', function () {
     return view('test');
 });
