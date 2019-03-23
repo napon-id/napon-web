@@ -1762,17 +1762,17 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-  * Bootstrap v4.2.1 (https://getbootstrap.com/)
-  * Copyright 2011-2018 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v4.3.1 (https://getbootstrap.com/)
+  * Copyright 2011-2019 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")) :
+   true ? factory(exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")) :
   undefined;
-}(this, (function (exports,Popper,$) { 'use strict';
+}(this, function (exports, $, Popper) { 'use strict';
 
-  Popper = Popper && Popper.hasOwnProperty('default') ? Popper['default'] : Popper;
   $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
+  Popper = Popper && Popper.hasOwnProperty('default') ? Popper['default'] : Popper;
 
   function _defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
@@ -1832,7 +1832,7 @@ module.exports = {
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v4.2.1): util.js
+   * Bootstrap (v4.3.1): util.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -1908,7 +1908,11 @@ module.exports = {
         selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : '';
       }
 
-      return selector && document.querySelector(selector) ? selector : null;
+      try {
+        return document.querySelector(selector) ? selector : null;
+      } catch (err) {
+        return null;
+      }
     },
     getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
       if (!element) {
@@ -1988,7 +1992,7 @@ module.exports = {
    */
 
   var NAME = 'alert';
-  var VERSION = '4.2.1';
+  var VERSION = '4.3.1';
   var DATA_KEY = 'bs.alert';
   var EVENT_KEY = "." + DATA_KEY;
   var DATA_API_KEY = '.data-api';
@@ -2043,8 +2047,8 @@ module.exports = {
     _proto.dispose = function dispose() {
       $.removeData(this._element, DATA_KEY);
       this._element = null;
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getRootElement = function _getRootElement(element) {
       var selector = Util.getSelectorFromElement(element);
@@ -2086,8 +2090,8 @@ module.exports = {
 
     _proto._destroyElement = function _destroyElement(element) {
       $(element).detach().trigger(Event.CLOSED).remove();
-    }; // Static
-
+    } // Static
+    ;
 
     Alert._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -2153,7 +2157,7 @@ module.exports = {
    */
 
   var NAME$1 = 'button';
-  var VERSION$1 = '4.2.1';
+  var VERSION$1 = '4.3.1';
   var DATA_KEY$1 = 'bs.button';
   var EVENT_KEY$1 = "." + DATA_KEY$1;
   var DATA_API_KEY$1 = '.data-api';
@@ -2239,8 +2243,8 @@ module.exports = {
     _proto.dispose = function dispose() {
       $.removeData(this._element, DATA_KEY$1);
       this._element = null;
-    }; // Static
-
+    } // Static
+    ;
 
     Button._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -2307,7 +2311,7 @@ module.exports = {
    */
 
   var NAME$2 = 'carousel';
-  var VERSION$2 = '4.2.1';
+  var VERSION$2 = '4.3.1';
   var DATA_KEY$2 = 'bs.carousel';
   var EVENT_KEY$2 = "." + DATA_KEY$2;
   var DATA_API_KEY$2 = '.data-api';
@@ -2502,8 +2506,8 @@ module.exports = {
       this._isSliding = null;
       this._activeElement = null;
       this._indicatorsElement = null;
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getConfig = function _getConfig(config) {
       config = _objectSpread({}, Default, config);
@@ -2547,7 +2551,9 @@ module.exports = {
         });
       }
 
-      this._addTouchEventListeners();
+      if (this._config.touch) {
+        this._addTouchEventListeners();
+      }
     };
 
     _proto._addTouchEventListeners = function _addTouchEventListeners() {
@@ -2788,8 +2794,8 @@ module.exports = {
       if (isCycling) {
         this.cycle();
       }
-    }; // Static
-
+    } // Static
+    ;
 
     Carousel._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -2816,7 +2822,7 @@ module.exports = {
           }
 
           data[action]();
-        } else if (_config.interval) {
+        } else if (_config.interval && _config.ride) {
           data.pause();
           data.cycle();
         }
@@ -2905,7 +2911,7 @@ module.exports = {
    */
 
   var NAME$3 = 'collapse';
-  var VERSION$3 = '4.2.1';
+  var VERSION$3 = '4.3.1';
   var DATA_KEY$3 = 'bs.collapse';
   var EVENT_KEY$3 = "." + DATA_KEY$3;
   var DATA_API_KEY$3 = '.data-api';
@@ -3127,8 +3133,8 @@ module.exports = {
       this._element = null;
       this._triggerArray = null;
       this._isTransitioning = null;
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getConfig = function _getConfig(config) {
       config = _objectSpread({}, Default$1, config);
@@ -3172,8 +3178,8 @@ module.exports = {
       if (triggerArray.length) {
         $(triggerArray).toggleClass(ClassName$3.COLLAPSED, !isOpen).attr('aria-expanded', isOpen);
       }
-    }; // Static
-
+    } // Static
+    ;
 
     Collapse._getTargetFromElement = function _getTargetFromElement(element) {
       var selector = Util.getSelectorFromElement(element);
@@ -3265,7 +3271,7 @@ module.exports = {
    */
 
   var NAME$4 = 'dropdown';
-  var VERSION$4 = '4.2.1';
+  var VERSION$4 = '4.3.1';
   var DATA_KEY$4 = 'bs.dropdown';
   var EVENT_KEY$4 = "." + DATA_KEY$4;
   var DATA_API_KEY$4 = '.data-api';
@@ -3494,8 +3500,8 @@ module.exports = {
       if (this._popper !== null) {
         this._popper.scheduleUpdate();
       }
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._addEventListeners = function _addEventListeners() {
       var _this = this;
@@ -3551,24 +3557,28 @@ module.exports = {
       return $(this._element).closest('.navbar').length > 0;
     };
 
-    _proto._getPopperConfig = function _getPopperConfig() {
+    _proto._getOffset = function _getOffset() {
       var _this2 = this;
 
-      var offsetConf = {};
+      var offset = {};
 
       if (typeof this._config.offset === 'function') {
-        offsetConf.fn = function (data) {
-          data.offsets = _objectSpread({}, data.offsets, _this2._config.offset(data.offsets) || {});
+        offset.fn = function (data) {
+          data.offsets = _objectSpread({}, data.offsets, _this2._config.offset(data.offsets, _this2._element) || {});
           return data;
         };
       } else {
-        offsetConf.offset = this._config.offset;
+        offset.offset = this._config.offset;
       }
 
+      return offset;
+    };
+
+    _proto._getPopperConfig = function _getPopperConfig() {
       var popperConfig = {
         placement: this._getPlacement(),
         modifiers: {
-          offset: offsetConf,
+          offset: this._getOffset(),
           flip: {
             enabled: this._config.flip
           },
@@ -3586,8 +3596,8 @@ module.exports = {
       }
 
       return popperConfig;
-    }; // Static
-
+    } // Static
+    ;
 
     Dropdown._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -3671,8 +3681,8 @@ module.exports = {
       }
 
       return parent || element.parentNode;
-    }; // eslint-disable-next-line complexity
-
+    } // eslint-disable-next-line complexity
+    ;
 
     Dropdown._dataApiKeydownHandler = function _dataApiKeydownHandler(event) {
       // If not input/textarea:
@@ -3787,7 +3797,7 @@ module.exports = {
    */
 
   var NAME$5 = 'modal';
-  var VERSION$5 = '4.2.1';
+  var VERSION$5 = '4.3.1';
   var DATA_KEY$5 = 'bs.modal';
   var EVENT_KEY$5 = "." + DATA_KEY$5;
   var DATA_API_KEY$5 = '.data-api';
@@ -3820,6 +3830,7 @@ module.exports = {
     CLICK_DATA_API: "click" + EVENT_KEY$5 + DATA_API_KEY$5
   };
   var ClassName$5 = {
+    SCROLLABLE: 'modal-dialog-scrollable',
     SCROLLBAR_MEASURER: 'modal-scrollbar-measure',
     BACKDROP: 'modal-backdrop',
     OPEN: 'modal-open',
@@ -3828,6 +3839,7 @@ module.exports = {
   };
   var Selector$5 = {
     DIALOG: '.modal-dialog',
+    MODAL_BODY: '.modal-body',
     DATA_TOGGLE: '[data-toggle="modal"]',
     DATA_DISMISS: '[data-dismiss="modal"]',
     FIXED_CONTENT: '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top',
@@ -3980,8 +3992,8 @@ module.exports = {
 
     _proto.handleUpdate = function handleUpdate() {
       this._adjustDialog();
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getConfig = function _getConfig(config) {
       config = _objectSpread({}, Default$3, config);
@@ -4005,7 +4017,11 @@ module.exports = {
 
       this._element.setAttribute('aria-modal', true);
 
-      this._element.scrollTop = 0;
+      if ($(this._dialog).hasClass(ClassName$5.SCROLLABLE)) {
+        this._dialog.querySelector(Selector$5.MODAL_BODY).scrollTop = 0;
+      } else {
+        this._element.scrollTop = 0;
+      }
 
       if (transition) {
         Util.reflow(this._element);
@@ -4175,11 +4191,11 @@ module.exports = {
       } else if (callback) {
         callback();
       }
-    }; // ----------------------------------------------------------------------
+    } // ----------------------------------------------------------------------
     // the following methods are used to handle overflowing modals
     // todo (fat): these should probably be refactored out of modal.js
     // ----------------------------------------------------------------------
-
+    ;
 
     _proto._adjustDialog = function _adjustDialog() {
       var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
@@ -4264,8 +4280,8 @@ module.exports = {
       var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
       document.body.removeChild(scrollDiv);
       return scrollbarWidth;
-    }; // Static
-
+    } // Static
+    ;
 
     Modal._jQueryInterface = function _jQueryInterface(config, relatedTarget) {
       return this.each(function () {
@@ -4357,18 +4373,140 @@ module.exports = {
   };
 
   /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v4.3.1): tools/sanitizer.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+  var uriAttrs = ['background', 'cite', 'href', 'itemtype', 'longdesc', 'poster', 'src', 'xlink:href'];
+  var ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i;
+  var DefaultWhitelist = {
+    // Global attributes allowed on any supplied element below.
+    '*': ['class', 'dir', 'id', 'lang', 'role', ARIA_ATTRIBUTE_PATTERN],
+    a: ['target', 'href', 'title', 'rel'],
+    area: [],
+    b: [],
+    br: [],
+    col: [],
+    code: [],
+    div: [],
+    em: [],
+    hr: [],
+    h1: [],
+    h2: [],
+    h3: [],
+    h4: [],
+    h5: [],
+    h6: [],
+    i: [],
+    img: ['src', 'alt', 'title', 'width', 'height'],
+    li: [],
+    ol: [],
+    p: [],
+    pre: [],
+    s: [],
+    small: [],
+    span: [],
+    sub: [],
+    sup: [],
+    strong: [],
+    u: [],
+    ul: []
+    /**
+     * A pattern that recognizes a commonly useful subset of URLs that are safe.
+     *
+     * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
+     */
+
+  };
+  var SAFE_URL_PATTERN = /^(?:(?:https?|mailto|ftp|tel|file):|[^&:/?#]*(?:[/?#]|$))/gi;
+  /**
+   * A pattern that matches safe data URLs. Only matches image, video and audio types.
+   *
+   * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
+   */
+
+  var DATA_URL_PATTERN = /^data:(?:image\/(?:bmp|gif|jpeg|jpg|png|tiff|webp)|video\/(?:mpeg|mp4|ogg|webm)|audio\/(?:mp3|oga|ogg|opus));base64,[a-z0-9+/]+=*$/i;
+
+  function allowedAttribute(attr, allowedAttributeList) {
+    var attrName = attr.nodeName.toLowerCase();
+
+    if (allowedAttributeList.indexOf(attrName) !== -1) {
+      if (uriAttrs.indexOf(attrName) !== -1) {
+        return Boolean(attr.nodeValue.match(SAFE_URL_PATTERN) || attr.nodeValue.match(DATA_URL_PATTERN));
+      }
+
+      return true;
+    }
+
+    var regExp = allowedAttributeList.filter(function (attrRegex) {
+      return attrRegex instanceof RegExp;
+    }); // Check if a regular expression validates the attribute.
+
+    for (var i = 0, l = regExp.length; i < l; i++) {
+      if (attrName.match(regExp[i])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function sanitizeHtml(unsafeHtml, whiteList, sanitizeFn) {
+    if (unsafeHtml.length === 0) {
+      return unsafeHtml;
+    }
+
+    if (sanitizeFn && typeof sanitizeFn === 'function') {
+      return sanitizeFn(unsafeHtml);
+    }
+
+    var domParser = new window.DOMParser();
+    var createdDocument = domParser.parseFromString(unsafeHtml, 'text/html');
+    var whitelistKeys = Object.keys(whiteList);
+    var elements = [].slice.call(createdDocument.body.querySelectorAll('*'));
+
+    var _loop = function _loop(i, len) {
+      var el = elements[i];
+      var elName = el.nodeName.toLowerCase();
+
+      if (whitelistKeys.indexOf(el.nodeName.toLowerCase()) === -1) {
+        el.parentNode.removeChild(el);
+        return "continue";
+      }
+
+      var attributeList = [].slice.call(el.attributes);
+      var whitelistedAttributes = [].concat(whiteList['*'] || [], whiteList[elName] || []);
+      attributeList.forEach(function (attr) {
+        if (!allowedAttribute(attr, whitelistedAttributes)) {
+          el.removeAttribute(attr.nodeName);
+        }
+      });
+    };
+
+    for (var i = 0, len = elements.length; i < len; i++) {
+      var _ret = _loop(i, len);
+
+      if (_ret === "continue") continue;
+    }
+
+    return createdDocument.body.innerHTML;
+  }
+
+  /**
    * ------------------------------------------------------------------------
    * Constants
    * ------------------------------------------------------------------------
    */
 
   var NAME$6 = 'tooltip';
-  var VERSION$6 = '4.2.1';
+  var VERSION$6 = '4.3.1';
   var DATA_KEY$6 = 'bs.tooltip';
   var EVENT_KEY$6 = "." + DATA_KEY$6;
   var JQUERY_NO_CONFLICT$6 = $.fn[NAME$6];
   var CLASS_PREFIX = 'bs-tooltip';
   var BSCLS_PREFIX_REGEX = new RegExp("(^|\\s)" + CLASS_PREFIX + "\\S+", 'g');
+  var DISALLOWED_ATTRIBUTES = ['sanitize', 'whiteList', 'sanitizeFn'];
   var DefaultType$4 = {
     animation: 'boolean',
     template: 'string',
@@ -4378,10 +4516,13 @@ module.exports = {
     html: 'boolean',
     selector: '(string|boolean)',
     placement: '(string|function)',
-    offset: '(number|string)',
+    offset: '(number|string|function)',
     container: '(string|element|boolean)',
     fallbackPlacement: '(string|array)',
-    boundary: '(string|element)'
+    boundary: '(string|element)',
+    sanitize: 'boolean',
+    sanitizeFn: '(null|function)',
+    whiteList: 'object'
   };
   var AttachmentMap$1 = {
     AUTO: 'auto',
@@ -4402,7 +4543,10 @@ module.exports = {
     offset: 0,
     container: false,
     fallbackPlacement: 'flip',
-    boundary: 'scrollParent'
+    boundary: 'scrollParent',
+    sanitize: true,
+    sanitizeFn: null,
+    whiteList: DefaultWhitelist
   };
   var HoverState = {
     SHOW: 'show',
@@ -4587,9 +4731,7 @@ module.exports = {
         this._popper = new Popper(this.element, tip, {
           placement: attachment,
           modifiers: {
-            offset: {
-              offset: this.config.offset
-            },
+            offset: this._getOffset(),
             flip: {
               behavior: this.config.fallbackPlacement
             },
@@ -4698,8 +4840,8 @@ module.exports = {
       if (this._popper !== null) {
         this._popper.scheduleUpdate();
       }
-    }; // Protected
-
+    } // Protected
+    ;
 
     _proto.isWithContent = function isWithContent() {
       return Boolean(this.getTitle());
@@ -4721,19 +4863,27 @@ module.exports = {
     };
 
     _proto.setElementContent = function setElementContent($element, content) {
-      var html = this.config.html;
-
       if (typeof content === 'object' && (content.nodeType || content.jquery)) {
         // Content is a DOM node or a jQuery
-        if (html) {
+        if (this.config.html) {
           if (!$(content).parent().is($element)) {
             $element.empty().append(content);
           }
         } else {
           $element.text($(content).text());
         }
+
+        return;
+      }
+
+      if (this.config.html) {
+        if (this.config.sanitize) {
+          content = sanitizeHtml(content, this.config.whiteList, this.config.sanitizeFn);
+        }
+
+        $element.html(content);
       } else {
-        $element[html ? 'html' : 'text'](content);
+        $element.text(content);
       }
     };
 
@@ -4745,8 +4895,25 @@ module.exports = {
       }
 
       return title;
-    }; // Private
+    } // Private
+    ;
 
+    _proto._getOffset = function _getOffset() {
+      var _this3 = this;
+
+      var offset = {};
+
+      if (typeof this.config.offset === 'function') {
+        offset.fn = function (data) {
+          data.offsets = _objectSpread({}, data.offsets, _this3.config.offset(data.offsets, _this3.element) || {});
+          return data;
+        };
+      } else {
+        offset.offset = this.config.offset;
+      }
+
+      return offset;
+    };
 
     _proto._getContainer = function _getContainer() {
       if (this.config.container === false) {
@@ -4765,27 +4932,27 @@ module.exports = {
     };
 
     _proto._setListeners = function _setListeners() {
-      var _this3 = this;
+      var _this4 = this;
 
       var triggers = this.config.trigger.split(' ');
       triggers.forEach(function (trigger) {
         if (trigger === 'click') {
-          $(_this3.element).on(_this3.constructor.Event.CLICK, _this3.config.selector, function (event) {
-            return _this3.toggle(event);
+          $(_this4.element).on(_this4.constructor.Event.CLICK, _this4.config.selector, function (event) {
+            return _this4.toggle(event);
           });
         } else if (trigger !== Trigger.MANUAL) {
-          var eventIn = trigger === Trigger.HOVER ? _this3.constructor.Event.MOUSEENTER : _this3.constructor.Event.FOCUSIN;
-          var eventOut = trigger === Trigger.HOVER ? _this3.constructor.Event.MOUSELEAVE : _this3.constructor.Event.FOCUSOUT;
-          $(_this3.element).on(eventIn, _this3.config.selector, function (event) {
-            return _this3._enter(event);
-          }).on(eventOut, _this3.config.selector, function (event) {
-            return _this3._leave(event);
+          var eventIn = trigger === Trigger.HOVER ? _this4.constructor.Event.MOUSEENTER : _this4.constructor.Event.FOCUSIN;
+          var eventOut = trigger === Trigger.HOVER ? _this4.constructor.Event.MOUSELEAVE : _this4.constructor.Event.FOCUSOUT;
+          $(_this4.element).on(eventIn, _this4.config.selector, function (event) {
+            return _this4._enter(event);
+          }).on(eventOut, _this4.config.selector, function (event) {
+            return _this4._leave(event);
           });
         }
       });
       $(this.element).closest('.modal').on('hide.bs.modal', function () {
-        if (_this3.element) {
-          _this3.hide();
+        if (_this4.element) {
+          _this4.hide();
         }
       });
 
@@ -4884,7 +5051,13 @@ module.exports = {
     };
 
     _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread({}, this.constructor.Default, $(this.element).data(), typeof config === 'object' && config ? config : {});
+      var dataAttributes = $(this.element).data();
+      Object.keys(dataAttributes).forEach(function (dataAttr) {
+        if (DISALLOWED_ATTRIBUTES.indexOf(dataAttr) !== -1) {
+          delete dataAttributes[dataAttr];
+        }
+      });
+      config = _objectSpread({}, this.constructor.Default, dataAttributes, typeof config === 'object' && config ? config : {});
 
       if (typeof config.delay === 'number') {
         config.delay = {
@@ -4902,6 +5075,11 @@ module.exports = {
       }
 
       Util.typeCheckConfig(NAME$6, config, this.constructor.DefaultType);
+
+      if (config.sanitize) {
+        config.template = sanitizeHtml(config.template, config.whiteList, config.sanitizeFn);
+      }
+
       return config;
     };
 
@@ -4950,8 +5128,8 @@ module.exports = {
       this.hide();
       this.show();
       this.config.animation = initConfigAnimation;
-    }; // Static
-
+    } // Static
+    ;
 
     Tooltip._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -5039,7 +5217,7 @@ module.exports = {
    */
 
   var NAME$7 = 'popover';
-  var VERSION$7 = '4.2.1';
+  var VERSION$7 = '4.3.1';
   var DATA_KEY$7 = 'bs.popover';
   var EVENT_KEY$7 = "." + DATA_KEY$7;
   var JQUERY_NO_CONFLICT$7 = $.fn[NAME$7];
@@ -5122,8 +5300,8 @@ module.exports = {
 
       this.setElementContent($tip.find(Selector$7.CONTENT), content);
       $tip.removeClass(ClassName$7.FADE + " " + ClassName$7.SHOW);
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getContent = function _getContent() {
       return this.element.getAttribute('data-content') || this.config.content;
@@ -5136,8 +5314,8 @@ module.exports = {
       if (tabClass !== null && tabClass.length > 0) {
         $tip.removeClass(tabClass.join(''));
       }
-    }; // Static
-
+    } // Static
+    ;
 
     Popover._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -5226,7 +5404,7 @@ module.exports = {
    */
 
   var NAME$8 = 'scrollspy';
-  var VERSION$8 = '4.2.1';
+  var VERSION$8 = '4.3.1';
   var DATA_KEY$8 = 'bs.scrollspy';
   var EVENT_KEY$8 = "." + DATA_KEY$8;
   var DATA_API_KEY$6 = '.data-api';
@@ -5349,8 +5527,8 @@ module.exports = {
       this._targets = null;
       this._activeTarget = null;
       this._scrollHeight = null;
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getConfig = function _getConfig(config) {
       config = _objectSpread({}, Default$6, typeof config === 'object' && config ? config : {});
@@ -5457,8 +5635,8 @@ module.exports = {
       }).forEach(function (node) {
         return node.classList.remove(ClassName$8.ACTIVE);
       });
-    }; // Static
-
+    } // Static
+    ;
 
     ScrollSpy._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -5533,7 +5711,7 @@ module.exports = {
    */
 
   var NAME$9 = 'tab';
-  var VERSION$9 = '4.2.1';
+  var VERSION$9 = '4.3.1';
   var DATA_KEY$9 = 'bs.tab';
   var EVENT_KEY$9 = "." + DATA_KEY$9;
   var DATA_API_KEY$7 = '.data-api';
@@ -5641,8 +5819,8 @@ module.exports = {
     _proto.dispose = function dispose() {
       $.removeData(this._element, DATA_KEY$9);
       this._element = null;
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._activate = function _activate(element, container, callback) {
       var _this2 = this;
@@ -5684,7 +5862,10 @@ module.exports = {
       }
 
       Util.reflow(element);
-      $(element).addClass(ClassName$9.SHOW);
+
+      if (element.classList.contains(ClassName$9.FADE)) {
+        element.classList.add(ClassName$9.SHOW);
+      }
 
       if (element.parentNode && $(element.parentNode).hasClass(ClassName$9.DROPDOWN_MENU)) {
         var dropdownElement = $(element).closest(Selector$9.DROPDOWN)[0];
@@ -5700,8 +5881,8 @@ module.exports = {
       if (callback) {
         callback();
       }
-    }; // Static
-
+    } // Static
+    ;
 
     Tab._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -5765,7 +5946,7 @@ module.exports = {
    */
 
   var NAME$a = 'toast';
-  var VERSION$a = '4.2.1';
+  var VERSION$a = '4.3.1';
   var DATA_KEY$a = 'bs.toast';
   var EVENT_KEY$a = "." + DATA_KEY$a;
   var JQUERY_NO_CONFLICT$a = $.fn[NAME$a];
@@ -5880,8 +6061,8 @@ module.exports = {
       $.removeData(this._element, DATA_KEY$a);
       this._element = null;
       this._config = null;
-    }; // Private
-
+    } // Private
+    ;
 
     _proto._getConfig = function _getConfig(config) {
       config = _objectSpread({}, Default$7, $(this._element).data(), typeof config === 'object' && config ? config : {});
@@ -5914,8 +6095,8 @@ module.exports = {
       } else {
         complete();
       }
-    }; // Static
-
+    } // Static
+    ;
 
     Toast._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
@@ -5949,6 +6130,11 @@ module.exports = {
       get: function get() {
         return DefaultType$7;
       }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$7;
+      }
     }]);
 
     return Toast;
@@ -5970,7 +6156,7 @@ module.exports = {
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v4.2.1): index.js
+   * Bootstrap (v4.3.1): index.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -6007,692 +6193,8 @@ module.exports = {
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
 //# sourceMappingURL=bootstrap.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/ekko-lightbox/ekko-lightbox.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/ekko-lightbox/ekko-lightbox.js ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-const Lightbox = (($) => {
-
-	const NAME = 'ekkoLightbox'
-	const JQUERY_NO_CONFLICT = $.fn[NAME]
-
-	const Default = {
-		title: '',
-		footer: '',
-		maxWidth: 9999,
-		maxHeight: 9999,
-		showArrows: true, //display the left / right arrows or not
-		wrapping: true, //if true, gallery loops infinitely
-		type: null, //force the lightbox into image / youtube mode. if null, or not image|youtube|vimeo; detect it
-		alwaysShowClose: false, //always show the close button, even if there is no title
-		loadingMessage: '<div class="ekko-lightbox-loader"><div><div></div><div></div></div></div>', // http://tobiasahlin.com/spinkit/
-		leftArrow: '<span>&#10094;</span>',
-		rightArrow: '<span>&#10095;</span>',
-		strings: {
-			close: 'Close',
-			fail: 'Failed to load image:',
-			type: 'Could not detect remote target type. Force the type using data-type',
-		},
-		doc: document, // if in an iframe can specify top.document
-		onShow() {},
-		onShown() {},
-		onHide() {},
-		onHidden() {},
-		onNavigate() {},
-		onContentLoaded() {}
-	}
-
-	class Lightbox {
-
-		/**
-
-	    Class properties:
-
-		 _$element: null -> the <a> element currently being displayed
-		 _$modal: The bootstrap modal generated
-		    _$modalDialog: The .modal-dialog
-		    _$modalContent: The .modal-content
-		    _$modalBody: The .modal-body
-		    _$modalHeader: The .modal-header
-		    _$modalFooter: The .modal-footer
-		 _$lightboxContainerOne: Container of the first lightbox element
-		 _$lightboxContainerTwo: Container of the second lightbox element
-		 _$lightboxBody: First element in the container
-		 _$modalArrows: The overlayed arrows container
-
-		 _$galleryItems: Other <a>'s available for this gallery
-		 _galleryName: Name of the current data('gallery') showing
-		 _galleryIndex: The current index of the _$galleryItems being shown
-
-		 _config: {} the options for the modal
-		 _modalId: unique id for the current lightbox
-		 _padding / _border: CSS properties for the modal container; these are used to calculate the available space for the content
-
-		 */
-
-		static get Default() {
-			return Default
-		}
-
-		constructor($element, config) {
-			this._config = $.extend({}, Default, config)
-			this._$modalArrows = null
-			this._galleryIndex = 0
-			this._galleryName = null
-			this._padding = null
-			this._border = null
-			this._titleIsShown = false
-			this._footerIsShown = false
-			this._wantedWidth = 0
-			this._wantedHeight = 0
-			this._touchstartX = 0
-			this._touchendX = 0
-
-			this._modalId = `ekkoLightbox-${Math.floor((Math.random() * 1000) + 1)}`;
-			this._$element = $element instanceof jQuery ? $element : $($element)
-
-			this._isBootstrap3 = $.fn.modal.Constructor.VERSION[0] == 3;
-
-			let h4 = `<h4 class="modal-title">${this._config.title || "&nbsp;"}</h4>`;
-			let btn = `<button type="button" class="close" data-dismiss="modal" aria-label="${this._config.strings.close}"><span aria-hidden="true">&times;</span></button>`;
-
-			let header = `<div class="modal-header${this._config.title || this._config.alwaysShowClose ? '' : ' hide'}">`+(this._isBootstrap3 ? btn+h4 : h4+btn)+`</div>`;
-			let footer = `<div class="modal-footer${this._config.footer ? '' : ' hide'}">${this._config.footer || "&nbsp;"}</div>`;
-			let body = '<div class="modal-body"><div class="ekko-lightbox-container"><div class="ekko-lightbox-item fade in show"></div><div class="ekko-lightbox-item fade"></div></div></div>'
-			let dialog = `<div class="modal-dialog" role="document"><div class="modal-content">${header}${body}${footer}</div></div>`
-			$(this._config.doc.body).append(`<div id="${this._modalId}" class="ekko-lightbox modal fade" tabindex="-1" tabindex="-1" role="dialog" aria-hidden="true">${dialog}</div>`)
-
-			this._$modal = $(`#${this._modalId}`, this._config.doc)
-			this._$modalDialog = this._$modal.find('.modal-dialog').first()
-			this._$modalContent = this._$modal.find('.modal-content').first()
-			this._$modalBody = this._$modal.find('.modal-body').first()
-			this._$modalHeader = this._$modal.find('.modal-header').first()
-			this._$modalFooter = this._$modal.find('.modal-footer').first()
-
-			this._$lightboxContainer = this._$modalBody.find('.ekko-lightbox-container').first()
-			this._$lightboxBodyOne = this._$lightboxContainer.find('> div:first-child').first()
-			this._$lightboxBodyTwo = this._$lightboxContainer.find('> div:last-child').first()
-
-			this._border = this._calculateBorders()
-			this._padding = this._calculatePadding()
-
-			this._galleryName = this._$element.data('gallery')
-			if (this._galleryName) {
-				this._$galleryItems = $(document.body).find(`*[data-gallery="${this._galleryName}"]`)
-				this._galleryIndex = this._$galleryItems.index(this._$element)
-				$(document).on('keydown.ekkoLightbox', this._navigationalBinder.bind(this))
-
-				// add the directional arrows to the modal
-				if (this._config.showArrows && this._$galleryItems.length > 1) {
-					this._$lightboxContainer.append(`<div class="ekko-lightbox-nav-overlay"><a href="#">${this._config.leftArrow}</a><a href="#">${this._config.rightArrow}</a></div>`)
-					this._$modalArrows = this._$lightboxContainer.find('div.ekko-lightbox-nav-overlay').first()
-					this._$lightboxContainer.on('click', 'a:first-child', event => {
-						event.preventDefault()
-						return this.navigateLeft()
-					})
-					this._$lightboxContainer.on('click', 'a:last-child', event => {
-						event.preventDefault()
-						return this.navigateRight()
-					})
-					this.updateNavigation()
-				}
-			}
-
-			this._$modal
-			.on('show.bs.modal', this._config.onShow.bind(this))
-			.on('shown.bs.modal', () => {
-				this._toggleLoading(true)
-				this._handle()
-				return this._config.onShown.call(this)
-			})
-			.on('hide.bs.modal', this._config.onHide.bind(this))
-			.on('hidden.bs.modal', () => {
-				if (this._galleryName) {
-					$(document).off('keydown.ekkoLightbox')
-					$(window).off('resize.ekkoLightbox')
-				}
-				this._$modal.remove()
-				return this._config.onHidden.call(this)
-			})
-			.modal(this._config)
-
-			$(window).on('resize.ekkoLightbox', () => {
-				this._resize(this._wantedWidth, this._wantedHeight)
-			})
-			this._$lightboxContainer
-			.on('touchstart', () => {
-				this._touchstartX = event.changedTouches[0].screenX;
-
-			})
-			.on('touchend', () => {
-				this._touchendX = event.changedTouches[0].screenX;
-			    this._swipeGesure();
-			})
-		}
-
-		element() {
-			return this._$element;
-		}
-
-		modal() {
-			return this._$modal;
-		}
-
-		navigateTo(index) {
-
-			if (index < 0 || index > this._$galleryItems.length-1)
-				return this
-
-			this._galleryIndex = index
-
-			this.updateNavigation()
-
-			this._$element = $(this._$galleryItems.get(this._galleryIndex))
-			this._handle();
-		}
-
-		navigateLeft() {
-
-			if(!this._$galleryItems)
-				return;
-
-			if (this._$galleryItems.length === 1)
-				return
-
-			if (this._galleryIndex === 0) {
-				if (this._config.wrapping)
-					this._galleryIndex = this._$galleryItems.length - 1
-				else
-					return
-			}
-			else //circular
-				this._galleryIndex--
-
-			this._config.onNavigate.call(this, 'left', this._galleryIndex)
-			return this.navigateTo(this._galleryIndex)
-		}
-
-		navigateRight() {
-
-			if(!this._$galleryItems)
-				return;
-
-			if (this._$galleryItems.length === 1)
-				return
-
-			if (this._galleryIndex === this._$galleryItems.length - 1) {
-				if (this._config.wrapping)
-					this._galleryIndex = 0
-				else
-					return
-			}
-			else //circular
-				this._galleryIndex++
-
-			this._config.onNavigate.call(this, 'right', this._galleryIndex)
-			return this.navigateTo(this._galleryIndex)
-		}
-
-		updateNavigation() {
-			if (!this._config.wrapping) {
-				let $nav = this._$lightboxContainer.find('div.ekko-lightbox-nav-overlay')
-				if (this._galleryIndex === 0)
-					$nav.find('a:first-child').addClass('disabled')
-				else
-					$nav.find('a:first-child').removeClass('disabled')
-
-				if (this._galleryIndex === this._$galleryItems.length - 1)
-					$nav.find('a:last-child').addClass('disabled')
-				else
-					$nav.find('a:last-child').removeClass('disabled')
-			}
-		}
-
-		close() {
-			return this._$modal.modal('hide');
-		}
-
-		// helper private methods
-		_navigationalBinder(event) {
-			event = event || window.event;
-			if (event.keyCode === 39)
-				return this.navigateRight()
-			if (event.keyCode === 37)
-				return this.navigateLeft()
-		}
-
-		// type detection private methods
-		_detectRemoteType(src, type) {
-
-			type = type || false;
-
-			if(!type && this._isImage(src))
-				type = 'image';
-			if(!type && this._getYoutubeId(src))
-				type = 'youtube';
-			if(!type && this._getVimeoId(src))
-				type = 'vimeo';
-			if(!type && this._getInstagramId(src))
-				type = 'instagram';
-
-			if(!type || ['image', 'youtube', 'vimeo', 'instagram', 'video', 'url'].indexOf(type) < 0)
-				type = 'url';
-
-			return type;
-		}
-
-		_isImage(string) {
-			return string && string.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|png|bmp|webp|svg)((\?|#).*)?$)/i)
-		}
-
-		_containerToUse() {
-			// if currently showing an image, fade it out and remove
-			let $toUse = this._$lightboxBodyTwo
-			let $current = this._$lightboxBodyOne
-
-			if(this._$lightboxBodyTwo.hasClass('in')) {
-				$toUse = this._$lightboxBodyOne
-				$current = this._$lightboxBodyTwo
-			}
-
-			$current.removeClass('in show')
-			setTimeout(() => {
-				if(!this._$lightboxBodyTwo.hasClass('in'))
-					this._$lightboxBodyTwo.empty()
-				if(!this._$lightboxBodyOne.hasClass('in'))
-					this._$lightboxBodyOne.empty()
-			}, 500)
-
-			$toUse.addClass('in show')
-			return $toUse
-		}
-
-		_handle() {
-
-			let $toUse = this._containerToUse()
-			this._updateTitleAndFooter()
-
-			let currentRemote = this._$element.attr('data-remote') || this._$element.attr('href')
-			let currentType = this._detectRemoteType(currentRemote, this._$element.attr('data-type') || false)
-
-			if(['image', 'youtube', 'vimeo', 'instagram', 'video', 'url'].indexOf(currentType) < 0)
-				return this._error(this._config.strings.type)
-
-			switch(currentType) {
-				case 'image':
-					this._preloadImage(currentRemote, $toUse)
-					this._preloadImageByIndex(this._galleryIndex, 3)
-					break;
-				case 'youtube':
-					this._showYoutubeVideo(currentRemote, $toUse);
-					break;
-				case 'vimeo':
-					this._showVimeoVideo(this._getVimeoId(currentRemote), $toUse);
-					break;
-				case 'instagram':
-					this._showInstagramVideo(this._getInstagramId(currentRemote), $toUse);
-					break;
-				case 'video':
-					this._showHtml5Video(currentRemote, $toUse);
-					break;
-				default: // url
-					this._loadRemoteContent(currentRemote, $toUse);
-					break;
-			}
-
-			return this;
-		}
-
-		_getYoutubeId(string) {
-			if(!string)
-				return false;
-			let matches = string.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/)
-			return (matches && matches[2].length === 11) ? matches[2] : false
-		}
-
-		_getVimeoId(string) {
-			return string && string.indexOf('vimeo') > 0 ? string : false
-		}
-
-		_getInstagramId(string) {
-			return string && string.indexOf('instagram') > 0 ? string : false
-		}
-
-		// layout private methods
-		_toggleLoading(show) {
-			show = show || false
-			if(show) {
-				this._$modalDialog.css('display', 'none')
-				this._$modal.removeClass('in show')
-				$('.modal-backdrop').append(this._config.loadingMessage)
-			}
-			else {
-				this._$modalDialog.css('display', 'block')
-				this._$modal.addClass('in show')
-				$('.modal-backdrop').find('.ekko-lightbox-loader').remove()
-			}
-			return this;
-		}
-
-		_calculateBorders() {
-			return {
-				top: this._totalCssByAttribute('border-top-width'),
-				right: this._totalCssByAttribute('border-right-width'),
-				bottom: this._totalCssByAttribute('border-bottom-width'),
-				left: this._totalCssByAttribute('border-left-width'),
-			}
-		}
-
-		_calculatePadding() {
-			return {
-				top: this._totalCssByAttribute('padding-top'),
-				right: this._totalCssByAttribute('padding-right'),
-				bottom: this._totalCssByAttribute('padding-bottom'),
-				left: this._totalCssByAttribute('padding-left'),
-			}
-		}
-
-		_totalCssByAttribute(attribute) {
-			return parseInt(this._$modalDialog.css(attribute), 10) +
-				parseInt(this._$modalContent.css(attribute), 10) +
-				parseInt(this._$modalBody.css(attribute), 10)
-		}
-
-		_updateTitleAndFooter() {
-			let title = this._$element.data('title') || ""
-			let caption = this._$element.data('footer') || ""
-
-			this._titleIsShown = false
-			if (title || this._config.alwaysShowClose) {
-				this._titleIsShown = true
-				this._$modalHeader.css('display', '').find('.modal-title').html(title || "&nbsp;")
-			}
-			else
-				this._$modalHeader.css('display', 'none')
-
-			this._footerIsShown = false
-			if (caption) {
-				this._footerIsShown = true
-				this._$modalFooter.css('display', '').html(caption)
-			}
-			else
-				this._$modalFooter.css('display', 'none')
-
-			return this;
-		}
-
-		_showYoutubeVideo(remote, $containerForElement) {
-			let id = this._getYoutubeId(remote)
-			let query = remote.indexOf('&') > 0 ? remote.substr(remote.indexOf('&')) : ''
-			let width = this._$element.data('width') || 560
-			let height = this._$element.data('height') ||  width / ( 560/315 )
-			return this._showVideoIframe(
-				`//www.youtube.com/embed/${id}?badge=0&autoplay=1&html5=1${query}`,
-				width,
-				height,
-				$containerForElement
-			);
-		}
-
-		_showVimeoVideo(id, $containerForElement) {
-			let width = this._$element.data('width') || 500
-			let height = this._$element.data('height') ||  width / ( 560/315 )
-			return this._showVideoIframe(id + '?autoplay=1', width, height, $containerForElement)
-		}
-
-		_showInstagramVideo(id, $containerForElement) {
-			// instagram load their content into iframe's so this can be put straight into the element
-			let width = this._$element.data('width') || 612
-			let height = width + 80;
-			id = id.substr(-1) !== '/' ? id + '/' : id; // ensure id has trailing slash
-			$containerForElement.html(`<iframe width="${width}" height="${height}" src="${id}embed/" frameborder="0" allowfullscreen></iframe>`);
-			this._resize(width, height);
-			this._config.onContentLoaded.call(this);
-			if (this._$modalArrows) //hide the arrows when showing video
-				this._$modalArrows.css('display', 'none');
-			this._toggleLoading(false);
-			return this;
-		}
-
-		_showVideoIframe(url, width, height, $containerForElement) { // should be used for videos only. for remote content use loadRemoteContent (data-type=url)
-			height = height || width; // default to square
-			$containerForElement.html(`<div class="embed-responsive embed-responsive-16by9"><iframe width="${width}" height="${height}" src="${url}" frameborder="0" allowfullscreen class="embed-responsive-item"></iframe></div>`);
-			this._resize(width, height);
-			this._config.onContentLoaded.call(this);
-			if (this._$modalArrows)
-				this._$modalArrows.css('display', 'none'); //hide the arrows when showing video
-			this._toggleLoading(false);
-			return this;
-		}
-
-		_showHtml5Video(url, $containerForElement) { // should be used for videos only. for remote content use loadRemoteContent (data-type=url)
-			let width = this._$element.data('width') || 560
-			let height = this._$element.data('height') ||  width / ( 560/315 )
-			$containerForElement.html(`<div class="embed-responsive embed-responsive-16by9"><video width="${width}" height="${height}" src="${url}" preload="auto" autoplay controls class="embed-responsive-item"></video></div>`);
-			this._resize(width, height);
-			this._config.onContentLoaded.call(this);
-			if (this._$modalArrows)
-				this._$modalArrows.css('display', 'none'); //hide the arrows when showing video
-			this._toggleLoading(false);
-			return this;
-		}
-
-		_loadRemoteContent(url, $containerForElement) {
-			let width = this._$element.data('width') || 560;
-			let height = this._$element.data('height') || 560;
-
-			let disableExternalCheck = this._$element.data('disableExternalCheck') || false;
-			this._toggleLoading(false);
-
-			// external urls are loading into an iframe
-			// local ajax can be loaded into the container itself
-			if (!disableExternalCheck && !this._isExternal(url)) {
-				$containerForElement.load(url, $.proxy(() => {
-					return this._$element.trigger('loaded.bs.modal');l
-				}));
-
-			} else {
-				$containerForElement.html(`<iframe src="${url}" frameborder="0" allowfullscreen></iframe>`);
-				this._config.onContentLoaded.call(this);
-			}
-
-			if (this._$modalArrows) //hide the arrows when remote content
-				this._$modalArrows.css('display', 'none')
-
-			this._resize(width, height);
-			return this;
-		}
-
-		_isExternal(url) {
-			let match = url.match(/^([^:\/?#]+:)?(?:\/\/([^\/?#]*))?([^?#]+)?(\?[^#]*)?(#.*)?/);
-			if (typeof match[1] === "string" && match[1].length > 0 && match[1].toLowerCase() !== location.protocol)
-				return true;
-
-			if (typeof match[2] === "string" && match[2].length > 0 && match[2].replace(new RegExp(`:(${{
-					"http:": 80,
-					"https:": 443
-				}[location.protocol]})?$`), "") !== location.host)
-				return true;
-
-			return false;
-		}
-
-		_error( message ) {
-			console.error(message);
-			this._containerToUse().html(message);
-			this._resize(300, 300);
-			return this;
-		}
-
-		_preloadImageByIndex(startIndex, numberOfTimes) {
-
-			if(!this._$galleryItems)
-				return;
-
-			let next = $(this._$galleryItems.get(startIndex), false)
-			if(typeof next == 'undefined')
-				return
-
-			let src = next.attr('data-remote') || next.attr('href')
-			if (next.attr('data-type') === 'image' || this._isImage(src))
-				this._preloadImage(src, false)
-
-			if(numberOfTimes > 0)
-				return this._preloadImageByIndex(startIndex + 1, numberOfTimes-1);
-		}
-
-		_preloadImage( src, $containerForImage) {
-
-			$containerForImage = $containerForImage || false
-
-			let img = new Image();
-			if ($containerForImage) {
-
-				// if loading takes > 200ms show a loader
-				let loadingTimeout = setTimeout(() => {
-					$containerForImage.append(this._config.loadingMessage)
-				}, 200)
-
-				img.onload = () => {
-					if(loadingTimeout)
-						clearTimeout(loadingTimeout)
-					loadingTimeout = null;
-					let image = $('<img />');
-					image.attr('src', img.src);
-					image.addClass('img-fluid');
-
-					// backward compatibility for bootstrap v3
-					image.css('width', '100%');
-
-					$containerForImage.html(image);
-					if (this._$modalArrows)
-						this._$modalArrows.css('display', '') // remove display to default to css property
-
-					this._resize(img.width, img.height);
-					this._toggleLoading(false);
-					return this._config.onContentLoaded.call(this);
-				};
-				img.onerror = () => {
-					this._toggleLoading(false);
-					return this._error(this._config.strings.fail+`  ${src}`);
-				};
-			}
-
-			img.src = src;
-			return img;
-		}
-
-		_swipeGesure() {
-		    if (this._touchendX < this._touchstartX) {
-		        return this.navigateRight();
-		    }
-		    if (this._touchendX > this._touchstartX) {
-		        return this.navigateLeft();
-		    }
-		}
-
-		_resize( width, height ) {
-
-			height = height || width
-			this._wantedWidth = width
-			this._wantedHeight = height
-
-			let imageAspecRatio = width / height;
-
-			// if width > the available space, scale down the expected width and height
-			let widthBorderAndPadding = this._padding.left + this._padding.right + this._border.left + this._border.right
-
-			// force 10px margin if window size > 575px
-			let addMargin = this._config.doc.body.clientWidth > 575 ? 20 : 0
-			let discountMargin = this._config.doc.body.clientWidth > 575 ? 0 : 20
-
-			let maxWidth = Math.min(width + widthBorderAndPadding, this._config.doc.body.clientWidth - addMargin, this._config.maxWidth)
-
-			if((width + widthBorderAndPadding) > maxWidth) {
-				height = (maxWidth - widthBorderAndPadding - discountMargin) / imageAspecRatio;
-				width = maxWidth
-			} else
-				width = (width + widthBorderAndPadding)
-
-			let headerHeight = 0,
-			    footerHeight = 0
-
-			// as the resize is performed the modal is show, the calculate might fail
-			// if so, default to the default sizes
-			if (this._footerIsShown)
-				footerHeight = this._$modalFooter.outerHeight(true) || 55
-
-			if (this._titleIsShown)
-				headerHeight = this._$modalHeader.outerHeight(true) || 67
-
-			let borderPadding = this._padding.top + this._padding.bottom + this._border.bottom + this._border.top
-
-			//calculated each time as resizing the window can cause them to change due to Bootstraps fluid margins
-			let margins = parseFloat(this._$modalDialog.css('margin-top')) + parseFloat(this._$modalDialog.css('margin-bottom'));
-
-			let maxHeight = Math.min(height, $(window).height() - borderPadding - margins - headerHeight - footerHeight, this._config.maxHeight - borderPadding - headerHeight - footerHeight);
-
-			if(height > maxHeight) {
-				// if height > the available height, scale down the width
-				width = Math.ceil(maxHeight * imageAspecRatio) + widthBorderAndPadding;
-			}
-
-			this._$lightboxContainer.css('height', maxHeight)
-			this._$modalDialog.css('flex', 1).css('maxWidth', width);
-
-			let modal = this._$modal.data('bs.modal');
-			if (modal) {
-				// v4 method is mistakenly protected
-				try {
-					modal._handleUpdate();
-				} catch(Exception) {
-					modal.handleUpdate();
-				}
-			}
-			return this;
-		}
-
-		static _jQueryInterface(config) {
-			config = config || {}
-			return this.each(() => {
-				let $this = $(this)
-				let _config = $.extend(
-					{},
-					Lightbox.Default,
-					$this.data(),
-					typeof config === 'object' && config
-				)
-
-				new Lightbox(this, _config)
-			})
-		}
-	}
-
-
-
-	$.fn[NAME]             = Lightbox._jQueryInterface
-	$.fn[NAME].Constructor = Lightbox
-	$.fn[NAME].noConflict  = () => {
-		$.fn[NAME] = JQUERY_NO_CONFLICT
-		return Lightbox._jQueryInterface
-	}
-
-	return Lightbox
-
-})(jQuery)
-
-/* harmony default export */ __webpack_exports__["default"] = (Lightbox);
 
 
 /***/ }),
@@ -37174,10 +36676,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // mdboot
 __webpack_require__(/*! mdbootstrap/js/mdb.min */ "./node_modules/mdbootstrap/js/mdb.min.js"); // slick carousel
 
 
-__webpack_require__(/*! slick-carousel/slick/slick.min */ "./node_modules/slick-carousel/slick/slick.min.js"); // lightbox
-
-
-__webpack_require__(/*! ekko-lightbox/ekko-lightbox */ "./node_modules/ekko-lightbox/ekko-lightbox.js"); // components
+__webpack_require__(/*! slick-carousel/slick/slick.min */ "./node_modules/slick-carousel/slick/slick.min.js"); // components
 
 
 __webpack_require__(/*! ./home/slick */ "./resources/js/home/slick.js");
@@ -37185,8 +36684,6 @@ __webpack_require__(/*! ./home/slick */ "./resources/js/home/slick.js");
 __webpack_require__(/*! ./home/scroll */ "./resources/js/home/scroll.js");
 
 __webpack_require__(/*! ./home/faq */ "./resources/js/home/faq.js");
-
-__webpack_require__(/*! ./home/lightbox */ "./resources/js/home/lightbox.js");
 
 /***/ }),
 
@@ -37214,24 +36711,6 @@ __webpack_require__(/*! ./home/lightbox */ "./resources/js/home/lightbox.js");
         }
       });
     }
-  });
-})(jQuery);
-
-/***/ }),
-
-/***/ "./resources/js/home/lightbox.js":
-/*!***************************************!*\
-  !*** ./resources/js/home/lightbox.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-(function ($) {
-  $(function () {
-    $(document).on('click', '[data-toggle="lightbox"]', function (event) {
-      event.preventDefault();
-      $(this).ekkoLightbox();
-    });
   });
 })(jQuery);
 
@@ -37296,6 +36775,15 @@ __webpack_require__(/*! ./home/lightbox */ "./resources/js/home/lightbox.js");
       slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 2000
+    }); // simulation carousel
+
+    $('.simulate').slick({
+      arrows: false,
+      infinite: false,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000
     });
   });
 })(jQuery);
@@ -37309,7 +36797,7 @@ __webpack_require__(/*! ./home/lightbox */ "./resources/js/home/lightbox.js");
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\xampp\htdocs\napon-web\resources\js\home.js */"./resources/js/home.js");
+module.exports = __webpack_require__(/*! /home/nb/laravel/napon-web/resources/js/home.js */"./resources/js/home.js");
 
 
 /***/ })

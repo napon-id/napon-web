@@ -40,6 +40,32 @@
     background-image: url("/images/media/img/bg-faq.jpg");
 }
 
+#simulateAkarku {
+    background-image: url("/images/media/img/simulasi-akarku.jpg");
+}
+
+#simulateBatangku {
+    background-image: url("/images/media/img/simulasi-batangku.jpg");
+}
+
+#simulateRantingku {
+    background-image: url("/images/media/img/simulasi-rantingku.jpg");
+}
+
+#simulateDaunku {
+    background-image: url("/images/media/img/simulasi-daunku.jpg");
+}
+
+#simulateHutanku {
+    background-image: url("/images/media/img/simulasi-hutanku.jpg");
+}
+
+.simulate-page {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 950px;
+}
+
 #whyChooseUs {
     color: white;
 }
