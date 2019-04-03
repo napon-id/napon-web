@@ -16,3 +16,24 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Faq Api
+Route::get('faq', 'ApiController@getFaq')->name('api.faq');
+
+// User Api
+Route::get('user', 'ApiController@getUser')->name('api.user');
+Route::get('user/details/{user}', 'ApiController@getUserDetail')->name('api.user.detail');
+Route::get('user/orders/{user}', 'ApiController@getUserOrder')->name('api.user.order');
+Route::get('user/balances/{user}', 'ApiController@getUserBalance')->name('api.user.balance');
+Route::get('user/withdraws/{user}', 'ApiController@getUserWithdraw')->name('api.user.withdraw');
+Route::get('user/logs/{user}', 'ApiController@getUserLog')->name('api.user.log');
+
+// Tree Api
+Route::get('tree', 'ApiController@getTree')->name('api.tree');
+
+// Product Api
+Route::get('product', 'ApiController@getProduct')->name('api.product');
+
+// Order Api
+Route::get('order/{order}', 'ApiController@getOrder')->name('api.order');
+Route::get('order/updates/{order}', 'ApiController@getOrderUpdate')->name('api.order.updates');
