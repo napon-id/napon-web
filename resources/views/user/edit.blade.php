@@ -2,10 +2,10 @@
 
 @section('breadcrumbs')
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="{{ route('user.dashboard') }}">Dashboard</a>
-  </li>
-  <li class="breadcrumb-item active">Edit</li>
+    <li class="breadcrumb-item">
+        <a href="{{ route('user.dashboard') }}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Edit</li>
 </ol>
 @endsection
 
@@ -43,11 +43,65 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Alamat lengkap</label>
+                        <label for="address">Alamat lengkap</label>
                         <textarea name="address" rows="4" cols="80" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}">{{ old('address') ?? $userInformation->address }}</textarea>
                         @if($errors->has('address'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('address') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="born_place">{{ __('Tempat Lahir') }}</label>
+                        <input type="text" name="born_place" class="form-control {{ $errors->has('born_place') ? 'is-invalid' : '' }}" value="{{ old('born_place') ?? $userInformation->born_place }}">
+                        @if($errors->has('born_place'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('born_place') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="born_date">{{ __('Tanggal Lahir') }}</label>
+                        <input type="date" name="born_date" class="form-control {{ $errors->has('born_date') ? 'is-invalid' : '' }}" value="{{ old('born_date') ?? $userInformation->born_date }}">
+                        @if($errors->has('born_date'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('born_date') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">{{ __('Gender') }}</label>
+                        <select name="gender" class="form-control {{ $errors->has('gender') ? 'is-invalid' : '' }}">
+                            <option value="">{{ __('Pilih') }}</option>
+                            <option value="1" {{ $userInformation->gender == 1 ? 'selected' : '' }}>{{ __('Pria') }}</option>
+                            <option value="2" {{ $userInformation->gender == 2 ? 'selected' : '' }}>{{ __('Wanita') }}</option>
+                        </select>
+                        @if($errors->has('gender'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('gender') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="province">{{ __('Provinsi') }}</label>
+                        <input type="text" name="province" class="form-control {{ $errors->has('province') ? 'is-invalid' : '' }}" value="{{ old('province') ?? $userInformation->province }}">
+                        @if($errors->has('province'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('province') }}</strong>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">{{ __('Kota Tempat Tinggal') }}</label>
+                        <input type="text" name="city" class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" value="{{ old('city') ?? $userInformation->city }}">
+                        @if($errors->has('city'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('city') }}</strong>
                         </div>
                         @endif
                     </div>

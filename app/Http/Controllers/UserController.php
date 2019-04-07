@@ -56,7 +56,13 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'ktp' => 'required|numeric|digits:16|unique:user_informations,ktp,' . $userInformation->id,
             'phone' => 'required|numeric',
-            'address' => 'required'
+            'address' => 'required',
+            'born_place' => 'nullable|max:191',
+            'born_date' => 'nullable|date|before:' . now(),
+            'gender' => 'nullable',
+            'city' => 'nullable|max:191',
+            'province' => 'nullable|max:191',
+            'postal_code' => 'nullable|numeric|digits:5',
         ]);
 
         if ($validator->fails()) {
@@ -65,11 +71,7 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $userInformation->update([
-            'ktp' => $request->ktp,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
+        $userInformation->update($request->all());
 
         return redirect()
             ->route('user.edit', ['userInformation' => $userInformation])
