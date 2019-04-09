@@ -37,3 +37,9 @@ Route::get('product', 'ApiController@getProduct')->name('api.product');
 // Order Api
 Route::get('order/{order}', 'ApiController@getOrder')->name('api.order');
 Route::get('order/updates/{order}', 'ApiController@getOrderUpdate')->name('api.order.updates');
+
+// Provinces Cities Api
+Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
+Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
+Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
+Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');

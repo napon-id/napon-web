@@ -9,6 +9,8 @@ use App\User;
 use App\Order;
 use DB;
 use App\Faq;
+use App\Province;
+use App\Cities;
 
 class ApiController extends Controller
 {
@@ -105,6 +107,38 @@ class ApiController extends Controller
         return response()->json([
             'result_code' => 200,
             'data' => $order->updates()->get(),
+        ]);
+    }
+
+    public function getProvinces()
+    {
+        return response()->json([
+            'result_code' => 200,
+            'data' => Province::all(),
+        ]);
+    }
+
+    public function getProvinceDetail(Province $province)
+    {
+        return response()->json([
+            'result_code' => 200,
+            'data' => $province,
+        ]);
+    }
+
+    public function getCities(Province $province)
+    {
+        return response()->json([
+            'result_code' => 200,
+            'data' => $province->cities()->get(),
+        ]);
+    }
+
+    public function getCityDetail(Cities $city)
+    {
+        return response()->json([
+            'result_code' => 200,
+            'data' => $city,
         ]);
     }
 }
