@@ -15,12 +15,16 @@ use Illuminate\Http\Request;
 
 Route::get('/fire', 'ApiController@firebase');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('/me', function (Request $request) {
+    return (array) $request->user();
+})->middleware('auth:api');
 
 // Faq Api
-Route::get('faq', 'ApiController@getFaq')->name('api.faq');
+Route::get('faq', 'ApiController@getFaq')->name('api.faq')->middleware('auth:api');
 
 // User Api
 Route::get('user', 'ApiController@getUser')->name('api.user');
