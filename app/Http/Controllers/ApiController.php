@@ -13,23 +13,15 @@ use App\Province;
 use App\Cities;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use App\Http\Controllers\Traits\Firebase;
 
 class ApiController extends Controller
 {
+    use Firebase;
+
     public function firebase()
     {
-
-        $serviceAccount = ServiceAccount::fromJsonFile(__DIR__.'/Firebase.json');
-
-        $firebase = (new Factory)
-            ->withServiceAccount($serviceAccount)
-            ->create();
-
-        $auth = $firebase->getAuth();
-        $users = $auth->getUserByEmail('user@example.com');
-
-        dd($users);
-
+        $this->userDetail('user@example.com');
     }
 
     public function getFaq()

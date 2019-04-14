@@ -12,12 +12,12 @@
         messagingSenderId: "429643042573"
     };
     firebase.initializeApp(config);
-    // signin();
-    getFaq();
+    signin();
+    // getFaq();
 
     async function signin() {
         console.log('signing in');
-        let creds = await firebase.auth().signInWithEmailAndPassword('user@example.com', 'secretPassword');
+        let creds = await firebase.auth().signInWithEmailAndPassword('lorem@mailinator.com', 'katakunci');
         console.log({ creds });
         let token = await creds.user.getIdToken();
         console.log({ token });

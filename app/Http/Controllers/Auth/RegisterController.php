@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Controllers\Traits\Firebase;
 
 class RegisterController extends Controller
 {
@@ -21,7 +22,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers, Firebase;
 
     /**
      * Where to redirect users after registration.
@@ -63,6 +64,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $createdFirebaseUser = $this->createUserFromFirebase($data['name'], $data['email'], $data['password']);
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
