@@ -106,4 +106,14 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('product/api', 'User\OrderController@productApi')->name('user.product.api');
     Route::get('product/api/order', 'User\OrderController@productApiOrder')->name('user.product.api.order');
     Route::get('product/api/{status}', 'User\OrderController@productApiStatus')->name('user.product.api.status');
+
 });
+
+// get City API
+Route::get('city', function () {
+    if (request()->has('province')) {
+        return response()->json([
+            'cities' => \App\Province::find(request()->get('province'))->cities()->get(['id', 'name'])
+        ]);
+    }
+})->name('city');

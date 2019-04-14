@@ -11,6 +11,8 @@ use App\Order;
 use App\Product;
 use App\UserInformation;
 use App\User;
+use App\Province;
+use App\Cities;
 use App\Log;
 use DB;
 
@@ -41,10 +43,20 @@ class UserController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $userInformation = $user->userInformation()->first();
+        if ($userInformation->province != NULL) {
+            $cities = Province::find($userInformation->province)->cities()->get(['id', 'name']);
+        } else {
+            $cities = [];
+        }
+
+        // $bornCities = Cities::query()->get(['id', 'name']);
 
         return view('user.edit')
             ->with([
                 'userInformation' => $userInformation,
+                'provinces' => Province::query()->get(['id', 'name']),
+                'cities' => $cities,
+                // 'bornCities' => $bornCities
             ]);
     }
 

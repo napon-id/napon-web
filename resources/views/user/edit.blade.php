@@ -52,15 +52,19 @@
                         @endif
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="born_place">{{ __('Tempat Lahir') }}</label>
-                        <input type="text" name="born_place" class="form-control {{ $errors->has('born_place') ? 'is-invalid' : '' }}" value="{{ old('born_place') ?? $userInformation->born_place }}">
+                        <select class="form-control {{ $errors->has('born_place') ? 'is-invalid' : '' }}" name="born_place" id="born_place">
+                        @foreach ($bornCities as $city)
+                            <option value="{{ $city->id }}" {{ $city->id == $userInformation->born_place ? 'selected' : '' }}>{{ $city->name }}</option>
+                        @endforeach
+                        </select>
                         @if($errors->has('born_place'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('born_place') }}</strong>
                         </div>
                         @endif
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label for="born_date">{{ __('Tanggal Lahir') }}</label>
@@ -88,7 +92,12 @@
 
                     <div class="form-group">
                         <label for="province">{{ __('Provinsi') }}</label>
-                        <input type="text" name="province" class="form-control {{ $errors->has('province') ? 'is-invalid' : '' }}" value="{{ old('province') ?? $userInformation->province }}">
+                        <select name="province" id="province" class="form-control {{ $errors->has('province') ? 'is-invalid' : '' }}" onchange="changeCities(this, '#city', '{{ route('city') }}')" required>
+                            <option value="">{{ __('Pilih provinsi') }}</option>
+                            @foreach ($provinces as $province)
+                                <option value="{{ $province->id }}" {{ $province->id == $userInformation->province ? 'selected' : '' }}>{{ $province->name }}</option>
+                            @endforeach
+                        </select>
                         @if($errors->has('province'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('province') }}</strong>
@@ -98,7 +107,12 @@
 
                     <div class="form-group">
                         <label for="city">{{ __('Kota Tempat Tinggal') }}</label>
-                        <input type="text" name="city" class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" value="{{ old('city') ?? $userInformation->city }}">
+                        <select name="city" id="city" class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" required>
+                            <option value=""></option>
+                            @foreach ($cities as $city)
+                                <option value="{{ $city->id }}" {{ $userInformation->city == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                            @endforeach
+                        </select>
                         @if($errors->has('city'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('city') }}</strong>
