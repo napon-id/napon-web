@@ -12,7 +12,7 @@
         messagingSenderId: "429643042573"
     };
     firebase.initializeApp(config);
-    // signin();
+    signin();
     getFaq();
 
     async function signin() {
