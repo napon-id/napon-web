@@ -23,13 +23,13 @@
         console.log({ token });
         localStorage.setItem('token', token);
         let headers = { Authorization: 'Bearer ' + token };
-        let me = await axios.get('http://localhost:8000/api/me', { headers });
+        let me = await axios.get('/api/me', { headers });
         console.log({ me });
     }
 
     async function getFaq() {
         let headers = { Authorization: 'Bearer ' + localStorage.token };
-        let me = await axios.get('http://localhost:8000/api/faq', { headers });
+        let me = await axios.get('/api/faq', { headers });
         console.log({me});
     }
     </script>
