@@ -12,8 +12,8 @@
         messagingSenderId: "429643042573"
     };
     firebase.initializeApp(config);
-    signin();
-    // getFaq();
+    // signin();
+    getFaq();
 
     async function signin() {
         console.log('signing in');
@@ -21,19 +21,15 @@
         console.log({ creds });
         let token = await creds.user.getIdToken();
         console.log({ token });
+        localStorage.setItem('token', token);
         let headers = { Authorization: 'Bearer ' + token };
         let me = await axios.get('http://localhost:8000/api/me', { headers });
         console.log({ me });
     }
 
     async function getFaq() {
-        console.log('signing in');
-        let creds = await firebase.auth().signInWithEmailAndPassword('user@example.com', 'secretPassword');
-        console.log({ creds });
-        let token = await creds.user.getIdToken();
-        console.log({ token });
-        let headers = { Authorization: 'Bearer ' + token };
+        let headers = { Authorization: 'Bearer ' + localStorage.token };
         let me = await axios.get('http://localhost:8000/api/faq', { headers });
-        console.log(me);
+        console.log({me});
     }
     </script>

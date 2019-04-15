@@ -7,9 +7,6 @@ use Kreait\Firebase\ServiceAccount;
 
 trait Firebase
 {
-    protected $serviceAccount;
-    protected $firebase;
-    protected $auth;
 
     public function initialize()
     {
@@ -22,7 +19,7 @@ trait Firebase
 
     public function userDetail($email)
     {
-        $auth = initialize();
+        $auth = $this->initialize();
         $user = $auth->getUserByEmail($email);
         
         return $user;
