@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 // });
 
 Route::get('/me', function (Request $request) {
-    return (array) $request->user();
+    return (array) $request->bearerToken();
 })->middleware('auth:api');
 
 Route::group(['middleware' => 'auth:api'], function () {
@@ -27,11 +27,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     // User Api
     Route::get('user', 'ApiController@getUser')->name('api.user');
-    Route::get('user/details/{user}', 'ApiController@getUserDetail')->name('api.user.detail');
-    Route::get('user/orders/{user}', 'ApiController@getUserOrder')->name('api.user.order');
-    Route::get('user/balances/{user}', 'ApiController@getUserBalance')->name('api.user.balance');
-    Route::get('user/withdraws/{user}', 'ApiController@getUserWithdraw')->name('api.user.withdraw');
-    Route::get('user/logs/{user}', 'ApiController@getUserLog')->name('api.user.log');
+    Route::get('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
+    Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
+    Route::get('user/balances', 'ApiController@getUserBalance')->name('api.user.balance');
+    Route::get('user/withdraws', 'ApiController@getUserWithdraw')->name('api.user.withdraw');
+    Route::get('user/logs', 'ApiController@getUserLog')->name('api.user.log');
     
     // Tree Api
     Route::get('tree', 'ApiController@getTree')->name('api.tree');

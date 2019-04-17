@@ -16,11 +16,28 @@ use App\Http\Controllers\Traits\Firebase;
 class ApiController extends Controller
 {
     use Firebase;
+
+    /**
+     * Var $email
+     */
+    // protected $email;
+
+    /**
+     * store firebase token 
+     * Var $token
+     */
+    // protected $token;
     
+    public function __construct()
+    {
+        // $this->email = request()->user()->getEmail();
+        $this->token = request()->bearerToken();
+    }
 
     public function getFaq()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Faq::all(),
         ]);
@@ -31,52 +48,72 @@ class ApiController extends Controller
         $user = User::where('role', 'user')->get();
 
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user,
         ]);
     }
 
-    public function getUserDetail(User $user)
+    public function getUserDetail()
     {
+        $email = request()->user()->getEmail();
+
         $user = DB::table('users')
             ->leftJoin('user_informations', 'users.id', '=', 'user_informations.user_id')
             ->select('users.*', 'user_informations.*')
-            ->where('users.id', '=', $user->id)
+            ->where('users.email', '=', $email)
             ->first();
 
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user,
         ]);
     }
 
-    public function getUserOrder(User $user)
+    public function getUserOrder()
     {
+        $email = request()->user()->getEmail();
+        $user = User::where('email', '=', $email)->first();
+
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->orders()->get(),
         ]);
     }
 
-    public function getUserWithdraw(User $user)
+    public function getUserWithdraw()
     {
+        $email = request()->user()->getEmail();
+        $user = User::where('email', '=', $email)->first();
+
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->withdraws()->get(),
         ]);
     }
 
-    public function getUserBalance(User $user)
+    public function getUserBalance()
     {
+        $email = request()->user()->getEmail();
+        $user = User::where('email', '=', $email)->first();
+
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->balance()->first(),
         ]);
     }
 
-    public function getUserLog(User $user)
+    public function getUserLog()
     {
+        $email = request()->user()->getEmail();
+        $user = User::where('email', '=', $email)->first();
+
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->logs()->get(),
         ]);
@@ -85,6 +122,7 @@ class ApiController extends Controller
     public function getTree()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Tree::all(),
         ]);
@@ -93,6 +131,7 @@ class ApiController extends Controller
     public function getProduct()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Product::all(),
         ]);
@@ -101,6 +140,7 @@ class ApiController extends Controller
     public function getOrder(Order $order)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $order,
         ]);
@@ -109,6 +149,7 @@ class ApiController extends Controller
     public function getOrderUpdate(Order $order)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $order->updates()->get(),
         ]);
@@ -117,6 +158,7 @@ class ApiController extends Controller
     public function getProvinces()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Province::all(),
         ]);
@@ -125,6 +167,7 @@ class ApiController extends Controller
     public function getProvinceDetail(Province $province)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $province,
         ]);
@@ -133,6 +176,7 @@ class ApiController extends Controller
     public function getCities(Province $province)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $province->cities()->get(),
         ]);
@@ -141,6 +185,7 @@ class ApiController extends Controller
     public function getCityDetail(Cities $city)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $city,
         ]);

@@ -14,22 +14,48 @@
     firebase.initializeApp(config);
     signin();
     getFaq();
+    getUserDetail();
 
     async function signin() {
         console.log('signing in');
         let creds = await firebase.auth().signInWithEmailAndPassword('lorem@mailinator.com', 'katakunci');
-        console.log({ creds });
+        console.log({
+            creds
+        });
         let token = await creds.user.getIdToken();
-        console.log({ token });
+        console.log({
+            token
+        });
         localStorage.setItem('token', token);
-        let headers = { Authorization: 'Bearer ' + token };
+        let headers = {
+            Authorization: 'Bearer ' + token
+        };
+        console.log(headers);
         let me = await axios.get('/api/me', { headers });
         console.log({ me });
     }
 
     async function getFaq() {
-        let headers = { Authorization: 'Bearer ' + localStorage.token };
-        let me = await axios.get('/api/faq', { headers });
-        console.log({me});
+        let headers = {
+            Authorization: 'Bearer ' + localStorage.token
+        };
+        let me = await axios.get('/api/faq', {
+            headers
+        });
+        console.log({
+            me
+        });
     }
-    </script>
+
+    async function getUserDetail() {
+        let headers = {
+            Authorization: 'Bearer ' + localStorage.token
+        };
+        let me = await axios.get('/api/user/orders', {
+            headers
+        });
+        console.log({
+            me
+        });
+    }
+</script>
