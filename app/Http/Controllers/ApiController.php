@@ -37,9 +37,10 @@ class ApiController extends Controller
     public function getFaq()
     {
         return response()->json([
-            'token' => $this->token,
-            'result_code' => 200,
+            'result_code' => 4,
+            'request_code' => 200,
             'data' => Faq::all(),
+            'result_code' => 4,
         ]);
     }
 
@@ -49,8 +50,9 @@ class ApiController extends Controller
 
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
             'data' => $user,
+            'result_code' => 4,
         ]);
     }
 
@@ -66,8 +68,9 @@ class ApiController extends Controller
 
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
             'data' => $user,
+            'result_code' => 4,
         ]);
     }
 
@@ -78,7 +81,8 @@ class ApiController extends Controller
 
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => $user->orders()->get(),
         ]);
     }
@@ -90,7 +94,8 @@ class ApiController extends Controller
 
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => $user->withdraws()->get(),
         ]);
     }
@@ -102,7 +107,8 @@ class ApiController extends Controller
 
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => $user->balance()->first(),
         ]);
     }
@@ -114,7 +120,8 @@ class ApiController extends Controller
 
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => $user->logs()->get(),
         ]);
     }
@@ -123,7 +130,8 @@ class ApiController extends Controller
     {
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => Tree::all(),
         ]);
     }
@@ -132,7 +140,8 @@ class ApiController extends Controller
     {
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => Product::all(),
         ]);
     }
@@ -141,7 +150,8 @@ class ApiController extends Controller
     {
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
+            'result_code' => 4,
             'data' => $order,
         ]);
     }
@@ -150,16 +160,17 @@ class ApiController extends Controller
     {
         return response()->json([
             'token' => $this->token,
-            'result_code' => 200,
+            'request_code' => 200,
             'data' => $order->updates()->get(),
+            'result_code' => 4,
         ]);
     }
 
     public function getProvinces()
     {
         return response()->json([
-            'token' => $this->token,
-            'result_code' => 200,
+            'result_code' => 4,
+            'request_code' => 200,
             'data' => Province::all(),
         ]);
     }
@@ -167,8 +178,8 @@ class ApiController extends Controller
     public function getProvinceDetail(Province $province)
     {
         return response()->json([
-            'token' => $this->token,
-            'result_code' => 200,
+            'result_code' => 4,
+            'request_code' => 200,
             'data' => $province,
         ]);
     }
@@ -176,8 +187,8 @@ class ApiController extends Controller
     public function getCities(Province $province)
     {
         return response()->json([
-            'token' => $this->token,
-            'result_code' => 200,
+            'result_code' => 4,
+            'request_code' => 200,
             'data' => $province->cities()->get(),
         ]);
     }
@@ -185,8 +196,8 @@ class ApiController extends Controller
     public function getCityDetail(Cities $city)
     {
         return response()->json([
-            'token' => $this->token,
-            'result_code' => 200,
+            'result_code' => 4,
+            'request_code' => 200,
             'data' => $city,
         ]);
     }
