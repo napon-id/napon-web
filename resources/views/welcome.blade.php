@@ -12,8 +12,8 @@
         messagingSenderId: "429643042573"
     };
     firebase.initializeApp(config);
-    // signin();
-    // getFaq();
+    signin();
+    getFaq();
     getUserDetail();
 
     async function signin() {
@@ -31,7 +31,7 @@
             Authorization: 'Bearer ' + token
         };
         console.log(headers);
-        let me = await axios.get('http://localhost:8000/api/me', { headers });
+        let me = await axios.get('/api/me', { headers });
         console.log({ me });
     }
 
@@ -39,7 +39,7 @@
         let headers = {
             Authorization: 'Bearer ' + localStorage.token
         };
-        let me = await axios.get('http://localhost:8000/api/faq', {
+        let me = await axios.get('/api/faq', {
             headers
         });
         console.log({
@@ -51,7 +51,7 @@
         let headers = {
             Authorization: 'Bearer ' + localStorage.token
         };
-        let me = await axios.get('http://localhost:8000/api/user/orders', {
+        let me = await axios.get('/api/user/orders', {
             headers
         });
         console.log({

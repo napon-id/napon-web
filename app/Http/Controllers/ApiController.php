@@ -37,7 +37,6 @@ class ApiController extends Controller
     public function getFaq()
     {
         return response()->json([
-            'user' => $this->email,
             'token' => $this->token,
             'result_code' => 200,
             'data' => Faq::all(),
@@ -112,7 +111,7 @@ class ApiController extends Controller
     {
         $email = request()->user()->getEmail();
         $user = User::where('email', '=', $email)->first();
-        
+
         return response()->json([
             'token' => $this->token,
             'result_code' => 200,
