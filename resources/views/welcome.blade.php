@@ -13,24 +13,49 @@
     };
     firebase.initializeApp(config);
     // signin();
-    getFaq();
+    // getFaq();
+    getUserDetail();
 
     async function signin() {
         console.log('signing in');
         let creds = await firebase.auth().signInWithEmailAndPassword('lorem@mailinator.com', 'katakunci');
-        console.log({ creds });
+        console.log({
+            creds
+        });
         let token = await creds.user.getIdToken();
-        console.log({ token });
+        console.log({
+            token
+        });
         localStorage.setItem('token', token);
-        let headers = { Authorization: 'Bearer ' + token };
-        // console.log(headers);
-        // let me = await axios.get('http://localhost:8000/api/me', { headers });
-        // console.log({ me });
+        let headers = {
+            Authorization: 'Bearer ' + token
+        };
+        console.log(headers);
+        let me = await axios.get('http://localhost:8000/api/me', { headers });
+        console.log({ me });
     }
 
     async function getFaq() {
-        let headers = { Authorization: 'Bearer ' + localStorage.token };
-        let me = await axios.get('http://localhost:8000/api/faq', { headers });
-        console.log({me});
+        let headers = {
+            Authorization: 'Bearer ' + localStorage.token
+        };
+        let me = await axios.get('http://localhost:8000/api/faq', {
+            headers
+        });
+        console.log({
+            me
+        });
     }
-    </script>
+
+    async function getUserDetail() {
+        let headers = {
+            Authorization: 'Bearer ' + localStorage.token
+        };
+        let me = await axios.get('http://localhost:8000/api/user/orders', {
+            headers
+        });
+        console.log({
+            me
+        });
+    }
+</script>

@@ -72,4 +72,13 @@ class User implements Authenticatable
     {
         throw new \Exception('No remember token for Firebase User');
     }
+
+    /**
+     * Get email 
+     * @return string
+     */
+    public function getEmail()
+    {
+        return (string) $this->claims['email'];
+    }
 }
