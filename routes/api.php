@@ -21,10 +21,25 @@ Route::get('/me', function (Request $request) {
     return (array) $request->bearerToken();
 })->middleware('auth:api');
 
-Route::group(['middleware' => 'auth:api'], function () {
-    // Faq Api
-    Route::get('faq', 'ApiController@getFaq')->name('api.faq');
-    
+// Faq Api
+Route::get('faq', 'ApiController@getFaq')->name('api.faq');
+
+// Tree Api
+Route::get('tree', 'ApiController@getTree')->name('api.tree');
+
+// Product Api
+Route::get('product', 'ApiController@getProduct')->name('api.product');
+
+// Provinces Cities Api
+Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
+Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
+Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
+Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');
+
+/**
+ * Route group based on auth:api middleware
+ */
+Route::group(['middleware' => 'auth:api'], function () {    
     // User Api
     Route::get('user', 'ApiController@getUser')->name('api.user');
     Route::get('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
@@ -33,19 +48,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user/withdraws', 'ApiController@getUserWithdraw')->name('api.user.withdraw');
     Route::get('user/logs', 'ApiController@getUserLog')->name('api.user.log');
     
-    // Tree Api
-    Route::get('tree', 'ApiController@getTree')->name('api.tree');
-    
-    // Product Api
-    Route::get('product', 'ApiController@getProduct')->name('api.product');
-    
     // Order Api
     Route::get('order/{order}', 'ApiController@getOrder')->name('api.order');
     Route::get('order/updates/{order}', 'ApiController@getOrderUpdate')->name('api.order.updates');
-    
-    // Provinces Cities Api
-    Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
-    Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
-    Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
-    Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');
 });
