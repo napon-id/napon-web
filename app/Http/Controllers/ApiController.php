@@ -17,10 +17,15 @@ class ApiController extends Controller
 {
     use Firebase;
     
+    public function __construct()
+    {
+        $this->token = request()->bearerToken();
+    }
 
     public function getFaq()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Faq::all(),
         ]);
@@ -31,6 +36,7 @@ class ApiController extends Controller
         $user = User::where('role', 'user')->get();
 
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user,
         ]);
@@ -45,6 +51,7 @@ class ApiController extends Controller
             ->first();
 
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user,
         ]);
@@ -53,6 +60,7 @@ class ApiController extends Controller
     public function getUserOrder(User $user)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->orders()->get(),
         ]);
@@ -61,6 +69,7 @@ class ApiController extends Controller
     public function getUserWithdraw(User $user)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->withdraws()->get(),
         ]);
@@ -69,6 +78,7 @@ class ApiController extends Controller
     public function getUserBalance(User $user)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->balance()->first(),
         ]);
@@ -77,6 +87,7 @@ class ApiController extends Controller
     public function getUserLog(User $user)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $user->logs()->get(),
         ]);
@@ -85,6 +96,7 @@ class ApiController extends Controller
     public function getTree()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Tree::all(),
         ]);
@@ -93,6 +105,7 @@ class ApiController extends Controller
     public function getProduct()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Product::all(),
         ]);
@@ -101,6 +114,7 @@ class ApiController extends Controller
     public function getOrder(Order $order)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $order,
         ]);
@@ -109,6 +123,7 @@ class ApiController extends Controller
     public function getOrderUpdate(Order $order)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $order->updates()->get(),
         ]);
@@ -117,6 +132,7 @@ class ApiController extends Controller
     public function getProvinces()
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => Province::all(),
         ]);
@@ -125,6 +141,7 @@ class ApiController extends Controller
     public function getProvinceDetail(Province $province)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $province,
         ]);
@@ -133,6 +150,7 @@ class ApiController extends Controller
     public function getCities(Province $province)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $province->cities()->get(),
         ]);
@@ -141,6 +159,7 @@ class ApiController extends Controller
     public function getCityDetail(Cities $city)
     {
         return response()->json([
+            'token' => $this->token,
             'result_code' => 200,
             'data' => $city,
         ]);

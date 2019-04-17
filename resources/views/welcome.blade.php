@@ -23,8 +23,9 @@
         console.log({ token });
         localStorage.setItem('token', token);
         let headers = { Authorization: 'Bearer ' + token };
-        let me = await axios.get('http://localhost:8000/api/me', { headers });
-        console.log({ me });
+        // console.log(headers);
+        // let me = await axios.get('http://localhost:8000/api/me', { headers });
+        // console.log({ me });
     }
 
     async function getFaq() {

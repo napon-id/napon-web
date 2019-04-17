@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 // });
 
 Route::get('/me', function (Request $request) {
-    return (array) $request->user();
+    return (array) $request->bearerToken();
 })->middleware('auth:api');
 
 Route::group(['middleware' => 'auth:api'], function () {
