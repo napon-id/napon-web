@@ -62,8 +62,8 @@ class ApiController extends Controller
      */
     public function getUserDetail()
     {
-        // $email = request()->user()->getEmail();
-        $email = 'akunbaru@mailinator.com';
+        $email = request()->user()->getEmail();
+        // $email = 'akunbaru@mailinator.com';
 
         $user = DB::table('users')
             ->leftJoin( 'user_informations', 'users.id', '=', 'user_informations.user_id')
@@ -124,10 +124,14 @@ class ApiController extends Controller
         ]);
     }
 
+    /**
+     * get user banks based on email
+     * @return Illuminate\Http\Response
+     */
     public function getUserBank()
     {
-        // $email = request()->user()->getEmail();
-        $email = 'akunbaru@mailinator.com';
+        $email = request()->user()->getEmail();
+        // $email = 'akunbaru@mailinator.com';
 
         $banks = DB::table( 'users')
             ->rightJoin('accounts', 'accounts.user_id', '=', 'users.id')
@@ -137,6 +141,7 @@ class ApiController extends Controller
                 DB::raw( 'accounts.account_code AS user_bank_account_code'),
                 DB::raw('accounts.number AS user_bank_account_name')
             )
+            ->where('users.email', '=', $email)
             ->get();
         
         return response()->json([
@@ -147,16 +152,64 @@ class ApiController extends Controller
         ]);
     }
 
+    /**
+     * get user orders based on email
+     * @return Illuminate\Http\Response
+     */
     public function getUserOrder()
     {
         $email = request()->user()->getEmail();
+        // $email = 'akunbaru@mailinator.com';
         $user = User::where('email', '=', $email)->first();
+
+        $orders = DB::table( 'users')
+            ->rightJoin( 'orders', 'orders.user_id', '=', 'users.id')
+            ->join('products', 'products.id', '=', 'orders.product_id')
+            ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
+            ->select(
+                DB::raw( 'orders.token AS user_product_key'),
+                DB::raw( 'products.name AS product_name'),
+                DB::raw( 'products.img AS product_image_black'),
+                DB::raw( 'products.created_at AS user_product_start_date'),
+                DB::raw( 'locations.location AS user_product_location'),
+                DB::raw( 'orders.updated_at AS user_product_harvest_date'),
+                DB::raw( 'orders.status AS user_product_is_ready_to_harvest'),
+                DB::table('order_details')
+            )
+            ->where('users.email', '=', $email)
+            ->get();
 
         return response()->json([
             'token' => $this->token,
             'request_code' => 200,
             'result_code' => 4,
-            'data' => $user->orders()->get(),
+            'data' => $orders,
+        ]);
+    }
+
+    /**
+     * get order detail based on token
+     * @return Illuminate\Http\Response
+     */
+    public function getUserOrderDetail($token)
+    {
+        if ($token) {
+            $details = DB::table( 'orders')
+                ->rightJoin( 'order_updates', 'order_updates.order_id', '=', 'orders.id')
+                ->select( 
+                    DB::raw('orders.token AS product_token'),
+                    DB::raw('order_updates.description AS update_description'),
+                    DB::raw('order_updates.created_at AS update_date')
+                )
+                ->where('orders.token', '=', $token)
+                ->get();
+        }
+
+        return response()->json([
+            'token' => $this->token,
+            'request_code' => 200,
+            'result_code' => 4,
+            'data' => $details
         ]);
     }
 
