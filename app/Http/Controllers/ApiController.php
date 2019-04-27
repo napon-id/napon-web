@@ -242,39 +242,74 @@ class ApiController extends Controller
         ]);
     }
 
+    /**
+     * return all provinces
+     * @return Illuminate\Http\Response
+     */
     public function getProvinces()
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => Province::all(),
+            'province_list' => Province::all(),
         ]);
     }
 
+    /**
+     * get province detail based on province id
+     * @return Illuminate\Http\Response
+     */
     public function getProvinceDetail(Province $province)
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => $province,
+            'province_detail' => $province,
         ]);
     }
 
+    /**
+     * get city list based on province id
+     * @return Illuminate\Http\Response
+     */
     public function getCities(Province $province)
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => $province->cities()->get(),
+            'city_list' => $province->cities()->get(),
         ]);
     }
 
+    /**
+     * get city detail based on city id
+     * @return Illuminate\Http\Response
+     */
     public function getCityDetail(Cities $city)
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => $city,
+            'city_detail' => $city,
+        ]);
+    }
+
+    /**
+     * get latest user activity
+     * @return Illuminate\Http\Response
+     */
+    public function databaseStatus()
+    {
+        $lastProduct = Product::latest()->first();
+
+        $lastDescription = Description::latest()->first();
+
+        return response()->json([
+            'request_code' => 200,
+            'db_status' => [
+                'product_last_update' => $lastProduct->updated_at->format('d m Y h:i:s'),
+                'description_last_update' => $lastDescription->created_at->format('d m Y h:i:s')
+            ]
         ]);
     }
 }

@@ -27,6 +27,9 @@ Route::get('products', 'ApiController@getProduct')->name('api.product');
 // Description Api
 Route::get('descriptions', 'ApiController@getDescription')->name('api.description');
 
+//Database Status
+Route::get('database_status', 'ApiController@databaseStatus')->name('api.database.status');
+
 // Provinces Cities Api
 Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
 Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
