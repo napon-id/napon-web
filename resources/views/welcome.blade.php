@@ -13,8 +13,8 @@
     };
     firebase.initializeApp(config);
     signin();
-    getFaq();
-    getUserDetail();
+    // getFaq();
+    // getUserDetail();
 
     async function signin() {
         console.log('signing in');

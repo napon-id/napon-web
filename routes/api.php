@@ -43,7 +43,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     // User Api
     Route::get('user', 'ApiController@getUser')->name('api.user');
     Route::get('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
+    Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
     Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
+    Route::get('user/orders/{token}', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
     Route::get('user/balances', 'ApiController@getUserBalance')->name('api.user.balance');
     Route::get('user/withdraws', 'ApiController@getUserWithdraw')->name('api.user.withdraw');
     Route::get('user/logs', 'ApiController@getUserLog')->name('api.user.log');
