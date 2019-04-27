@@ -13,22 +13,22 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-Route::get('/me', function (Request $request) {
+// Authentication process
+Route::get('/auth', function (Request $request) {
     return (array) $request->bearerToken();
 })->middleware('auth:api');
 
 // Faq Api
 Route::get('faq', 'ApiController@getFaq')->name('api.faq');
 
-// Tree Api
-Route::get('tree', 'ApiController@getTree')->name('api.tree');
-
 // Product Api
-Route::get('product', 'ApiController@getProduct')->name('api.product');
+Route::get('products', 'ApiController@getProduct')->name('api.product');
+
+// Description Api
+Route::get('descriptions', 'ApiController@getDescription')->name('api.description');
+
+//Database Status
+Route::get('database_status', 'ApiController@databaseStatus')->name('api.database.status');
 
 // Provinces Cities Api
 Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
@@ -41,16 +41,8 @@ Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail'
  */
 Route::group(['middleware' => 'auth:api'], function () {    
     // User Api
-    Route::get('user', 'ApiController@getUser')->name('api.user');
     Route::get('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
     Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
     Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
     Route::get('user/orders/{token}', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
-    Route::get('user/balances', 'ApiController@getUserBalance')->name('api.user.balance');
-    Route::get('user/withdraws', 'ApiController@getUserWithdraw')->name('api.user.withdraw');
-    Route::get('user/logs', 'ApiController@getUserLog')->name('api.user.log');
-    
-    // Order Api
-    Route::get('order/{order}', 'ApiController@getOrder')->name('api.order');
-    Route::get('order/updates/{order}', 'ApiController@getOrderUpdate')->name('api.order.updates');
 });

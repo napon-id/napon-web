@@ -12,6 +12,7 @@ use App\Faq;
 use App\Province;
 use App\Cities;
 use App\Http\Controllers\Traits\Firebase;
+use App\Description;
 
 class ApiController extends Controller
 {
@@ -35,24 +36,20 @@ class ApiController extends Controller
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => Faq::query()->get(['question AS faq_question', 'answer AS faq_answer']),
-            'result_code' => 4,
+            'faq_list' => Faq::query()->get(['question AS faq_question', 'answer AS faq_answer']),
         ]);
     }
 
     /**
-     * get User list
+     * get description
      * @return Illuminate\Http\Response
      */
-    public function getUser()
+    public function getDescription()
     {
-        $user = User::where('role', 'user')->get();
-
         return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'data' => $user,
             'result_code' => 4,
+            'request_code' => 200,
+            'description_list' => Description::query()->get(['img AS description_image', 'title AS description_title', 'text AS description_text'])
         ]);
     }
 
@@ -213,118 +210,106 @@ class ApiController extends Controller
         ]);
     }
 
-    public function getUserWithdraw()
-    {
-        $email = request()->user()->getEmail();
-        $user = User::where('email', '=', $email)->first();
-
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'result_code' => 4,
-            'data' => $user->withdraws()->get(),
-        ]);
-    }
-
-    public function getUserBalance()
-    {
-        $email = request()->user()->getEmail();
-        $user = User::where('email', '=', $email)->first();
-
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'result_code' => 4,
-            'data' => $user->balance()->first(),
-        ]);
-    }
-
-    public function getUserLog()
-    {
-        $email = request()->user()->getEmail();
-        $user = User::where('email', '=', $email)->first();
-
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'result_code' => 4,
-            'data' => $user->logs()->get(),
-        ]);
-    }
-
-    public function getTree()
-    {
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'result_code' => 4,
-            'data' => Tree::all(),
-        ]);
-    }
-
     public function getProduct()
     {
+        $products = DB::table('products')
+            ->join('trees', 'trees.id', '=', 'products.tree_id')
+            ->select(
+                DB::raw( 'products.id AS product_id'),
+                DB::raw( 'products.name AS product_name'),
+                DB::raw( 'products.tree_quantity AS product_tree_quantity'),
+                DB::raw( 'products.img AS product_image_black'),
+                DB::raw( 'products.secondary_img AS product_image_white'),
+                DB::raw( 'products.img_android AS product_background'),
+                DB::raw( 'products.simulation_img AS product_simulation'),
+                DB::raw( 'products.description AS product_description'),
+                DB::raw( 'products.tree_quantity * trees.price AS product_price'),
+                DB::raw( '
+                    (
+                        CASE 
+                            WHEN products.has_certificate = "1" 
+                            THEN "true" 
+                            ELSE "false" 
+                            END
+                        ) AS product_has_certificate')
+            )
+            ->get();
         return response()->json([
             'token' => $this->token,
             'request_code' => 200,
             'result_code' => 4,
-            'data' => Product::all(),
+            'product_list' => $products,
         ]);
     }
 
-    public function getOrder(Order $order)
-    {
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'result_code' => 4,
-            'data' => $order,
-        ]);
-    }
-
-    public function getOrderUpdate(Order $order)
-    {
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'data' => $order->updates()->get(),
-            'result_code' => 4,
-        ]);
-    }
-
+    /**
+     * return all provinces
+     * @return Illuminate\Http\Response
+     */
     public function getProvinces()
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => Province::all(),
+            'province_list' => Province::all(),
         ]);
     }
 
+    /**
+     * get province detail based on province id
+     * @return Illuminate\Http\Response
+     */
     public function getProvinceDetail(Province $province)
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => $province,
+            'province_detail' => $province,
         ]);
     }
 
+    /**
+     * get city list based on province id
+     * @return Illuminate\Http\Response
+     */
     public function getCities(Province $province)
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => $province->cities()->get(),
+            'city_list' => $province->cities()->get(),
         ]);
     }
 
+    /**
+     * get city detail based on city id
+     * @return Illuminate\Http\Response
+     */
     public function getCityDetail(Cities $city)
     {
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'data' => $city,
+            'city_detail' => $city,
+        ]);
+    }
+
+    /**
+     * get latest user activity
+     * @return Illuminate\Http\Response
+     */
+    public function databaseStatus()
+    {
+        $lastProduct = Product::latest()->first();
+
+        $lastDescription = Description::latest()->first();
+
+        return response()->json([
+            'request_code' => 200,
+            'db_status' => [
+                'product_last_update' => $lastProduct->updated_at->format('d m Y h:i:s'),
+                'description_last_update' => $lastDescription->created_at->format('d m Y h:i:s')
+            ]
         ]);
     }
 }
