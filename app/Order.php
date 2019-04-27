@@ -12,7 +12,6 @@ class Order extends Model
       'token',
       'product_id',
       'location_id',
-      'quantity',
       'ip_address',
       'status',
       'selling_price',
