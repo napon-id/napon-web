@@ -38,7 +38,7 @@ Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail'
 
 // Article Api
 Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.top');
-Route::get('articles', 'ApiController@geArticle')->name('api.articles');
+Route::get('articles', 'ApiController@getArticle')->name('api.articles');
 Route::get('articles/{id}', 'ApiController@getArticleDetail')->name('api.articles.detail');
 
 // Banner Api

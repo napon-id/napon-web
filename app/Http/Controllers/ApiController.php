@@ -335,7 +335,7 @@ class ApiController extends Controller
      */
     public function getTopArticle()
     {
-        $articles = Article::orderBy('statistic', 'desc')->get(5);
+        $articles = Article::orderBy('statistic', 'desc')->paginate(5);
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
@@ -348,9 +348,12 @@ class ApiController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function getArticles()
+    public function getArticle()
     {
-        $articles = Article::get()->paginate(5);
+        $articles = DB::table('articles')
+            ->select('articles.*')
+            ->paginate(5);
+
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
@@ -365,12 +368,12 @@ class ApiController extends Controller
      */
     public function getArticleDetail($id)
     {
-        $article = Article::find($id);
+        $article = Article::findOrFail($id);
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
             'article' => $article, [
-                'article_detail' => $article->articleDetails()
+                'article_detail' => $article->articleDetails()->get()
             ]           
         ]);
     }
