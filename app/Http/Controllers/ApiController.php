@@ -14,6 +14,7 @@ use App\Cities;
 use App\Http\Controllers\Traits\Firebase;
 use App\Description;
 use App\Article;
+use App\Banner;
 
 class ApiController extends Controller
 {
@@ -363,4 +364,25 @@ class ApiController extends Controller
 
     // TODO: make model, migration for Banner
     // TODO: make method for Banner
+    /**
+     * get banners
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getBanner()
+    {
+        $banners = DB::table('banners')
+            ->select(
+                DB::raw( 'banners.id AS banner_id'),
+                DB::raw( 'banners.img AS banner_image'),
+                DB::raw( 'banners.description AS banner_description')
+            )
+            ->get();
+
+        return response()->json([
+            'request_code' => 200,
+            'result_code' => 4,
+            'banner_list' => $banners
+        ]);
+    }
 }

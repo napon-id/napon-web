@@ -41,6 +41,9 @@ Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.to
 Route::get('articles', 'ApiController@geArticle')->name('api.articles');
 Route::get('articles/{id}', 'ApiController@getArticleDetail')->name('api.articles.detail');
 
+// Banner Api
+Route::get('banners', 'ApiController@getBanner')->name('api.banners');
+
 /**
  * Route group based on auth:api middleware
  */
