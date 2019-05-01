@@ -47,10 +47,10 @@ Route::get('banners', 'ApiController@getBanner')->name('api.banners');
 /**
  * Route group based on auth:api middleware
  */
-Route::group(['middleware' => 'auth:api'], function () {    
+// Route::group(['middleware' => 'auth:api'], function () {    
     // User Api
     Route::get('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
     Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
     Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
     Route::get('user/orders/{token}', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
-});
+// });

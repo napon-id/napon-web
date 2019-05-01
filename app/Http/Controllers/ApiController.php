@@ -170,8 +170,8 @@ class ApiController extends Controller
      */
     public function getUserOrder()
     {
-        $email = request()->user()->getEmail();
-        // $email = 'akunbaru@mailinator.com';
+        // $email = request()->user()->getEmail();
+        $email = 'akunbaru@mailinator.com';
         $user = User::where('email', '=', $email)->first();
 
         $orders = DB::table( 'users')
@@ -180,16 +180,65 @@ class ApiController extends Controller
             ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
             ->select(
                 DB::raw( 'orders.token AS user_product_key'),
-                DB::raw( 'products.name AS product_name'),
-                DB::raw( 'products.img AS product_image_black'),
                 DB::raw( 'products.created_at AS user_product_start_date'),
                 DB::raw( 'locations.location AS user_product_location'),
                 DB::raw( 'orders.updated_at AS user_product_harvest_date'),
-                DB::raw( 'orders.status AS user_product_is_ready_to_harvest'),
-                DB::table('order_details')
+                DB::raw( 'orders.status AS user_product_is_ready_to_harvest')
             )
             ->where('users.email', '=', $email)
             ->get();
+        
+        foreach ($orders as $order) {
+            $order_id = DB::table('orders')
+                ->select('orders.*')
+                ->where('orders.token', '=', $order->user_product_key)
+                ->first();
+            
+            $product = DB::table('products')
+                ->select(
+                    DB::raw( 'products.name AS product_name'),
+                    DB::raw( 'products.img AS product_image_black')
+                )
+                ->where('products.id', '=', $order_id->product_id)
+                ->first();
+            $order->product = $product;
+
+            $reports = DB::table('reports')
+                ->select(
+                    DB::raw( 'reports.id AS report_key'),
+                    DB::raw( 'reports.period AS report_period'),
+                    DB::raw( 'reports.start_date AS report_start_date'),
+                    DB::raw( 'reports.end_date AS report_end_date'),
+                    DB::raw( 'reports.tree_height AS report_tree_height'),
+                    DB::raw( 'reports.tree_diameter AS report_tree_diameter'),
+                    DB::raw( 'reports.tree_state AS report_tree_state'),
+                    DB::raw( 'reports.weather AS report_weather'),
+                    DB::raw( 'reports.roi AS report_roi')
+                )
+                ->where('reports.order_id', '=', $order_id->id)
+                ->get();
+            
+            foreach ($reports as $report) {
+                $displays = DB::table('displays')
+                    ->select(
+                        DB::raw( '
+                            (
+                                CASE 
+                                    WHEN displays.is_video IS NULL 
+                                    THEN "false" 
+                                    ELSE "true" 
+                                    END
+                                ) AS video'),
+                        DB::raw('displays.display_url AS display_url')
+                    )
+                    ->where('displays.report_id', '=', $report->id)
+                    ->get();
+                
+                $report->display_list = $displays;
+            }
+
+            $order->report_list = $reports;
+        }
 
         return response()->json([
             'token' => $this->token,
@@ -238,9 +287,9 @@ class ApiController extends Controller
                 DB::raw( 'products.img_android AS product_background'),
                 DB::raw( 'products.simulation_img AS product_simulation'),
                 DB::raw( 'products.description AS product_description'),
-                DB::raw( 'products.tree_quantity * trees.price AS product_price'),
+                DB::raw( 'CAST(products.tree_quantity AS unsigned) * CAST(trees.price AS unsigned) AS product_price'),
                 DB::raw( '
-                    (
+                (
                         CASE 
                             WHEN products.has_certificate = "1" 
                             THEN "true" 
@@ -322,8 +371,8 @@ class ApiController extends Controller
         return response()->json([
             'request_code' => 200,
             'db_status' => [
-                'product_last_update' => $lastProduct->updated_at->format('d m Y h:i:s'),
-                'description_last_update' => $lastDescription->created_at->format('d m Y h:i:s')
+                'product_last_update' => $lastProduct->updated_at->format('Y-m-d h:i:s'),
+                'description_last_update' => $lastDescription->created_at->format('Y-m-d h:i:s')
             ]
         ]);
     }
