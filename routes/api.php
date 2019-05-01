@@ -36,6 +36,11 @@ Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.
 Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
 Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');
 
+// Article Api
+Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.top');
+Route::get('articles', 'ApiController@geArticle')->name('api.articles');
+Route::get('articles/{id}', 'ApiController@getArticleDetail')->name('api.articles.detail');
+
 /**
  * Route group based on auth:api middleware
  */

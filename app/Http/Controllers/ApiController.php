@@ -13,6 +13,7 @@ use App\Province;
 use App\Cities;
 use App\Http\Controllers\Traits\Firebase;
 use App\Description;
+use App\Article;
 
 class ApiController extends Controller
 {
@@ -312,4 +313,54 @@ class ApiController extends Controller
             ]
         ]);
     }
+
+    /**
+     * get top article
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getTopArticle()
+    {
+        $articles = Article::orderBy('statistic', 'desc')->get(5);
+        return response()->json([
+            'result_code' => 4,
+            'request_code' => 200,
+            'article_list' => $articles
+        ]);
+    }
+
+    /**
+     * get all article
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getArticles()
+    {
+        $articles = Article::get()->paginate(5);
+        return response()->json([
+            'result_code' => 4,
+            'request_code' => 200,
+            'article_list' => $articles
+        ]);
+    }
+
+    /**
+     * get specific article and deails
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getArticleDetail($id)
+    {
+        $article = Article::find($id);
+        return response()->json([
+            'result_code' => 4,
+            'request_code' => 200,
+            'article' => $article, [
+                'article_detail' => $article->articleDetails()
+            ]           
+        ]);
+    }
+
+    // TODO: make model, migration for Banner
+    // TODO: make method for Banner
 }
