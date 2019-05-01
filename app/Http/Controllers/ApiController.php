@@ -61,16 +61,16 @@ class ApiController extends Controller
      */
     public function getUserDetail()
     {
-        $email = request()->user()->getEmail();
-        // $email = 'akunbaru@mailinator.com';
+        // $email = request()->user()->getEmail();
+        $email = 'akunbaru@mailinator.com';
 
         $user = DB::table('users')
             ->leftJoin( 'user_informations', 'users.id', '=', 'user_informations.user_id')
-            ->join('cities', 'cities.id', '=', 'user_informations.city')
-            ->join('provinces', 'provinces.id', '=', 'cities.province_id')
-            ->join('orders', 'orders.user_id', '=', 'users.id')
-            ->join('products', 'products.id', '=', 'orders.product_id')
-            ->join('trees', 'trees.id', '=', 'products.tree_id')
+            ->leftJoin('cities', 'cities.id', '=', 'user_informations.city')
+            ->leftJoin('provinces', 'provinces.id', '=', 'cities.province_id')
+            ->leftJoin('orders', 'orders.user_id', '=', 'users.id')
+            ->leftJoin('products', 'products.id', '=', 'orders.product_id')
+            ->leftJoin('trees', 'trees.id', '=', 'products.tree_id')
             ->leftJoin('balances', 'balances.id', '=', 'users.id')
             ->select(
                 DB::raw( 'users.name AS user_name'),
@@ -114,6 +114,19 @@ class ApiController extends Controller
                 'user_informations.id'
             )
             ->first();
+
+        $banks = DB::table('users')
+            ->rightJoin('accounts', 'accounts.user_id', '=', 'users.id')
+            ->select(
+                DB::raw('accounts.name AS user_bank_name'),
+                DB::raw('accounts.number AS user_bank_account_number'),
+                DB::raw('accounts.account_code AS user_bank_account_code'),
+                DB::raw('accounts.number AS user_bank_account_name')
+            )
+            ->where('users.email', '=', $email)
+            ->get();
+            
+        $user->user_banks = $banks;
 
         return response()->json([
             'token' => $this->token,
