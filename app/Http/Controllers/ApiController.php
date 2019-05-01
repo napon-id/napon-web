@@ -360,4 +360,7 @@ class ApiController extends Controller
             ]           
         ]);
     }
+
+    // TODO: make model, migration for Banner
+    // TODO: make method for Banner
 }
