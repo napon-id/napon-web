@@ -14,43 +14,55 @@ use Illuminate\Http\Request;
 */
 
 // Authentication process
-Route::get('/auth', function (Request $request) {
-    return (array) $request->bearerToken();
-})->middleware('auth:api');
+// Route::get('/auth', function (Request $request) {
+    //     return (array) $request->bearerToken();
+    // })->middleware('auth:api');
+    
+    // Register Api
+    Route::post('register', 'ApiController@register')->name('api.register');
+    
+    // Faq Api
+    Route::get('faq', 'ApiController@getFaq')->name('api.faq');
+    
+    // Product Api
+    Route::get('products', 'ApiController@getProduct')->name('api.product');
+    
+    // Description Api
+    Route::get('descriptions', 'ApiController@getDescription')->name('api.description');
+    
+    //Database Status
+    Route::get('database_status', 'ApiController@databaseStatus')->name('api.database.status');
+    
+    // Provinces Cities Api
+    Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
+    Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
+    Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
+    Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');
+    
+    // Article Api
+    Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.top');
+    Route::get('articles', 'ApiController@getArticle')->name('api.articles');
+    Route::get('articles/{id}', 'ApiController@getArticleDetail')->name('api.articles.detail');
+    
+    // Banner Api
+    Route::get('banners', 'ApiController@getBanner')->name('api.banners');
+    
+    // Order detail
+    Route::get('user/orders/{token}', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
 
-// Faq Api
-Route::get('faq', 'ApiController@getFaq')->name('api.faq');
-
-// Product Api
-Route::get('products', 'ApiController@getProduct')->name('api.product');
-
-// Description Api
-Route::get('descriptions', 'ApiController@getDescription')->name('api.description');
-
-//Database Status
-Route::get('database_status', 'ApiController@databaseStatus')->name('api.database.status');
-
-// Provinces Cities Api
-Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
-Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
-Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
-Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');
-
-// Article Api
-Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.top');
-Route::get('articles', 'ApiController@getArticle')->name('api.articles');
-Route::get('articles/{id}', 'ApiController@getArticleDetail')->name('api.articles.detail');
-
-// Banner Api
-Route::get('banners', 'ApiController@getBanner')->name('api.banners');
-
-/**
- * Route group based on auth:api middleware
- */
+    /**
+     * Route group based on auth:api middleware
+     */
 // Route::group(['middleware' => 'auth:api'], function () {    
+    // Auth
+    Route::post('auth', 'ApiController@auth')->name('api.auth');
     // User Api
     Route::get('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
     Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
     Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
-    Route::get('user/orders/{token}', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
 // });
+Route::get('check', 'ApiController@check');
+
+Route::get('getter', function (Request $request) {
+    return response()->json($request);
+});

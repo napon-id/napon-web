@@ -9,12 +9,18 @@ use App\Faq;
 use App\Province;
 use App\Cities;
 use App\Http\Controllers\Traits\Firebase;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
 use App\Description;
 use App\Article;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    use Firebase;
+    /**
+     * use App\Http\Controllers\Traits\Firebase
+     */
+    use Firebase, RegistersUsers;
 
     /**
      * Controller constructor
@@ -22,9 +28,90 @@ class ApiController extends Controller
     public function __construct()
     {
         // $this->email = request()->user()->getEmail();
-        $this->token = request()->bearerToken();
+        // $this->token = request()->bearerToken();
     }
 
+    public function check(Request $request)
+    {
+        $user = $this->userDetail($request->uid);
+
+        return $user->email;
+    }
+
+    /**
+     * auth process. Create new user if authenticated user from firebase
+     * does not has account on yet
+     * 
+     * @return Illuminate\Support\Facades\Request
+     */
+    public function auth(Request $request)
+    {
+        $message = '';
+
+        $email = $request->email;
+        // $email = request()->user()->getEmail();
+
+        $user = User::where('email', '=', $email)->count();
+
+        $password = $request->password ?? 'abcdef123456';
+
+        if ($user < 1) {
+            $createdUser = User::create([
+                'name' => $email,
+                'email' => $email,
+                'password' => Hash::make($password)
+            ]);
+
+            if ($createdUser) {
+                $createdUser->sendEmailVerificationNotification();
+            }
+
+            $message = 'User created successfully';
+        } else {
+            $message = 'User already has an account';
+        }
+
+        return response()->json([
+            $message
+        ]);
+    }
+
+    /**
+     * register user through Api Post
+     */
+    public function register(Request $request)
+    {
+        $message = '';
+
+        if (!empty($request->name) && !empty($request->email) && !empty($request->password)) {
+            $createdUser = User::where('email', '=', $request->email)->count();
+            if ($createdUser > 0) {
+                return response()->json([
+                    'User already registered'
+                ]);
+            }
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+
+            if ($user) {
+                $this->createUserFromFirebase($request->name, $request->email, $request->password);
+                $user->sendEmailVerificationNotification();
+            }
+
+            $message = 'User created';
+
+        } else {
+            $message = 'User not created';
+        }
+
+        return response()->json([
+            $message
+        ]);
+    }
+    
     /**
      * return Faq
      * @return Illuminate\Http\Response
@@ -55,10 +142,11 @@ class ApiController extends Controller
      * get user detail based on email
      * @return Illuminate\Http\Response
      */
-    public function getUserDetail()
+    public function getUserDetail(Request $request)
     {
-        // $email = request()->user()->getEmail();
-        $email = 'akunbaru@mailinator.com';
+        $user = $this->userDetail($request->uid);
+        $email = $user->email;
+        // $email = 'akunbaru@mailinator.com';
 
         $user = DB::table('users')
             ->leftJoin( 'user_informations', 'users.id', '=', 'user_informations.user_id')
@@ -133,41 +221,16 @@ class ApiController extends Controller
     }
 
     /**
-     * get user banks based on email
-     * @return Illuminate\Http\Response
-     */
-    public function getUserBank()
-    {
-        $email = request()->user()->getEmail();
-        // $email = 'akunbaru@mailinator.com';
-
-        $banks = DB::table( 'users')
-            ->rightJoin('accounts', 'accounts.user_id', '=', 'users.id')
-            ->select(
-                DB::raw( 'accounts.name AS user_bank_name'),
-                DB::raw( 'accounts.number AS user_bank_account_number'),
-                DB::raw( 'accounts.account_code AS user_bank_account_code'),
-                DB::raw('accounts.number AS user_bank_account_name')
-            )
-            ->where('users.email', '=', $email)
-            ->get();
-        
-        return response()->json([
-            'token' => $this->token,
-            'request_code' => 200,
-            'data' => $banks,
-            'result_code' => 4
-        ]);
-    }
-
-    /**
      * get user orders based on email
      * @return Illuminate\Http\Response
      */
-    public function getUserOrder()
+    public function getUserOrder(Request $request)
     {
+        $user = $this->userDetail($request->uid);
+        $email = $user->email;
         // $email = request()->user()->getEmail();
-        $email = 'akunbaru@mailinator.com';
+        // $email = 'akunbaru@mailinator.com';
+
         $user = User::where('email', '=', $email)->first();
 
         $orders = DB::table( 'users')

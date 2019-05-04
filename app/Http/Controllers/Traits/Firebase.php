@@ -17,10 +17,10 @@ trait Firebase
         return $auth;
     }
 
-    public function userDetail($email)
+    public function userDetail($uid)
     {
         $auth = $this->initialize();
-        $user = $auth->getUserByEmail($email);
+        $user = $auth->getUser($uid);
         
         return $user;
     }

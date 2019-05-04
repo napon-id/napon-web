@@ -1,24 +1,27 @@
+<!-- <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script> -->
 <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
     // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyAqFVyrPZuPN19_JTxGmgEA0uBBsoZpXqQ",
-        authDomain: "napon-ce32c.firebaseapp.com",
-        databaseURL: "https://napon-ce32c.firebaseio.com",
-        projectId: "napon-ce32c",
-        storageBucket: "napon-ce32c.appspot.com",
-        messagingSenderId: "429643042573"
+    var firebaseConfig = {
+        apiKey: "AIzaSyD4aGcBRxe8uaNA5tQyyeUklPTBogAI-SY",
+        authDomain: "napon-ee0b6.firebaseapp.com",
+        databaseURL: "https://napon-ee0b6.firebaseio.com",
+        projectId: "napon-ee0b6",
+        storageBucket: "napon-ee0b6.appspot.com",
+        messagingSenderId: "1088632750476",
+        appId: "1:1088632750476:web:64fb9f52a2b10813"
     };
-    firebase.initializeApp(config);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
     signin();
     // getFaq();
     // getUserDetail();
 
     async function signin() {
         console.log('signing in');
-        let creds = await firebase.auth().signInWithEmailAndPassword('lorem@mailinator.com', 'katakunci');
+        let creds = await firebase.auth().signInWithEmailAndPassword('ipsum123@mailinator.com', 'katakunci123');
         console.log({
             creds
         });
@@ -31,8 +34,10 @@
             Authorization: 'Bearer ' + token
         };
         console.log(headers);
-        let me = await axios.get('/api/me', { headers });
-        console.log({ me });
+        let me = await axios.post('/api/auth?email=ipsum123@mailinator.com', {headers});
+        console.log({
+            me
+        });
     }
 
     async function getFaq() {
