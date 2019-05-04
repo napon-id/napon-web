@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FaqTableSeeder::class);
         $this->call(ProvinceTableSeeder::class);
         $this->call(CityTableSeeder::class);
+        $this->call(DescriptionTableSeeder::class);
+        $this->call(BannerTableSeeder::class);
     }
 }

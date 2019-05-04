@@ -12,22 +12,33 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        // insert user with admin role
-        User::create([
-              'name' => 'admin',
-              'email' => 'admin@mail.com',
-              'password' => bcrypt('katakunci'),
-              'email_verified_at' => now(),
-              'role' => 'admin',
-        ]);
-        
-        // insert user again with user role
-        User::create([
-            'name' => 'user',
-            'email' => 'user@mail.com',
-            'password' => bcrypt('katakunci'),
-            'email_verified_at' => now(),
-            'role' => 'user',
-        ]);
+        try {
+            foreach ($this->items() as $item) {
+                User::updateOrCreate($item);
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+    public function items(): array
+    {
+        return [
+            // insert user with admin role
+            [
+                  'name' => 'admin',
+                  'email' => 'admin@mail.com',
+                  'password' => bcrypt('katakunci'),
+                  'email_verified_at' => now(),
+                  'role' => 'admin',
+            ],
+            // insert user again with user role
+            [
+                'name' => 'user',
+                'email' => 'user@mail.com',
+                'password' => bcrypt('katakunci'),
+                'email_verified_at' => now(),
+                'role' => 'user',
+            ]
+        ];
     }
 }

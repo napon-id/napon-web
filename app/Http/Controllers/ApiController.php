@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Tree;
 use App\Product;
 use App\User;
-use App\Order;
 use DB;
 use App\Faq;
 use App\Province;
@@ -14,7 +11,6 @@ use App\Cities;
 use App\Http\Controllers\Traits\Firebase;
 use App\Description;
 use App\Article;
-use App\Banner;
 
 class ApiController extends Controller
 {
