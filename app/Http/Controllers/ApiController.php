@@ -72,7 +72,7 @@ class ApiController extends Controller
         }
 
         return response()->json([
-            $message
+            'message' => $message
         ]);
     }
 
@@ -108,7 +108,7 @@ class ApiController extends Controller
         }
 
         return response()->json([
-            $message
+            'message' => $message
         ]);
     }
     
@@ -213,7 +213,6 @@ class ApiController extends Controller
         $user->user_banks = $banks;
 
         return response()->json([
-            'token' => $this->token,
             'request_code' => 200,
             'data' => $user,
             'result_code' => 4,
@@ -300,7 +299,6 @@ class ApiController extends Controller
         }
 
         return response()->json([
-            'token' => $this->token,
             'request_code' => 200,
             'result_code' => 4,
             'data' => $orders,
@@ -326,7 +324,6 @@ class ApiController extends Controller
         }
 
         return response()->json([
-            'token' => $this->token,
             'request_code' => 200,
             'result_code' => 4,
             'data' => $details
@@ -358,7 +355,6 @@ class ApiController extends Controller
             )
             ->get();
         return response()->json([
-            'token' => $this->token,
             'request_code' => 200,
             'result_code' => 4,
             'product_list' => $products,
