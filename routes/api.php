@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
     //     return (array) $request->bearerToken();
     // })->middleware('auth:api');
     
+    // Login Api
+    Route::post('login', 'ApiController@login')->name('api.login');
+
     // Register Api
     Route::post('register', 'ApiController@register')->name('api.register');
     

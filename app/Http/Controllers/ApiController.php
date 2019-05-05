@@ -77,40 +77,99 @@ class ApiController extends Controller
     }
 
     /**
+     * login user through Api Post
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $message = '';
+        $resultCode = 0;
+        $userKey = NULL;
+
+        if (!empty($request->user_email) && !empty($request->user_password)) {
+            $email = $request->user_email;
+            $password = $request->user_password;
+
+            $auth = User::where('email', '=', $email)->first();
+            if (!empty($auth)) {
+                $checkPassword = Hash::check($password, $auth->password);
+
+                if ($checkPassword) {
+                    $resultCode = 4;
+                    $message = 'Login Success';
+                    $userKey = $auth->id;
+                } else {
+                    $resultCode = 1;
+                    $message = 'Login failed, wrong email or password';
+                }
+            } else {
+                $resultCode = 2;
+                $message = 'User account not found';
+            }
+        } else {
+            $resultCode = 2;
+            $message = 'User account not found';
+        }
+
+        return response()->json([
+            'result_code' => $resultCode,
+            'request_code' => 200,
+            'message' => $message,
+            'user_key' => $userKey
+        ]);
+    }
+
+    /**
      * register user through Api Post
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
      */
     public function register(Request $request)
     {
         $message = '';
+        $resultCode = 0;
 
-        if (!empty($request->name) && !empty($request->email) && !empty($request->password)) {
-            $createdUser = User::where('email', '=', $request->email)->count();
+        if (!empty($request->user_name) && !empty($request->user_email) && !empty($request->user_password)) {
+            $createdUser = User::where('email', '=', $request->user_email)->count();
             if ($createdUser > 0) {
-                return response()->json([
-                    'User already registered'
+                $message = 'User already registered';
+                $resultCode = 6;
+            } else {
+                $user = User::create([
+                    'name' => $request->user_name,
+                    'email' => $request->user_email,
+                    'password' => Hash::make($request->user_password)
                 ]);
+
+                if ($user) {
+                    $user->sendEmailVerificationNotification();
+                    $message = 'Register Successful';
+                    $resultCode = 5;
+                }
             }
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
-
-            if ($user) {
-                $this->createUserFromFirebase($request->name, $request->email, $request->password);
-                $user->sendEmailVerificationNotification();
-            }
-
-            $message = 'User created';
-
         } else {
-            $message = 'User not created';
+            $message = 'Register failed';
+            $resultCode = 6;
         }
 
         return response()->json([
-            'message' => $message
+            'result_code' => $resultCode,
+            'request_code' => 200,
+            'message' => $message,
+            'user_data' => [
+                'user_key' => $user->id ?? NULL,
+                'user_email' => $user->email ?? NULL,
+                'user_name' => $user->name ?? NULL
+            ]
         ]);
     }
+
+    // TODO: Add getUserEmail and check data from firebase-uid or user_id
     
     /**
      * return Faq
@@ -482,8 +541,6 @@ class ApiController extends Controller
         ]);
     }
 
-    // TODO: make model, migration for Banner
-    // TODO: make method for Banner
     /**
      * get banners
      * 
@@ -504,5 +561,26 @@ class ApiController extends Controller
             'result_code' => 4,
             'banner_list' => $banners
         ]);
+    }
+
+    /**
+     * get User key
+     * 
+     * @param App\User
+     * 
+     * @return (array) key
+     */
+    protected function getUserKey(User $user)
+    {
+        $key = [];
+        if ($user->firebase_uid != NULL) {
+            $key['userKey'] = $user->firebase_uid; 
+            $key['is_firebase'] = true;
+        } else {
+            $key['userKey'] = $user->id;
+            $key['is_firebase'] = false;
+        }
+
+        return $key;
     }
 }
