@@ -203,9 +203,17 @@ class ApiController extends Controller
      */
     public function getUserDetail(Request $request)
     {
-        $user = $this->userDetail($request->uid);
-        $email = $user->email;
-        // $email = 'akunbaru@mailinator.com';
+        $email = $this->getUserEmail((string) $request->user_key);
+
+        if ($email == 'User not found') {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
 
         $user = DB::table('users')
             ->leftJoin( 'user_informations', 'users.id', '=', 'user_informations.user_id')
@@ -582,5 +590,27 @@ class ApiController extends Controller
         }
 
         return $key;
+    }
+
+    /**
+     * get User email from User key
+     * 
+     * @param (string) user_key
+     * 
+     * @return (string) email
+     */
+    protected function getUserEmail(string $user_key)
+    {
+        $user = User::where('firebase_uid', '=', $user_key)->first();
+
+        if (!$user) {
+            $user = User::find((integer) $user_key);
+        }
+
+        if (!$user) {
+            return 'User not found';
+        } else {
+            return (string) $user->email;
+        }
     }
 }
