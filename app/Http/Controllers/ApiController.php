@@ -205,7 +205,7 @@ class ApiController extends Controller
     {
         $email = $this->getUserEmail((string) $request->user_key);
 
-        if ($email == 'User not found') {
+        if ($email == '') {
             return response()->json([
                 'result_code' => 2,
                 'request_code' => 200,
@@ -226,6 +226,7 @@ class ApiController extends Controller
             ->select(
                 DB::raw( 'users.name AS user_name'),
                 DB::raw( 'users.email AS user_email'),
+                DB::raw( 'user_informations.user_image AS user_image'),
                 DB::raw( 'user_informations.born_place AS user_birth_place'),
                 DB::raw( 'user_informations.born_date AS user_birth_date'),
                 DB::raw( 'user_informations.gender    AS user_sex'),
@@ -243,7 +244,7 @@ class ApiController extends Controller
                 DB::raw( 'provinces.name AS user_state'),
                 DB::raw( 'user_informations.postal_code AS user_zip_code'),
                 DB::raw( 'user_informations.ktp AS user_id_number'),
-                DB::raw( 'user_informations.user_image AS user_id_image'),
+                DB::raw( 'user_informations.user_id_image AS user_id_image'),
                 DB::raw( 'SUM(products.tree_quantity) AS user_total_tree'),
                 DB::raw( 'users.created_at AS user_join_date'),
                 DB::raw( 'balances.balance AS user_balance'),
@@ -283,6 +284,73 @@ class ApiController extends Controller
             'request_code' => 200,
             'data' => $user,
             'result_code' => 4,
+        ]);
+    }
+
+    /**
+     * update user data
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function updateUserDetail(Request $request)
+    {
+        /**
+         * request param && mapping
+         * - user_name => user->name
+         * - user_image => userInformation->user_image
+         * - user_birth_place => userInformation->born_place
+         * - user_sex => userInformation->gender
+         * - user_phone => userInformation->phone
+         * - user_address => userInformation->address
+         * - user_city => userInformation->city
+         * - user_state => userInformation->province
+         * - user_zip_code => userInformation->postal_code
+         * - user_id_number => userInformation->ktp
+         * - user_id_image => userInformation->user_id_image
+         *  
+         */
+        $email = $this->getUserEmail((string) $request->user_key);
+
+        if ($email == '') {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
+
+        $user = User::where('email', $email)->first();
+
+        $user->update([
+            'name' => $request->user_name ?? $user->name
+        ]);
+        
+        $userInformation = $user->userInformation()->first();
+        
+        $userInformation->update([
+            'user_image' => $request->user_image ?? $userInformation->user_image,
+            'born_place' => $request->user_birth_place ?? $userInformation->born_place,
+            'born_date' => $request->user_born_date ?? $userInformation->born_date,
+            'gender' => $request->user_sex ?? $userInformation->gender,
+            'phone' => $request->user_phone ?? $userInformation->phone,
+            'address' => $request->user_address ?? $userInformation->address,
+            'city' => $request->user_city ?? $userInformation->city,
+            'province' => $request->user_state ?? $userInformation->province,
+            'postal_code' => $request->user_zip_code ?? $userInformation->postal_code,
+            'ktp' => $request->user_id_number ?? $userInformation->ktp,
+            'user_id_image' => $request->user_id_image ?? $userInformation->user_id_image
+        ]);
+
+        return response()->json([
+            'result_code' => 3,
+            'request_code' => 200,
+            'data' => [
+                'message' => 'There is change on user profile, update user local data'
+            ]
         ]);
     }
 
@@ -608,7 +676,7 @@ class ApiController extends Controller
         }
 
         if (!$user) {
-            return 'User not found';
+            return '';
         } else {
             return (string) $user->email;
         }

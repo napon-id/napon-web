@@ -63,6 +63,7 @@ use Illuminate\Http\Request;
     Route::post('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
     Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
     Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
+    Route::post('user/update', 'ApiController@updateUserDetail')->name('api.user.update');
 // });
 Route::get('check', 'ApiController@check');
 

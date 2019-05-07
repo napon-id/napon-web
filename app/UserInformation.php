@@ -25,7 +25,9 @@ class UserInformation extends Model
 		'gender',
 		'city',
 		'province',
-		'postal_code',
+        'postal_code',
+        'user_image',
+        'user_id_image'
 	];
 
     public function user()
