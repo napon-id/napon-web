@@ -86,7 +86,7 @@ class ApiController extends Controller
                 if ($checkPassword) {
                     $resultCode = 4;
                     $message = 'Login Success';
-                    $userKey = $auth->id;
+                    $userKey = base64_encode($auth->email);
                 } else {
                     $resultCode = 1;
                     $message = 'Login failed, wrong email or password';
@@ -209,7 +209,8 @@ class ApiController extends Controller
             $user = User::create([
                 'name' => $email,
                 'email' => $email,
-                'password' => Hash::make('katakunci123')
+                'password' => Hash::make('katakunci123'),
+                'firebase_uid' => (string) $request->user_key
             ]);
 
             if ($user) {
