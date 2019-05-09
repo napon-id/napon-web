@@ -25,44 +25,6 @@ class ApiController extends Controller
     use Firebase, RegistersUsers;
 
     /**
-     * auth process. Create new user if authenticated user from firebase
-     * does not has account on yet
-     * 
-     * @return Illuminate\Support\Facades\Request
-     */
-    // public function auth(Request $request)
-    // {
-    //     $message = '';
-
-    //     $email = $request->email;
-    //     // $email = request()->user()->getEmail();
-
-    //     $user = User::where('email', '=', $email)->count();
-
-    //     $password = $request->password ?? 'abcdef123456';
-
-    //     if ($user < 1) {
-    //         $createdUser = User::create([
-    //             'name' => $email,
-    //             'email' => $email,
-    //             'password' => Hash::make($password)
-    //         ]);
-
-    //         if ($createdUser) {
-    //             $createdUser->sendEmailVerificationNotification();
-    //         }
-
-    //         $message = 'User created successfully';
-    //     } else {
-    //         $message = 'User already has an account';
-    //     }
-
-    //     return response()->json([
-    //         'message' => $message
-    //     ]);
-    // }
-
-    /**
      * login user through Api Post
      * 
      * @param Illuminate\Http\Request
@@ -580,9 +542,21 @@ class ApiController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function getTopArticle()
+    public function getTopArticle(Request $request)
     {
-        $articles = Article::orderBy('statistic', 'desc')->paginate(5);
+        if ($request->has('page')) {
+            $page = $request->page;
+            if ($request->has('count_per_page')) {
+                $dataPerPage = $request->data_per_page;
+            } else {
+                $dataPerPage = 5;
+            }
+            $offset = ($page - 1) * $dataPerPage;
+            $articles = Article::orderBy('statistic', 'desc')->limit($dataPerPage)->offset($offset)->get();
+        } else {
+            $articles = Article::orderBy('statistic', 'desc')->get();
+        }
+
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
@@ -595,11 +569,20 @@ class ApiController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function getArticle()
+    public function getArticle(Request $request)
     {
-        $articles = DB::table('articles')
-            ->select('articles.*')
-            ->paginate(5);
+        if ($request->has('page')) {
+            $page = $request->page;
+            if ($request->has('count_per_page')) {
+                $dataPerPage = $request->data_per_page;
+            } else {
+                $dataPerPage = 5;
+            }
+            $offset = ($page - 1) * $dataPerPage;
+            $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get();
+        } else {
+            $articles = Article::orderBy('id', 'asc')->get();
+        }
 
         return response()->json([
             'result_code' => 4,
@@ -616,12 +599,13 @@ class ApiController extends Controller
     public function getArticleDetail($id)
     {
         $article = Article::findOrFail($id);
+
+        $article->article_detail = $article->articleDetails()->get(['title AS sub_title', 'img AS sub_image', 'description AS sub_description']);
+
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'article' => $article, [
-                'article_detail' => $article->articleDetails()->get()
-            ]           
+            'article' => $article
         ]);
     }
 
