@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Description;
 use App\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use function GuzzleHttp\json_encode;
 
 class ApiController extends Controller
 {
@@ -23,58 +25,42 @@ class ApiController extends Controller
     use Firebase, RegistersUsers;
 
     /**
-     * Controller constructor
-     */
-    public function __construct()
-    {
-        // $this->email = request()->user()->getEmail();
-        // $this->token = request()->bearerToken();
-    }
-
-    public function check(Request $request)
-    {
-        $user = $this->userDetail($request->uid);
-
-        return $user->email;
-    }
-
-    /**
      * auth process. Create new user if authenticated user from firebase
      * does not has account on yet
      * 
      * @return Illuminate\Support\Facades\Request
      */
-    public function auth(Request $request)
-    {
-        $message = '';
+    // public function auth(Request $request)
+    // {
+    //     $message = '';
 
-        $email = $request->email;
-        // $email = request()->user()->getEmail();
+    //     $email = $request->email;
+    //     // $email = request()->user()->getEmail();
 
-        $user = User::where('email', '=', $email)->count();
+    //     $user = User::where('email', '=', $email)->count();
 
-        $password = $request->password ?? 'abcdef123456';
+    //     $password = $request->password ?? 'abcdef123456';
 
-        if ($user < 1) {
-            $createdUser = User::create([
-                'name' => $email,
-                'email' => $email,
-                'password' => Hash::make($password)
-            ]);
+    //     if ($user < 1) {
+    //         $createdUser = User::create([
+    //             'name' => $email,
+    //             'email' => $email,
+    //             'password' => Hash::make($password)
+    //         ]);
 
-            if ($createdUser) {
-                $createdUser->sendEmailVerificationNotification();
-            }
+    //         if ($createdUser) {
+    //             $createdUser->sendEmailVerificationNotification();
+    //         }
 
-            $message = 'User created successfully';
-        } else {
-            $message = 'User already has an account';
-        }
+    //         $message = 'User created successfully';
+    //     } else {
+    //         $message = 'User already has an account';
+    //     }
 
-        return response()->json([
-            'message' => $message
-        ]);
-    }
+    //     return response()->json([
+    //         'message' => $message
+    //     ]);
+    // }
 
     /**
      * login user through Api Post
@@ -134,27 +120,30 @@ class ApiController extends Controller
         $message = '';
         $resultCode = 0;
 
-        if (!empty($request->user_name) && !empty($request->user_email) && !empty($request->user_password)) {
-            $createdUser = User::where('email', '=', $request->user_email)->count();
-            if ($createdUser > 0) {
-                $message = 'User already registered';
-                $resultCode = 6;
-            } else {
-                $user = User::create([
-                    'name' => $request->user_name,
-                    'email' => $request->user_email,
-                    'password' => Hash::make($request->user_password)
-                ]);
+        $validator = Validator::make($request->all(), [
+            'user_name' => 'required|regex:/^[\pL\s]+$/u|max:191',
+            'user_email' => 'required|email|unique:users,email|max:191',
+            'user_password' => 'required|string|min:6|alpha_num'
+        ]);
 
-                if ($user) {
-                    $user->sendEmailVerificationNotification();
-                    $message = 'Register Successful';
-                    $resultCode = 5;
-                }
-            }
-        } else {
-            $message = 'Register failed';
-            $resultCode = 6;
+        if ($validator->fails()) {
+            return response()->json([
+                'result_code' => 6,
+                'request_code' => 200,
+                'errors' => json_encode($validator->getMessageBag()->toArray(), JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+            ]);
+        }
+
+        $user = User::create([
+            'name' => $request->user_name,
+            'email' => $request->user_email,
+            'password' => Hash::make($request->user_password)
+        ]);
+
+        if ($user) {
+            $user->sendEmailVerificationNotification();
+            $message = 'Register Successful';
+            $resultCode = 5;
         }
 
         return response()->json([
@@ -162,14 +151,12 @@ class ApiController extends Controller
             'request_code' => 200,
             'message' => $message,
             'user_data' => [
-                'user_key' => $user->id ?? NULL,
+                'user_key' => base64_encode($user->email) ?? NULL,
                 'user_email' => $user->email ?? NULL,
                 'user_name' => $user->name ?? NULL
             ]
         ]);
     }
-
-    // TODO: Add getUserEmail and check data from firebase-uid or user_id
     
     /**
      * return Faq
@@ -215,6 +202,24 @@ class ApiController extends Controller
             ]);
         }
 
+        // check if registered user does not have User data
+        $userData = User::where('email', $email)->count();
+
+        if ($userData < 1) {
+            $user = User::create([
+                'name' => $email,
+                'email' => $email,
+                'password' => Hash::make('katakunci123')
+            ]);
+
+            if ($user) {
+                $user->sendEmailVerificationNotification();
+                $message = 'Register Successful';
+                $resultCode = 5;
+            }
+        }
+
+
         $user = DB::table('users')
             ->leftJoin( 'user_informations', 'users.id', '=', 'user_informations.user_id')
             ->leftJoin('cities', 'cities.id', '=', 'user_informations.city')
@@ -235,7 +240,9 @@ class ApiController extends Controller
                         CASE 
                             WHEN user_informations.gender = "1" 
                             THEN "Laki-Laki" 
-                            ELSE "Wanita" 
+                            WHEN user_informations.gender = "2"
+                            THEN "Wanita"
+                            ELSE null 
                             END
                         ) AS user_sex'),
                 DB::raw( 'user_informations.phone AS user_phone'),
@@ -669,10 +676,11 @@ class ApiController extends Controller
      */
     protected function getUserEmail(string $user_key)
     {
-        $user = User::where('firebase_uid', '=', $user_key)->first();
+        // $user = User::where('firebase_uid', '=', $user_key)->first();
+        $user = $this->userDetail($user_key);
 
         if (!$user) {
-            $user = User::find((integer) $user_key);
+            $user = User::where('email', base64_decode($user_key))->first();
         }
 
         if (!$user) {

@@ -58,15 +58,15 @@ use Illuminate\Http\Request;
      */
 // Route::group(['middleware' => 'auth:api'], function () {    
     // Auth
-    Route::post('auth', 'ApiController@auth')->name('api.auth');
+    // Route::post('auth', 'ApiController@auth')->name('api.auth');
     // User Api
     Route::post('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
     Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
     Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
     Route::post('user/update', 'ApiController@updateUserDetail')->name('api.user.update');
 // });
-Route::get('check', 'ApiController@check');
+// Route::get('check', 'ApiController@check');
 
-Route::get('getter', function (Request $request) {
-    return response()->json($request);
-});
+// Route::get('getter', function (Request $request) {
+//     return response()->json($request);
+// });
