@@ -16,6 +16,8 @@ use App\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use function GuzzleHttp\json_encode;
+use App\Order;
+use App\Account;
 
 class ApiController extends Controller
 {
@@ -242,7 +244,6 @@ class ApiController extends Controller
             ->select(
                 DB::raw('accounts.name AS user_bank_name'),
                 DB::raw('accounts.number AS user_bank_account_number'),
-                DB::raw('accounts.account_code AS user_bank_account_code'),
                 DB::raw('accounts.number AS user_bank_account_name')
             )
             ->where('users.email', '=', $email)
@@ -330,26 +331,45 @@ class ApiController extends Controller
      */
     public function getUserOrder(Request $request)
     {
-        $user = $this->userDetail($request->uid);
-        $email = $user->email;
-        // $email = request()->user()->getEmail();
-        // $email = 'akunbaru@mailinator.com';
+        $email = $this->getUserEmail($request->user_key);
 
-        $user = User::where('email', '=', $email)->first();
-
-        $orders = DB::table( 'users')
-            ->rightJoin( 'orders', 'orders.user_id', '=', 'users.id')
-            ->join('products', 'products.id', '=', 'orders.product_id')
-            ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
-            ->select(
-                DB::raw( 'orders.token AS user_product_key'),
-                DB::raw( 'products.created_at AS user_product_start_date'),
-                DB::raw( 'locations.location AS user_product_location'),
-                DB::raw( 'orders.updated_at AS user_product_harvest_date'),
-                DB::raw( 'orders.status AS user_product_is_ready_to_harvest')
-            )
-            ->where('users.email', '=', $email)
-            ->get();
+        if ($request->has('page')) {
+            $page = $request->page;
+            if ($request->has('count_per_page')) {
+                $dataPerPage = $request->data_per_page;
+            } else {
+                $dataPerPage = 5;
+            }
+            $offset = ($page - 1) * $dataPerPage;
+            $orders = DB::table('users')
+                ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
+                ->join('products', 'products.id', '=', 'orders.product_id')
+                ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
+                ->select(
+                    DB::raw('orders.token AS user_product_key'),
+                    DB::raw('products.created_at AS user_product_start_date'),
+                    DB::raw('locations.location AS user_product_location'),
+                    DB::raw('orders.updated_at AS user_product_harvest_date'),
+                    DB::raw('orders.status AS user_product_is_ready_to_harvest')
+                )
+                ->where('users.email', '=', $email)
+                ->offset(5)
+                ->get();
+        } else {
+            $orders = DB::table('users')
+                ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
+                ->join('products', 'products.id', '=', 'orders.product_id')
+                ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
+                ->select(
+                    DB::raw('orders.token AS user_product_key'),
+                    DB::raw('products.created_at AS user_product_start_date'),
+                    DB::raw('locations.location AS user_product_location'),
+                    DB::raw('orders.updated_at AS user_product_harvest_date'),
+                    DB::raw('orders.status AS user_product_is_ready_to_harvest')
+                )
+                ->where('users.email', '=', $email)
+                ->get();
+        }
         
         foreach ($orders as $order) {
             $order_id = DB::table('orders')
@@ -629,6 +649,109 @@ class ApiController extends Controller
             'result_code' => 4,
             'banner_list' => $banners
         ]);
+    }
+
+    /**
+     * create user order process
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function orderProduct(Request $request)
+    {
+        $message = '';
+        $resultCode = 0;
+
+        $email = $this->getUserEmail($request->user_key);
+        $product = $request->user_order;
+
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $productQuery = Product::where('name', '=', $product)->first();
+
+            if ($productQuery) {
+                $order = Order::create([
+                    'token' => base64_encode(now()),
+                    'user_id' => $user->id,
+                    'product_id' => $productQuery->id
+                ]);
+                
+                if ($order) {
+                    $resultCode = 4;
+                    $message = 'Product ordered successfully';
+                }
+            } else {
+                $resultCode = 4;
+                $message = 'Product not found';
+            }
+
+        } else {
+            $resultCode = 2;
+            $message = 'User account not found';
+        }
+
+        return response()->json([
+            'result_code' => $resultCode,
+            'request_code' => 200,
+            'message' => $message
+        ]);
+    }
+
+    /**
+     * add user bank data
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function userAddBank(Request $request)
+    {
+        $message = '';
+        $resultCode = 0;
+
+        $email = $this->getUserEmail($request->user_key);
+
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $validator = Validator::make($request->all(), [
+                'user_bank_name' => 'required|string|max:191',
+                'user_bank_account_name' => 'required|string|max:191',
+                'user_bank_account_number' => 'required|numeric|digits_between:10,15'
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'errors' => json_encode($validator->getMessageBag()->toArray(), JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                ]);
+            }
+    
+            $account = Account::create([
+                'user_id' => $user->id,
+                'name' => $request->user_bank_name,
+                'holder_name' => $request->user_bank_account_name,
+                'number' => $request->user_bank_account_name
+            ]);
+    
+            if ($account) {
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'message' => 'Bank created'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+
     }
 
     /**
