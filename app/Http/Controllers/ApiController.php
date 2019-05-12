@@ -91,10 +91,17 @@ class ApiController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errors = (object) array();
+            $validatorMessage = $validator->getMessageBag()->toArray();
+
+            isset($validatorMessage['user_name']) ? ($errors->user_name = $validatorMessage['user_name'][0]) : $errors;
+            isset($validatorMessage['user_email']) ? ($errors->user_email = $validatorMessage['user_email'][0]) : $errors;
+            isset($validatorMessage['user_password']) ? ($errors->user_password = $validatorMessage['user_password'][0]) : $errors;
+            
             return response()->json([
                 'result_code' => 6,
                 'request_code' => 200,
-                'errors' => json_encode($validator->getMessageBag()->toArray(), JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                'errors' => $errors
             ]);
         }
 
@@ -113,12 +120,12 @@ class ApiController extends Controller
         return response()->json([
             'result_code' => $resultCode,
             'request_code' => 200,
-            'message' => $message,
-            'user_data' => [
-                'user_key' => base64_encode($user->email) ?? NULL,
-                'user_email' => $user->email ?? NULL,
-                'user_name' => $user->name ?? NULL
-            ]
+            'message' => $message
+            // 'user_data' => [
+            //     'user_key' => base64_encode($user->email) ?? NULL,
+            //     'user_email' => $user->email ?? NULL,
+            //     'user_name' => $user->name ?? NULL
+            // ]
         ]);
     }
     
