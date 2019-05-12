@@ -19,8 +19,14 @@ trait Firebase
 
     public function userDetail($uid)
     {
+        $user = NULL;
+
         $auth = $this->initialize();
-        $user = $auth->getUser($uid);
+        try {
+            $user = $auth->getUser($uid);
+        } catch (\Exception $e) {
+            $user = NULL;    
+        }
         
         return $user;
     }

@@ -784,8 +784,10 @@ class ApiController extends Controller
      */
     protected function getUserEmail(string $user_key)
     {
-        // $user = User::where('firebase_uid', '=', $user_key)->first();
-        $user = $this->userDetail($user_key);
+        $user = User::where('firebase_uid', '=', $user_key)->first();
+        if (!$user) {
+            $user = $this->userDetail($user_key);
+        }
 
         if (!$user) {
             $user = User::where('email', base64_decode($user_key))->first();

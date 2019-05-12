@@ -64,7 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $createdFirebaseUser = $this->createUserFromFirebase($data['name'], $data['email'], $data['password']);
+        // $createdFirebaseUser = $this->createUserFromFirebase($data['name'], $data['email'], $data['password']);
 
         $user = User::create([
             'name' => $data['name'],
