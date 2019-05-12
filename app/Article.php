@@ -11,7 +11,8 @@ class Article extends Model
         'title',
         'img',
         'description',
-        'statistic'
+        'statistic',
+        'author'
     ];
 
     public function articleDetails()

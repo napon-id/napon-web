@@ -564,18 +564,9 @@ class ApiController extends Controller
      */
     public function getTopArticle(Request $request)
     {
-        if ($request->has('page')) {
-            $page = $request->page;
-            if ($request->has('count_per_page')) {
-                $dataPerPage = $request->data_per_page;
-            } else {
-                $dataPerPage = 5;
-            }
-            $offset = ($page - 1) * $dataPerPage;
-            $articles = Article::orderBy('statistic', 'desc')->limit($dataPerPage)->offset($offset)->get();
-        } else {
-            $articles = Article::orderBy('statistic', 'desc')->get();
-        }
+        $articles = Article::orderBy('statistic', 'desc')
+            ->limit(5)
+            ->get($this->getArticleArray());
 
         return response()->json([
             'result_code' => 4,
@@ -591,17 +582,24 @@ class ApiController extends Controller
      */
     public function getArticle(Request $request)
     {
+        // initialize variables
+        $page = $dataPerPage = $offset = 0;
+
+        if ($request->has('count_per_page')) {
+            $dataPerPage = $request->data_per_page;
+        } else {
+            $dataPerPage = 5;
+        }
+
         if ($request->has('page')) {
             $page = $request->page;
-            if ($request->has('count_per_page')) {
-                $dataPerPage = $request->data_per_page;
-            } else {
-                $dataPerPage = 5;
-            }
             $offset = ($page - 1) * $dataPerPage;
-            $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get();
+        } 
+
+        if ($dataPerPage > 0 && $page > 0 && $offset > 0) {
+            $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
         } else {
-            $articles = Article::orderBy('id', 'asc')->get();
+            $articles = Article::orderBy('id', 'asc')->get($this->getArticleArray());
         }
 
         return response()->json([
@@ -798,5 +796,23 @@ class ApiController extends Controller
         } else {
             return (string) $user->email;
         }
+    }
+
+    /**
+     * get article array
+     * 
+     * @return (array)
+     */
+    private function getArticleArray(): array
+    {
+        return [
+            'id AS article_id',
+            'title AS article_title',
+            'author AS article_author',
+            'img AS article_image',
+            'description AS article_content',
+            'statistic AS article_views',
+            'created_at AS article_time',
+        ];
     }
 }
