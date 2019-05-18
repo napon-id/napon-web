@@ -722,9 +722,6 @@ class ApiController extends Controller
      */
     public function userAddBank(Request $request)
     {
-        $message = '';
-        $resultCode = 0;
-
         $email = $this->getUserEmail($request->user_key);
 
         $user = User::where('email', $email)->first();
@@ -735,12 +732,19 @@ class ApiController extends Controller
                 'user_bank_account_name' => 'required|string|max:191',
                 'user_bank_account_number' => 'required|numeric|digits_between:10,15'
             ]);
-    
+
             if ($validator->fails()) {
+                $errors = (object)array();
+                $validatorMessage = $validator->getMessageBag()->toArray();
+
+                isset($validatorMessage['user_bank_name']) ? ($errors->user_name = $validatorMessage['user_bank_name'][0]) : $errors;
+                isset($validatorMessage['user_bank_account_name']) ? ($errors->user_email = $validatorMessage['user_bank_account_name'][0]) : $errors;
+                isset($validatorMessage['user_bank_account_number']) ? ($errors->user_password = $validatorMessage['user_bank_account_number'][0]) : $errors;
+
                 return response()->json([
-                    'result_code' => 4,
+                    'result_code' => 6,
                     'request_code' => 200,
-                    'errors' => json_encode($validator->getMessageBag()->toArray(), JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                    'errors' => $errors
                 ]);
             }
     
