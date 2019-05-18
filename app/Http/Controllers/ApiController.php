@@ -581,7 +581,7 @@ class ApiController extends Controller
     public function getTopArticle(Request $request)
     {
         $articles = Article::orderBy('statistic', 'desc')
-            ->limit(5)
+            ->limit(4)
             ->get($this->getArticleArray());
 
         return response()->json([
