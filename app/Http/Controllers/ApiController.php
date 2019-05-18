@@ -602,7 +602,7 @@ class ApiController extends Controller
         $page = $dataPerPage = $offset = 0;
 
         if ($request->has('count_per_page')) {
-            $dataPerPage = $request->data_per_page;
+            $dataPerPage = $request->count_per_page;
         } else {
             $dataPerPage = 5;
         }
