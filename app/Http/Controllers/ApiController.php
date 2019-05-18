@@ -131,6 +131,7 @@ class ApiController extends Controller
     
     /**
      * return Faq
+     * 
      * @return Illuminate\Http\Response
      */
     public function getFaq()
@@ -144,6 +145,7 @@ class ApiController extends Controller
 
     /**
      * get description
+     * 
      * @return Illuminate\Http\Response
      */
     public function getDescription()
@@ -186,27 +188,24 @@ class ApiController extends Controller
 
             if ($user) {
                 $user->sendEmailVerificationNotification();
-                $message = 'Register Successful';
-                $resultCode = 5;
             }
         }
 
-
         $user = DB::table('users')
             ->leftJoin( 'user_informations', 'users.id', '=', 'user_informations.user_id')
-            ->leftJoin('cities', 'cities.id', '=', 'user_informations.city')
-            ->leftJoin('provinces', 'provinces.id', '=', 'cities.province_id')
-            ->leftJoin('orders', 'orders.user_id', '=', 'users.id')
-            ->leftJoin('products', 'products.id', '=', 'orders.product_id')
-            ->leftJoin('trees', 'trees.id', '=', 'products.tree_id')
-            ->leftJoin('balances', 'balances.id', '=', 'users.id')
+            ->leftJoin( 'cities', 'cities.id', '=', 'user_informations.city')
+            ->leftJoin( 'provinces', 'provinces.id', '=', 'cities.province_id')
+            ->leftJoin( 'orders', 'orders.user_id', '=', 'users.id')
+            ->leftJoin( 'products', 'products.id', '=', 'orders.product_id')
+            ->leftJoin( 'trees', 'trees.id', '=', 'products.tree_id')
+            ->leftJoin( 'balances', 'balances.id', '=', 'users.id')
             ->select(
                 DB::raw( 'users.name AS user_name'),
                 DB::raw( 'users.email AS user_email'),
                 DB::raw( 'user_informations.user_image AS user_image'),
                 DB::raw( 'user_informations.born_place AS user_birth_place'),
                 DB::raw( 'user_informations.born_date AS user_birth_date'),
-                DB::raw( 'user_informations.gender    AS user_sex'),
+                DB::raw( 'user_informations.gender AS user_sex'),
                 DB::raw( '
                     (
                         CASE 
@@ -255,8 +254,18 @@ class ApiController extends Controller
             )
             ->where('users.email', '=', $email)
             ->get();
+        
             
-        $user->user_banks = $banks;
+            if ($user) {
+                $user->user_banks = $banks;
+                
+                // cast string to other data type
+                $user->user_id_number = (int) $user->user_id_number;
+                $user->user_zip_code = (int) $user->user_zip_code;
+                $user->user_balance = (double) $user->user_balance;
+                $user->user_total_tree = (int) $user->user_total_tree;
+                $user->user_total_investment = (double) $user->user_total_investment;
+        }
 
         return response()->json([
             'request_code' => 200,
@@ -310,7 +319,7 @@ class ApiController extends Controller
         $userInformation = $user->userInformation()->first();
         
         $userInformation->update([
-            'user_image' => $request->user_image ?? $userInformation->user_image,
+            // 'user_image' => $request->user_image ?? $userInformation->user_image,
             'born_place' => $request->user_birth_place ?? $userInformation->born_place,
             'born_date' => $request->user_born_date ?? $userInformation->born_date,
             'gender' => $request->user_sex ?? $userInformation->gender,
@@ -319,8 +328,8 @@ class ApiController extends Controller
             'city' => $request->user_city ?? $userInformation->city,
             'province' => $request->user_state ?? $userInformation->province,
             'postal_code' => $request->user_zip_code ?? $userInformation->postal_code,
-            'ktp' => $request->user_id_number ?? $userInformation->ktp,
-            'user_id_image' => $request->user_id_image ?? $userInformation->user_id_image
+            'ktp' => $request->user_id_number ?? $userInformation->ktp
+            // 'user_id_image' => $request->user_id_image ?? $userInformation->user_id_image
         ]);
 
         return response()->json([
