@@ -456,6 +456,8 @@ class ApiController extends Controller
             }
 
             $order->report_list = $reports;
+
+            $order->user_product_is_ready_to_harvest = (bool) $order->user_product_is_ready_to_harvest;
         }
 
         return response()->json([
@@ -725,6 +727,13 @@ class ApiController extends Controller
                 if ($order) {
                     $resultCode = 4;
                     $message = 'Product ordered successfully';
+                    
+                    $user_order = (object) array();
+                    
+                    $user_order->product_name = $productQuery->name;
+                    $user_order->product_price = (double) $productQuery->tree_quantity * $productQuery->tree->price;
+                    $user_order->product_tree_quantity = (int) $productQuery->tree_quantity;
+                    $user_order->product_has_certificate = (bool) $productQuery->has_certificate;
                 }
             } else {
                 $resultCode = 4;
@@ -735,12 +744,18 @@ class ApiController extends Controller
             $resultCode = 2;
             $message = 'User account not found';
         }
-
-        return response()->json([
+        
+        $response = [
             'result_code' => $resultCode,
             'request_code' => 200,
             'message' => $message
-        ]);
+        ];
+
+        if ($user_order) {
+            $response['user_order'] = $user_order;
+        }
+
+        return response()->json($response);
     }
 
     /**
