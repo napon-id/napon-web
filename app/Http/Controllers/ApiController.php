@@ -343,49 +343,68 @@ class ApiController extends Controller
 
     /**
      * get user orders based on email
+     * 
      * @return Illuminate\Http\Response
      */
     public function getUserOrder(Request $request)
     {
-        $email = $this->getUserEmail($request->user_key);
+        if ($request->has('user_key')) {
+            $email = $this->getUserEmail($request->user_key);
+
+            if (!$email) {
+                return response()->json([
+                    'result_code' => 2,
+                    'request_code' => 200,
+                    'message' => 'User not found'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+
+        // initialize variables
+        $dataPerPage = $offset = 0;
+        $page = 1;
+
+        if ($request->has('count_per_page')) {
+            $dataPerPage = $request->count_per_page;
+        } else {
+            $dataPerPage = 5;
+        }
 
         if ($request->has('page')) {
             $page = $request->page;
-            if ($request->has('count_per_page')) {
-                $dataPerPage = $request->data_per_page;
-            } else {
-                $dataPerPage = 5;
-            }
             $offset = ($page - 1) * $dataPerPage;
-            $orders = DB::table('users')
-                ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
-                ->join('products', 'products.id', '=', 'orders.product_id')
-                ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
-                ->select(
-                    DB::raw('orders.token AS user_product_key'),
-                    DB::raw('products.created_at AS user_product_start_date'),
-                    DB::raw('locations.location AS user_product_location'),
-                    DB::raw('orders.updated_at AS user_product_harvest_date'),
-                    DB::raw('orders.status AS user_product_is_ready_to_harvest')
-                )
-                ->where('users.email', '=', $email)
-                ->offset(5)
-                ->get();
         } else {
-            $orders = DB::table('users')
-                ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
-                ->join('products', 'products.id', '=', 'orders.product_id')
-                ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
-                ->select(
-                    DB::raw('orders.token AS user_product_key'),
-                    DB::raw('products.created_at AS user_product_start_date'),
-                    DB::raw('locations.location AS user_product_location'),
-                    DB::raw('orders.updated_at AS user_product_harvest_date'),
-                    DB::raw('orders.status AS user_product_is_ready_to_harvest')
-                )
-                ->where('users.email', '=', $email)
-                ->get();
+            $offset = ($page - 1) * $dataPerPage;
         }
+        
+        $orders = DB::table('users')
+            ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
+            ->join('products', 'products.id', '=', 'orders.product_id')
+            ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
+            ->select(
+                DB::raw('orders.token AS user_product_key'),
+                DB::raw('products.created_at AS user_product_start_date'),
+                DB::raw('locations.location AS user_product_location'),
+                DB::raw('orders.updated_at AS user_product_harvest_date'),
+                DB::raw('
+                    (CASE 
+                        WHEN orders.status = "waiting" 
+                        THEN "true"
+                        ELSE "false"
+                        END
+                    ) AS user_product_is_ready_to_harvest
+                ')
+            )
+            ->where('users.email', '=', $email)
+            ->limit($dataPerPage)
+            ->offset($offset)
+            ->get();
         
         foreach ($orders as $order) {
             $order_id = DB::table('orders')

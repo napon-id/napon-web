@@ -44,7 +44,7 @@ Route::post('articles/addview', 'ApiController@incrementArticleStatistic')->name
 Route::get('banners', 'ApiController@getBanner')->name('api.banners');
     
 // Order detail
-Route::get('user/orders/{token}', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
+Route::get('user/orders', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
 
 // Routes that use user_key 
 // User Api
