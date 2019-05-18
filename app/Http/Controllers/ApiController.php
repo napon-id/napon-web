@@ -264,7 +264,6 @@ class ApiController extends Controller
                 $user->user_balance = (double) $user->user_balance;
                 $user->user_total_tree = (int) $user->user_total_tree;
                 $user->user_total_investment = (double) $user->user_total_investment;
-                $user->user_email_verified = (bool) $user->user_email_verified;
         }
 
         return response()->json([
@@ -394,7 +393,7 @@ class ApiController extends Controller
                 DB::raw('orders.updated_at AS user_product_harvest_date'),
                 DB::raw('
                     (CASE 
-                        WHEN orders.status = "waiting" 
+                        WHEN orders.status = "done" 
                         THEN "true"
                         ELSE "false"
                         END
@@ -435,29 +434,32 @@ class ApiController extends Controller
                 )
                 ->where('reports.order_id', '=', $order_id->id)
                 ->get();
-            
-            foreach ($reports as $report) {
-                $displays = DB::table('displays')
-                    ->select(
-                        DB::raw( '
-                            (
-                                CASE 
-                                    WHEN displays.is_video IS NULL 
-                                    THEN "false" 
-                                    ELSE "true" 
-                                    END
-                                ) AS video'),
-                        DB::raw('displays.display_url AS display_url')
-                    )
-                    ->where('displays.report_id', '=', $report->id)
-                    ->get();
-                
-                $report->display_list = $displays;
+
+            if ($reports) {
+                foreach ($reports as $report) {
+                    $displays = DB::table('displays')
+                        ->select(
+                            DB::raw( '
+                                (
+                                    CASE
+                                        WHEN displays.is_video = 1
+                                        THEN "true" 
+                                        ELSE "false" 
+                                        END
+                                    ) AS video'),
+                            DB::raw('displays.display_url AS display_url')
+                        )
+                        ->where('displays.report_id', '=', $report->report_key)
+                        ->orderBy('displays.created_at', 'desc')
+                        ->get();
+                    
+                    $report->display_list = $displays;
+                }
+
+                $order->report_list = $reports;    
             }
 
-            $order->report_list = $reports;
 
-            $order->user_product_is_ready_to_harvest = (bool) $order->user_product_is_ready_to_harvest;
         }
 
         return response()->json([
@@ -733,7 +735,6 @@ class ApiController extends Controller
                     $user_order->product_name = $productQuery->name;
                     $user_order->product_price = (double) $productQuery->tree_quantity * $productQuery->tree->price;
                     $user_order->product_tree_quantity = (int) $productQuery->tree_quantity;
-                    $user_order->product_has_certificate = (bool) $productQuery->has_certificate;
                 }
             } else {
                 $resultCode = 4;

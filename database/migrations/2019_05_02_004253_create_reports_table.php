@@ -19,8 +19,8 @@ class CreateReportsTable extends Migration
             $table->string('period');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->integer('tree_height')->nullable();
-            $table->integer('tree_diameter')->nullable();
+            $table->double('tree_height')->nullable();
+            $table->double('tree_diameter')->nullable();
             $table->text('tree_state')->nullable();
             $table->string('weather')->nullable();
             $table->integer('roi')->nullable();
