@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/firebase', function () {
+Route::get('/verified', function () {
     return view('welcome');
 });
 

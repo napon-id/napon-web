@@ -1,66 +1,27 @@
-<!-- <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script> -->
-<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+@extends('layouts.home')
 
-<script>
-    // Initialize Firebase
-    var firebaseConfig = {
-        apiKey: "AIzaSyD4aGcBRxe8uaNA5tQyyeUklPTBogAI-SY",
-        authDomain: "napon-ee0b6.firebaseapp.com",
-        databaseURL: "https://napon-ee0b6.firebaseio.com",
-        projectId: "napon-ee0b6",
-        storageBucket: "napon-ee0b6.appspot.com",
-        messagingSenderId: "1088632750476",
-        appId: "1:1088632750476:web:64fb9f52a2b10813"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    signin();
-    // getFaq();
-    // getUserDetail();
+@section('content')
+<main id="mainContent">
+    <div class="container content">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
 
-    async function signin() {
-        console.log('signing in');
-        let creds = await firebase.auth().signInWithEmailAndPassword('ipsum123@mailinator.com', 'katakunci123');
-        console.log({
-            creds
-        });
-        let token = await creds.user.getIdToken();
-        console.log({
-            token
-        });
-        localStorage.setItem('token', token);
-        let headers = {
-            Authorization: 'Bearer ' + token
-        };
-        console.log(headers);
-        let me = await axios.post('/api/auth?email=ipsum123@mailinator.com', {headers});
-        console.log({
-            me
-        });
-    }
+                <!-- session flash -->
+                @if(session('status'))
+                <div class="alert alert-success fade show alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ session('status') }}
+                </div>
+                @endif
 
-    async function getFaq() {
-        let headers = {
-            Authorization: 'Bearer ' + localStorage.token
-        };
-        let me = await axios.get('/api/faq', {
-            headers
-        });
-        console.log({
-            me
-        });
-    }
+                <div class="card">
 
-    async function getUserDetail() {
-        let headers = {
-            Authorization: 'Bearer ' + localStorage.token
-        };
-        let me = await axios.get('/api/user/orders', {
-            headers
-        });
-        console.log({
-            me
-        });
-    }
-</script>
+                    <div class="card-body">
+                        {{ __('Email Verification Success') }}
+                    </div> <!-- card body -->
+                </div> <!-- card -->
+            </div> <!-- col-md-8 -->
+        </div> <!-- row -->
+    </div> <!-- container -->
+</main>
+@endsection
