@@ -261,10 +261,10 @@ class ApiController extends Controller
                 
                 // cast string to other data type
                 $user->user_id_number = (int) $user->user_id_number;
-                $user->user_zip_code = (int) $user->user_zip_code;
                 $user->user_balance = (double) $user->user_balance;
                 $user->user_total_tree = (int) $user->user_total_tree;
                 $user->user_total_investment = (double) $user->user_total_investment;
+                $user->user_email_verified = (bool) $user->user_email_verified;
         }
 
         return response()->json([
