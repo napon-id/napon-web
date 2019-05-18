@@ -599,7 +599,8 @@ class ApiController extends Controller
     public function getArticle(Request $request)
     {
         // initialize variables
-        $page = $dataPerPage = $offset = 0;
+        $dataPerPage = $offset = 0;
+        $page = 1;
 
         if ($request->has('count_per_page')) {
             $dataPerPage = $request->count_per_page;
@@ -610,13 +611,11 @@ class ApiController extends Controller
         if ($request->has('page')) {
             $page = $request->page;
             $offset = ($page - 1) * $dataPerPage;
-        } 
-
-        if ($dataPerPage > 0 && $page > 0 && $offset > 0) {
-            $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
         } else {
-            $articles = Article::orderBy('id', 'asc')->get($this->getArticleArray());
+            $offset = ($page -1) * $dataPerPage;
         }
+
+        $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
 
         return response()->json([
             'result_code' => 4,
