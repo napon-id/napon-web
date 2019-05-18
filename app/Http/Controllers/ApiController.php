@@ -629,16 +629,28 @@ class ApiController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function getArticleDetail($id)
+    public function incrementArticleStatistic(Request $request)
     {
-        $article = Article::findOrFail($id);
+        $message = '';
 
-        $article->article_detail = $article->articleDetails()->get(['title AS sub_title', 'img AS sub_image', 'description AS sub_description']);
+        if ($request->has('article_id')) {
+            $article = Article::find($request->get('article_id'));
+        } else {
+            $message = 'Article not found';
+        }
+
+        if (isset( $article)) {
+            $article->increment('statistic', 1);
+
+            $message = 'Add article statistic by 1';
+        } else {
+            $message = 'Article not found';
+        }
 
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'article' => $article
+            'message' => $message
         ]);
     }
 
