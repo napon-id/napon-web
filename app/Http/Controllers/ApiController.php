@@ -285,7 +285,6 @@ class ApiController extends Controller
         /**
          * request param && mapping
          * - user_name => user->name
-         * - user_image => userInformation->user_image
          * - user_birth_place => userInformation->born_place
          * - user_sex => userInformation->gender
          * - user_phone => userInformation->phone
@@ -294,8 +293,6 @@ class ApiController extends Controller
          * - user_state => userInformation->province
          * - user_zip_code => userInformation->postal_code
          * - user_id_number => userInformation->ktp
-         * - user_id_image => userInformation->user_id_image
-         *  
          */
         $email = $this->getUserEmail((string) $request->user_key);
 
@@ -318,7 +315,6 @@ class ApiController extends Controller
         $userInformation = $user->userInformation()->first();
         
         $userInformation->update([
-            // 'user_image' => $request->user_image ?? $userInformation->user_image,
             'born_place' => $request->user_birth_place ?? $userInformation->born_place,
             'born_date' => $request->user_born_date ?? $userInformation->born_date,
             'gender' => $request->user_sex ?? $userInformation->gender,
@@ -328,8 +324,93 @@ class ApiController extends Controller
             'province' => $request->user_state ?? $userInformation->province,
             'postal_code' => $request->user_zip_code ?? $userInformation->postal_code,
             'ktp' => $request->user_id_number ?? $userInformation->ktp
-            // 'user_id_image' => $request->user_id_image ?? $userInformation->user_id_image
         ]);
+
+        return response()->json([
+            'result_code' => 3,
+            'request_code' => 200,
+            'data' => [
+                'message' => 'There is change on user profile, update user local data'
+            ]
+        ]);
+    }
+
+    /**
+     * update user id image
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function updateUserIdImage(Request $request)
+    {
+        $email = $this->getUserEmail((string) $request->user_key);
+
+        if ($email == '') {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
+
+        $user = User::where('email', $email)->first();
+
+        $userInformation = $user->userInformation()->first();
+
+        if ($request->has('user_id_image')) {
+            
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'Image not found'
+            ]);
+        }
+
+        return response()->json([
+            'result_code' => 3,
+            'request_code' => 200,
+            'data' => [
+                'message' => 'There is change on user profile, update user local data'
+            ]
+        ]);
+    }
+
+    /**
+     * update user image
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function updateUserImage(Request $request)
+    {
+        $email = $this->getUserEmail((string) $request->user_key);
+
+        if ($email == '') {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+
+        $user = User::where('email', $email)->first();
+
+        $userInformation = $user->userInformation()->first();
+
+        if ($request->has('user_image')) {
+            
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'Image not found'
+            ]);
+        }
 
         return response()->json([
             'result_code' => 3,

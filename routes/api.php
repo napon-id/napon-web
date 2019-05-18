@@ -52,5 +52,7 @@ Route::post('user/details', 'ApiController@getUserDetail')->name('api.user.detai
 Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
 Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
 Route::post('user/update', 'ApiController@updateUserDetail')->name('api.user.update');
+Route::post('user/update/id_image', 'ApiController@updateUserIdImage')->name('api.user.update.id_image');
+Route::post('user/update/image', 'ApiController@updateUserImage')->name('api.user.update.image');
 Route::post('user/order/product', 'ApiController@orderProduct')->name('api.user.order.product');
 Route::post('user/bank/add', 'ApiController@userAddBank')->name('api.user.bank.add');
