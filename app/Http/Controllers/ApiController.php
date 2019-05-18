@@ -85,7 +85,7 @@ class ApiController extends Controller
         $resultCode = 0;
 
         $validator = Validator::make($request->all(), [
-            'user_name' => 'required|regex:/^[\pL\s]+$/u|max:191',
+            'user_name' => 'required|max:191|regex:/^(\pL+\s?)*\s*$/',
             'user_email' => 'required|email|unique:users,email|max:191',
             'user_password' => 'required|string|min:6|alpha_num'
         ]);
