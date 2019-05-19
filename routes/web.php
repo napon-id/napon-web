@@ -18,6 +18,22 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index');
 Route::get('/logout', 'Auth\LoginController@logout');
 
+Route::get('images/user/{filename}', function ($filename) {
+$path = storage_path('app/public/user/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
 Route::get('/test', function () {
     return view('test');
 });

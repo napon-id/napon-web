@@ -361,7 +361,41 @@ class ApiController extends Controller
         $userInformation = $user->userInformation()->first();
 
         if ($request->has('user_id_image')) {
-            
+            $validator = Validator::make($request->all(), [
+                'user_id_image' => 'image|mimes:jpeg,jpg,bmp,png|max:2048'
+            ]);
+
+            if ($validator->fails()) {
+                $errors = (object)array();
+                $validatorMessage = $validator->getMessageBag()->toArray();
+
+                isset($validatorMessage['user_id_image']) ? ($errors->user_id_image = $validatorMessage['user_id_image'][0]) : $errors;
+
+                return response()->json([
+                    'result_code' => 6,
+                    'request_code' => 200,
+                    'errors' => $errors
+                ]);
+            }
+
+            $path = $request->file('user_id_image')->store('public/user');
+
+            $fileName = basename($path);
+
+            $userInformation->update([
+                'user_id_image' => config('app.url') . '/images/user' . $fileName
+            ]);
+
+            return response()->json([
+                'user_id_image' => $fileName
+            ]);
+
+            return response()->json([
+                'result_code' => 3,
+                'request_code' => 200,
+                'message' => 'There is change on user profile, update user local data'
+            ]);
+
         } else {
             return response()->json([
                 'result_code' => 2,
@@ -369,14 +403,6 @@ class ApiController extends Controller
                 'message' => 'Image not found'
             ]);
         }
-
-        return response()->json([
-            'result_code' => 3,
-            'request_code' => 200,
-            'data' => [
-                'message' => 'There is change on user profile, update user local data'
-            ]
-        ]);
     }
 
     /**
@@ -394,7 +420,9 @@ class ApiController extends Controller
             return response()->json([
                 'result_code' => 2,
                 'request_code' => 200,
-                'message' => 'User not found'
+                'data' => [
+                    'message' => 'User not found'
+                ]
             ]);
         }
 
@@ -403,7 +431,36 @@ class ApiController extends Controller
         $userInformation = $user->userInformation()->first();
 
         if ($request->has('user_image')) {
-            
+            $validator = Validator::make($request->all(), [
+                'user_image' => 'image|mimes:jpeg,jpg,bmp,png|max:2048'
+            ]);
+
+            if ($validator->fails()) {
+                $errors = (object) array();
+                $validatorMessage = $validator->getMessageBag()->toArray();
+
+                isset($validatorMessage['user_image']) ? ($errors->user_image = $validatorMessage['user_image'][0]) : $errors;
+
+                return response()->json([
+                    'result_code' => 6,
+                    'request_code' => 200,
+                    'errors' => $errors
+                ]);
+            }
+
+            $path = $request->file('user_image')->store('public/user');
+
+            $fileName = basename($path);
+
+            $userInformation->update([
+                'user_image' => config('app.url') . '/images/user' . $fileName
+            ]);
+
+            return response()->json([
+                'result_code' => 3,
+                'request_code' => 200,
+                'message' => 'There is change on user profile, update user local data'
+            ]);
         } else {
             return response()->json([
                 'result_code' => 2,
@@ -411,14 +468,6 @@ class ApiController extends Controller
                 'message' => 'Image not found'
             ]);
         }
-
-        return response()->json([
-            'result_code' => 3,
-            'request_code' => 200,
-            'data' => [
-                'message' => 'There is change on user profile, update user local data'
-            ]
-        ]);
     }
 
     /**
