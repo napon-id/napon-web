@@ -394,7 +394,7 @@ class ApiController extends Controller
 
         } else {
             return response()->json([
-                'result_code' => 2,
+                'result_code' => 7,
                 'request_code' => 200,
                 'message' => 'Image not found'
             ]);
@@ -459,7 +459,7 @@ class ApiController extends Controller
             ]);
         } else {
             return response()->json([
-                'result_code' => 2,
+                'result_code' => 7,
                 'request_code' => 200,
                 'message' => 'Image not found'
             ]);
