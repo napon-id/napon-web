@@ -923,6 +923,14 @@ class ApiController extends Controller
                 'user_bank_name' => 'required|string|max:191',
                 'user_bank_account_name' => 'required|string|max:191',
                 'user_bank_account_number' => 'required|numeric|digits_between:10,15'
+            ], [
+                'user_bank_name.required' => 'Nama Bank tidak boleh kosong',
+                'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
+                'user_bank_account_name.required' => 'Nama pemilik rekening tidak boleh kosong',
+                'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',
+                'user_bank_account_number.required' => 'Nomor rekening tidak boleh kosong',
+                'user_bank_account_number.numeric' => 'Nomor rekening harus berupa angka',
+                'user_bank_account_number.digits_between' => 'Nomor rekening harus berada di antara :min hingga :max digit'
             ]);
 
             if ($validator->fails()) {
