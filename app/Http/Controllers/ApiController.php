@@ -387,10 +387,6 @@ class ApiController extends Controller
             ]);
 
             return response()->json([
-                'user_id_image' => $fileName
-            ]);
-
-            return response()->json([
                 'result_code' => 3,
                 'request_code' => 200,
                 'message' => 'There is change on user profile, update user local data'
