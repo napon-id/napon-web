@@ -233,8 +233,8 @@ class ApiController extends Controller
                     (
                         CASE 
                             WHEN users.email_verified_at IS NULL 
-                            THEN "false" 
-                            ELSE "true" 
+                            THEN false 
+                            ELSE true 
                             END
                         ) AS user_email_verified')
             )
@@ -263,6 +263,7 @@ class ApiController extends Controller
                 $user->user_balance = (double) $user->user_balance;
                 $user->user_total_tree = (int) $user->user_total_tree;
                 $user->user_total_investment = (double) $user->user_total_investment;
+                $user->user_email_verified = (bool) $user->user_email_verified;
         }
 
         return response()->json([
@@ -519,8 +520,8 @@ class ApiController extends Controller
                 DB::raw('
                     (CASE 
                         WHEN orders.status = "done" 
-                        THEN "true"
-                        ELSE "false"
+                        THEN true
+                        ELSE false
                         END
                     ) AS user_product_is_ready_to_harvest
                 ')
@@ -531,6 +532,7 @@ class ApiController extends Controller
             ->get();
         
         foreach ($orders as $order) {
+            $order->user_product_is_ready_to_harvest = (bool) $order->user_product_is_ready_to_harvest;
             $order_id = DB::table('orders')
                 ->select('orders.*')
                 ->where('orders.token', '=', $order->user_product_key)
