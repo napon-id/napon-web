@@ -685,42 +685,39 @@ class ApiController extends Controller
     }
 
     /**
-     * get province detail based on province id
-     * @return Illuminate\Http\Response
-     */
-    public function getProvinceDetail(Province $province)
-    {
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'province_detail' => $province,
-        ]);
-    }
-
-    /**
      * get city list based on province id
      * @return Illuminate\Http\Response
      */
-    public function getCities(Province $province)
+    public function getCities(Request $request)
     {
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'city_list' => $province->cities()->get(),
-        ]);
-    }
+        if ($request->has('province_id')) {
+            
+            $province = Province::find($request->province_id);
+            
+            if ($province) {
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'city_list' => $province->cities()->get([
+                        'id AS city_id',
+                        'name AS city_name'
+                    ]),
+                ]);
+            } else {
+                return response()->json([
+                    'result_code' => 7,
+                    'request_code' => 200,
+                    'message' => 'Data not found'
+                ]);
+            }
 
-    /**
-     * get city detail based on city id
-     * @return Illuminate\Http\Response
-     */
-    public function getCityDetail(Cities $city)
-    {
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'city_detail' => $city,
-        ]);
+        } else {
+            return response()->json([
+                'result_code' => 7,
+                'request_code' => 200,
+                'message' => 'Data not found'
+            ]);
+        }
     }
 
     /**

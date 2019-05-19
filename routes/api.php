@@ -31,9 +31,7 @@ Route::get('database_status', 'ApiController@databaseStatus')->name('api.databas
     
 // Provinces Cities Api
 Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
-Route::get('province/{province}', 'ApiController@getProvinceDetail')->name('api.province.detail');
-Route::get('province/{province}/cities', 'ApiController@getCities')->name('api.province.cities');
-Route::get('city/{city}', 'ApiController@getCityDetail')->name('api.city.detail');
+Route::get('cities', 'ApiController@getCities')->name('api.province.cities');
     
 // Article Api
 Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.top');
