@@ -88,6 +88,17 @@ class ApiController extends Controller
             'user_name' => 'required|max:191|regex:/^(\pL+\s?)*\s*$/',
             'user_email' => 'required|email|unique:users,email|max:191',
             'user_password' => 'required|string|min:6|alpha_num'
+        ], [
+            'user_name.required' => 'Nama tidak boleh kosong',
+            'user_name.max' => 'Nama tidak boleh lebih dari :max karakter',
+            'user_name.regex' => 'Format Nama tidak valid',
+            'user_email.required' => 'Alamat Email tidak boleh kosong',
+            'user_email.email' => 'Alamat Email harus dalam format email standar',
+            'user_email.unique' => 'Alamat Email telah digunakan',
+            'user_email.max' => 'Alamat Email tidak boleh lebih dari :max karakter',
+            'user_password.required' => 'Kata sandi tidak boleh kosong',
+            'user_password.min' => 'Kata sandi minimal terdiri dari :min karakter',
+            'user_password.alpha_num' => 'Kata sandi harus berupa alfanumerik'
         ]);
 
         if ($validator->fails()) {
