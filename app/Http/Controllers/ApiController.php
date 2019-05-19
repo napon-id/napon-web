@@ -260,7 +260,6 @@ class ApiController extends Controller
                 $user->user_banks = $banks;
                 
                 // cast string to other data type
-                $user->user_id_number = (int) $user->user_id_number;
                 $user->user_balance = (double) $user->user_balance;
                 $user->user_total_tree = (int) $user->user_total_tree;
                 $user->user_total_investment = (double) $user->user_total_investment;
