@@ -383,7 +383,7 @@ class ApiController extends Controller
             $fileName = basename($path);
 
             $userInformation->update([
-                'user_id_image' => config('app.url') . '/images/user' . $fileName
+                'user_id_image' => config('app.url') . '/images/user/' . $fileName
             ]);
 
             return response()->json([
@@ -453,7 +453,7 @@ class ApiController extends Controller
             $fileName = basename($path);
 
             $userInformation->update([
-                'user_image' => config('app.url') . '/images/user' . $fileName
+                'user_image' => config('app.url') . '/images/user/' . $fileName
             ]);
 
             return response()->json([
