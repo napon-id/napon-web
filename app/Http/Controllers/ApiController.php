@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use function GuzzleHttp\json_encode;
 use App\Order;
 use App\Account;
+use App\Setting;
 
 class ApiController extends Controller
 {
@@ -737,6 +738,25 @@ class ApiController extends Controller
                 'description_last_update' => $lastDescription->created_at->format('Y-m-d h:i:s')
             ]
         ]);
+    }
+
+    /**
+     * get term and condition 
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getTermAndCondition()
+    {
+        $termAndCondition = Setting::where('key', 'term_and_condition')->first();
+        $data = $termAndCondition->value;
+        $jsonData = json_encode($data);
+
+        $response = [];
+        $response['result_code'] = 4;
+        $response['request_code'] = 200;
+        $response['message'] = $data;
+
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_LINE_TERMINATORS);
     }
 
     /**

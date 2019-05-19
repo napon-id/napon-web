@@ -44,6 +44,9 @@ Route::get('banners', 'ApiController@getBanner')->name('api.banners');
 // Order detail
 Route::get('user/orders', 'ApiController@getUserOrderDetail')->name('api.user.order.detail');
 
+// Term And Condition
+Route::get('term_and_condition', 'ApiController@getTermAndCondition')->name('api.term_and_condition');
+
 // Routes that use user_key 
 // User Api
 Route::post('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
