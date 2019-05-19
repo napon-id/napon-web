@@ -253,11 +253,16 @@ class ApiController extends Controller
                 DB::raw('accounts.number AS user_bank_account_name')
             )
             ->where('users.email', '=', $email)
-            ->get();
-        
+            ->get();        
             
             if ($user) {
                 $user->user_banks = $banks;
+
+                if (!empty($user->user_image) && !empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
+                    $user->user_data_filled = (bool) true;
+                } else {
+                    $user->user_date_filled = (bool) false;
+                }
                 
                 // cast string to other data type
                 $user->user_balance = (double) $user->user_balance;
