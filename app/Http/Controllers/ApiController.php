@@ -677,7 +677,10 @@ class ApiController extends Controller
         return response()->json([
             'result_code' => 4,
             'request_code' => 200,
-            'province_list' => Province::all(),
+            'province_list' => Province::get([
+                'id AS province_id',
+                'name AS province_name'
+            ]),
         ]);
     }
 
