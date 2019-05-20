@@ -273,7 +273,7 @@ class ApiController extends Controller
                 if (!empty($user->user_image) && !empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
                     $user->user_data_filled = (bool) true;
                 } else {
-                    $user->user_date_filled = (bool) false;
+                    $user->user_data_filled = (bool) false;
                 }
                 
                 // cast string to other data type
@@ -324,6 +324,56 @@ class ApiController extends Controller
         }
 
         $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $validator = Validator::make($request->all(), [
+                'user_name' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
+                'user_birth_place' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
+                'user_sex' => 'nullable|in:1,2',
+                'user_phone' => 'nullable|numeric|digits_between:8,14',
+                'user_address' => 'nullable',
+                'user_city' => 'nullable|exists:cities,id',
+                'user_state' => 'nullable|exists:provinces,id',
+                'user_zip_code' => 'nullable|numeric|digits:5',
+                'user_id_number' => 'nullable|numeric|digits:16|unique:user_informations,ktp,' . $user->userInformation->id
+            ], [ 
+                'user_name.regex' => 'Nama pengguna tidak sesuai',
+                'user_name.max' => 'Nama pengguna tidak boleh lebih dari :max karakter',
+                'user_birth_place.regex' => 'Tempat lahir tidak sesuai',
+                'user_birth_place.max' => 'Tempat lahir tidak boleh lebih dari :max karakter',
+                'user_sex.in' => 'Jenis kelamin tidak sesuai',
+                'user_phone.numeric' => 'Nomor telepon harus berupa angka',
+                'user_phone.digits_between' => 'Jumlah digit nomor telepon tidak sesuai',
+                'user_city.exists' => 'Data kota tidak terdapat pada basis data',
+                'user_state.exists' => 'Data provinsi tidak terdapat pada basis data',
+                'user_zip_code.numeric' => 'Kode Pos harus berupa angka',
+                'user_zip_code.digits' => 'Kode pos harus terdiri dari 5 digit angka',
+                'user_id_number.numeric' => 'Nomor ktp harus berupa angka',
+                'user_id_number.digits' => 'Nomor ktp harus terdiri dari 16 digit angka',
+                'user_id_number.unique' => 'Nomor ktp sudah digunakan'
+            ]);
+
+            if ($validator->fails()) {
+                $errors = (object)array();
+                $validatorMessage = $validator->getMessageBag()->toArray();
+
+                isset($validatorMessage['user_name']) ? ($errors->user_name = $validatorMessage['user_name'][0]) : $errors;
+                isset($validatorMessage['user_birth_place']) ? ($errors->user_birth_place = $validatorMessage['user_birth_place'][0]) : $errors;
+                isset($validatorMessage['user_sex']) ? ($errors->user_sex = $validatorMessage['user_sex'][0]) : $errors;
+                isset($validatorMessage['user_phone']) ? ($errors->user_phone = $validatorMessage['user_phone'][0]) : $errors;
+                isset($validatorMessage['user_address']) ? ($errors->user_address = $validatorMessage['user_address'][0]) : $errors;
+                isset($validatorMessage['user_city']) ? ($errors->user_city = $validatorMessage['user_city'][0]) : $errors;
+                isset($validatorMessage['user_state']) ? ($errors->user_state = $validatorMessage['user_state'][0]) : $errors;
+                isset($validatorMessage['user_zip_code']) ? ($errors->user_zip_code = $validatorMessage['user_zip_code'][0]) : $errors;
+                isset($validatorMessage['user_id_number']) ? ($errors->user_id_number = $validatorMessage['user_id_number'][0]) : $errors;
+
+                return response()->json([
+                    'result_code' => 6,
+                    'request_code' => 200,
+                    'errors' => $errors
+                ]);
+            }
+        }
 
         $user->update([
             'name' => $request->user_name ?? $user->name
