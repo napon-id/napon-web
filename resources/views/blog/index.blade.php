@@ -29,6 +29,6 @@
     </div> <!-- container fluid -->
 
     <div class="container text-center">
-        {{ $articles->links() }}
+        {{ $articles->links('vendor.pagination.mdb') }}
     </div>
 @endsection

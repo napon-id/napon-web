@@ -44,6 +44,10 @@ Route::get('/tentang-kami', 'HomeController@about')->name('tentang-kami');
 Route::get('/faq', 'HomeController@faq')->name('faq');
 Route::get('/layanan', 'HomeController@service')->name('layanan');
 
+// Blog pages
+Route::get('/blog', 'BlogController@index')->name('blog.index');
+Route::get('/blog/{title}', 'BlogController@show')->name('blog.show');
+
 // Admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
