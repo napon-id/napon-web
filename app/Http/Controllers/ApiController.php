@@ -29,9 +29,9 @@ class ApiController extends Controller
 
     /**
      * login user through Api Post
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -75,9 +75,9 @@ class ApiController extends Controller
 
     /**
      * register user through Api Post
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -109,7 +109,7 @@ class ApiController extends Controller
             isset($validatorMessage['user_name']) ? ($errors->user_name = $validatorMessage['user_name'][0]) : $errors;
             isset($validatorMessage['user_email']) ? ($errors->user_email = $validatorMessage['user_email'][0]) : $errors;
             isset($validatorMessage['user_password']) ? ($errors->user_password = $validatorMessage['user_password'][0]) : $errors;
-            
+
             return response()->json([
                 'result_code' => 6,
                 'request_code' => 200,
@@ -133,17 +133,12 @@ class ApiController extends Controller
             'result_code' => $resultCode,
             'request_code' => 200,
             'message' => $message
-            // 'user_data' => [
-            //     'user_key' => base64_encode($user->email) ?? NULL,
-            //     'user_email' => $user->email ?? NULL,
-            //     'user_name' => $user->name ?? NULL
-            // ]
         ]);
     }
-    
+
     /**
      * return Faq
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getFaq()
@@ -157,7 +152,7 @@ class ApiController extends Controller
 
     /**
      * get description
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getDescription()
@@ -220,12 +215,12 @@ class ApiController extends Controller
                 DB::raw( 'user_informations.gender AS user_sex'),
                 DB::raw( '
                     (
-                        CASE 
-                            WHEN user_informations.gender = "1" 
-                            THEN "Laki-Laki" 
+                        CASE
+                            WHEN user_informations.gender = "1"
+                            THEN "Laki-Laki"
                             WHEN user_informations.gender = "2"
                             THEN "Wanita"
-                            ELSE null 
+                            ELSE null
                             END
                         ) AS user_sex'),
                 DB::raw( 'user_informations.phone AS user_phone'),
@@ -239,14 +234,14 @@ class ApiController extends Controller
                 DB::raw( 'users.created_at AS user_join_date'),
                 DB::raw( 'balances.balance AS user_balance'),
                 DB::raw( '
-                    SUM(trees.price) 
+                    SUM(trees.price)
                     AS user_total_investment'),
                 DB::raw( '
                     (
-                        CASE 
-                            WHEN users.email_verified_at IS NULL 
-                            THEN false 
-                            ELSE true 
+                        CASE
+                            WHEN users.email_verified_at IS NULL
+                            THEN false
+                            ELSE true
                             END
                         ) AS user_email_verified')
             )
@@ -265,8 +260,8 @@ class ApiController extends Controller
                 DB::raw('accounts.number AS user_bank_account_name')
             )
             ->where('users.email', '=', $email)
-            ->get();        
-            
+            ->get();
+
             if ($user) {
                 $user->user_banks = $banks;
 
@@ -275,7 +270,7 @@ class ApiController extends Controller
                 } else {
                     $user->user_data_filled = (bool) false;
                 }
-                
+
                 // cast string to other data type
                 $user->user_balance = (double) $user->user_balance;
                 $user->user_total_tree = (int) $user->user_total_tree;
@@ -292,9 +287,9 @@ class ApiController extends Controller
 
     /**
      * update user data
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function updateUserDetail(Request $request)
@@ -317,8 +312,16 @@ class ApiController extends Controller
             return response()->json([
                 'result_code' => 2,
                 'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+
+        if (!$reqest->user_name && !$request->user_birth_place && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
+            return response()->json([
+                'result_code' => 7,
+                'request_code' => 200,
                 'data' => [
-                    'message' => 'User not found'
+                    'message' => 'Data not found'
                 ]
             ]);
         }
@@ -336,7 +339,7 @@ class ApiController extends Controller
                 'user_state' => 'nullable|exists:provinces,id',
                 'user_zip_code' => 'nullable|numeric|digits:5',
                 'user_id_number' => 'nullable|numeric|digits:16|unique:user_informations,ktp,' . $user->userInformation->id
-            ], [ 
+            ], [
                 'user_name.regex' => 'Nama pengguna tidak sesuai',
                 'user_name.max' => 'Nama pengguna tidak boleh lebih dari :max karakter',
                 'user_birth_place.regex' => 'Tempat lahir tidak sesuai',
@@ -378,9 +381,9 @@ class ApiController extends Controller
         $user->update([
             'name' => $request->user_name ?? $user->name
         ]);
-        
+
         $userInformation = $user->userInformation()->first();
-        
+
         $userInformation->update([
             'born_place' => $request->user_birth_place ?? $userInformation->born_place,
             'born_date' => $request->user_born_date ?? $userInformation->born_date,
@@ -404,9 +407,9 @@ class ApiController extends Controller
 
     /**
      * update user id image
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function updateUserIdImage(Request $request)
@@ -470,9 +473,9 @@ class ApiController extends Controller
 
     /**
      * update user image
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function updateUserImage(Request $request)
@@ -535,7 +538,7 @@ class ApiController extends Controller
 
     /**
      * get user orders based on email
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getUserOrder(Request $request)
@@ -574,7 +577,7 @@ class ApiController extends Controller
         } else {
             $offset = ($page - 1) * $dataPerPage;
         }
-        
+
         $orders = DB::table('users')
             ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
             ->join('products', 'products.id', '=', 'orders.product_id')
@@ -585,8 +588,8 @@ class ApiController extends Controller
                 DB::raw('locations.location AS user_product_location'),
                 DB::raw('orders.updated_at AS user_product_harvest_date'),
                 DB::raw('
-                    (CASE 
-                        WHEN orders.status = "done" 
+                    (CASE
+                        WHEN orders.status = "done"
                         THEN true
                         ELSE false
                         END
@@ -597,14 +600,14 @@ class ApiController extends Controller
             ->limit($dataPerPage)
             ->offset($offset)
             ->get();
-        
+
         foreach ($orders as $order) {
             $order->user_product_is_ready_to_harvest = (bool) $order->user_product_is_ready_to_harvest;
             $order_id = DB::table('orders')
                 ->select('orders.*')
                 ->where('orders.token', '=', $order->user_product_key)
                 ->first();
-            
+
             $product = DB::table('products')
                 ->select(
                     DB::raw( 'products.name AS product_name'),
@@ -637,8 +640,8 @@ class ApiController extends Controller
                                 (
                                     CASE
                                         WHEN displays.is_video = 1
-                                        THEN "true" 
-                                        ELSE "false" 
+                                        THEN "true"
+                                        ELSE "false"
                                         END
                                     ) AS video'),
                             DB::raw('displays.display_url AS display_url')
@@ -646,11 +649,11 @@ class ApiController extends Controller
                         ->where('displays.report_id', '=', $report->report_key)
                         ->orderBy('displays.created_at', 'desc')
                         ->get();
-                    
+
                     $report->display_list = $displays;
                 }
 
-                $order->report_list = $reports;    
+                $order->report_list = $reports;
             }
 
 
@@ -672,7 +675,7 @@ class ApiController extends Controller
         if ($token) {
             $details = DB::table( 'orders')
                 ->rightJoin( 'order_updates', 'order_updates.order_id', '=', 'orders.id')
-                ->select( 
+                ->select(
                     DB::raw('orders.token AS product_token'),
                     DB::raw('order_updates.description AS update_description'),
                     DB::raw('order_updates.created_at AS update_date')
@@ -704,10 +707,10 @@ class ApiController extends Controller
                 DB::raw( 'CAST(products.tree_quantity AS unsigned) * CAST(trees.price AS unsigned) AS product_price'),
                 DB::raw( '
                 (
-                        CASE 
-                            WHEN products.has_certificate = "1" 
-                            THEN "true" 
-                            ELSE "false" 
+                        CASE
+                            WHEN products.has_certificate = "1"
+                            THEN "true"
+                            ELSE "false"
                             END
                         ) AS product_has_certificate')
             )
@@ -742,9 +745,9 @@ class ApiController extends Controller
     public function getCities(Request $request)
     {
         if ($request->has('province_id')) {
-            
+
             $province = Province::find($request->province_id);
-            
+
             if ($province) {
                 return response()->json([
                     'result_code' => 4,
@@ -791,8 +794,8 @@ class ApiController extends Controller
     }
 
     /**
-     * get term and condition 
-     * 
+     * get term and condition
+     *
      * @return Illuminate\Http\Response
      */
     public function getTermAndCondition()
@@ -811,7 +814,7 @@ class ApiController extends Controller
 
     /**
      * get top article
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getTopArticle(Request $request)
@@ -829,7 +832,7 @@ class ApiController extends Controller
 
     /**
      * get all article
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getArticle(Request $request)
@@ -862,7 +865,7 @@ class ApiController extends Controller
 
     /**
      * get specific article and deails
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function incrementArticleStatistic(Request $request)
@@ -892,7 +895,7 @@ class ApiController extends Controller
 
     /**
      * get banners
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getBanner()
@@ -914,9 +917,9 @@ class ApiController extends Controller
 
     /**
      * create user order process
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function orderProduct(Request $request)
@@ -938,13 +941,13 @@ class ApiController extends Controller
                     'user_id' => $user->id,
                     'product_id' => $productQuery->id
                 ]);
-                
+
                 if ($order) {
                     $resultCode = 4;
                     $message = 'Product ordered successfully';
-                    
+
                     $user_order = (object) array();
-                    
+
                     $user_order->product_name = $productQuery->name;
                     $user_order->product_price = (double) $productQuery->tree_quantity * $productQuery->tree->price;
                     $user_order->product_tree_quantity = (int) $productQuery->tree_quantity;
@@ -958,7 +961,7 @@ class ApiController extends Controller
             $resultCode = 2;
             $message = 'User account not found';
         }
-        
+
         $response = [
             'result_code' => $resultCode,
             'request_code' => 200,
@@ -974,9 +977,9 @@ class ApiController extends Controller
 
     /**
      * add user bank data
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function userAddBank(Request $request)
@@ -1014,14 +1017,14 @@ class ApiController extends Controller
                     'errors' => $errors
                 ]);
             }
-    
+
             $account = Account::create([
                 'user_id' => $user->id,
                 'name' => $request->user_bank_name,
                 'holder_name' => $request->user_bank_account_name,
                 'number' => $request->user_bank_account_name
             ]);
-    
+
             if ($account) {
                 return response()->json([
                     'result_code' => 4,
@@ -1041,16 +1044,16 @@ class ApiController extends Controller
 
     /**
      * get User key
-     * 
+     *
      * @param App\User
-     * 
+     *
      * @return (array) key
      */
     protected function getUserKey(User $user)
     {
         $key = [];
         if ($user->firebase_uid != NULL) {
-            $key['userKey'] = $user->firebase_uid; 
+            $key['userKey'] = $user->firebase_uid;
             $key['is_firebase'] = true;
         } else {
             $key['userKey'] = $user->id;
@@ -1062,9 +1065,9 @@ class ApiController extends Controller
 
     /**
      * get User email from User key
-     * 
+     *
      * @param (string) user_key
-     * 
+     *
      * @return (string) email
      */
     protected function getUserEmail(string $user_key)
@@ -1087,7 +1090,7 @@ class ApiController extends Controller
 
     /**
      * get article array
-     * 
+     *
      * @return (array)
      */
     private function getArticleArray(): array
