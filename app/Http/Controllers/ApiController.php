@@ -316,7 +316,7 @@ class ApiController extends Controller
             ]);
         }
 
-        if (!$reqest->user_name && !$request->user_birth_place && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
+        if (!$request->user_name && !$request->user_birth_place && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
             return response()->json([
                 'result_code' => 7,
                 'request_code' => 200,
