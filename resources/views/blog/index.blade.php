@@ -14,15 +14,15 @@
     <div class="container-fluid smaller-content" id="aboutUsDescriptive">
         @foreach ($articles as $article)
         <div class="container">
-            <h2 class="light-green-text">
-                <a href="{{ route('blog.show', [str_slug($article->title)]) }}">
-                    {{ $article->title }}
+            <h4 class="light-green-text">
+                <a href="{{ route('blog.show', [$article->slug]) }}" title="{{ $article->title }}">
+                    {{ str_limit($article->title, 150) }}
                 </a>
-            </h2>
+            </h4>
             <hr>
             <span class="text-muted">{{ $article->created_at ? $article->created_at->format('d/m/Y') : '' }}</span>
             <p>
-                {{ $article->description }}
+                {{ str_limit($article->description, 400)  }}
             </p>
         </div> <!-- container -->
         @endforeach
