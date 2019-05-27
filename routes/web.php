@@ -34,6 +34,22 @@ $path = storage_path('app/public/user/' . $filename);
     return $response;
 });
 
+Route::get('images/blog/{filename}', function ($filename) {
+    $path = storage_path('app/public/blog/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
 Route::get('/test', function () {
     return view('test');
 });
@@ -96,6 +112,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     });
 
     Route::resource('locations', 'Admin\LocationController');
+
+    // Blog
+    Route::group(['prefix' => 'blog'], function () {
+        Route::get('/table', 'Admin\BlogController@table')->name('admin.blog.table');
+        Route::get('/', 'Admin\BlogController@index')->name('admin.blog.index');
+        Route::get('/create', 'Admin\BlogController@create')->name('admin.blog.create');
+        Route::post('/create', 'Admin\BlogController@store')->name('admin.blog.store');
+        Route::get('{id}', 'Admin\BlogController@show')->name('admin.blog.show');
+        Route::put('{id}/edit', 'Admin\BlogController@update')->name('admin.blog.update');
+        Route::get('{id}/edit', 'Admin\BlogController@edit')->name('admin.blog.edit');
+        Route::delete('{id}', 'Admin\BlogController@destroy')->name('admin.blog.destroy');
+    });
 });
 
 // User routes

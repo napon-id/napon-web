@@ -76,15 +76,15 @@
             <a class="dropdown-item" href="{{ route('admin.order.index') }}">Orders</a>
           </div>
         </li>
-        <li class="nav-item">
+        {{--<li class="nav-item">
           <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Charts</span></a>
-        </li>
+        </li>--}}
         <li class="nav-item">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="{{ route('admin.blog.index') }}">
             <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+            <span>Blog</span></a>
         </li>
       </ul>
 

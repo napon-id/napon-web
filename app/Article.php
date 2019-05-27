@@ -21,8 +21,8 @@ class Article extends Model
         return $this->hasMany(ArticleDetail::class);
     }
 
-    public function makeSlug()
+    public function makeSlug($title)
     {
-        return str_slug($this->title . '-' . str_random(8));
+        return str_slug($title . '-' . str_random(8));
     }
 }
