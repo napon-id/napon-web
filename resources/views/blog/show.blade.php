@@ -27,7 +27,7 @@
 
         <div class="container">
             <p>
-                {{ $article->description }}
+                {!! $article->description !!}
             </p>
         </div>
     </div> <!-- container fluid -->
