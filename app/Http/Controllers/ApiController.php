@@ -298,6 +298,7 @@ class ApiController extends Controller
          * request param && mapping
          * - user_name => user->name
          * - user_birth_place => userInformation->born_place
+         * - user_birth_date => userInformation->born_date
          * - user_sex => userInformation->gender
          * - user_phone => userInformation->phone
          * - user_address => userInformation->address
@@ -316,7 +317,7 @@ class ApiController extends Controller
             ]);
         }
 
-        if (!$request->user_name && !$request->user_birth_place && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
+        if (!$request->user_name && !$request->user_birth_place && !$request->user_birth_date && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
             return response()->json([
                 'result_code' => 7,
                 'request_code' => 200,
@@ -332,6 +333,7 @@ class ApiController extends Controller
             $validator = Validator::make($request->all(), [
                 'user_name' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
                 'user_birth_place' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
+                'user_birth_date' => 'nullable|date|before:' . now()->year(2000)->firstOfYear(),
                 'user_sex' => 'nullable|in:1,2',
                 'user_phone' => 'nullable|numeric|digits_between:8,14',
                 'user_address' => 'nullable',
@@ -344,6 +346,8 @@ class ApiController extends Controller
                 'user_name.max' => 'Nama pengguna tidak boleh lebih dari :max karakter',
                 'user_birth_place.regex' => 'Tempat lahir tidak sesuai',
                 'user_birth_place.max' => 'Tempat lahir tidak boleh lebih dari :max karakter',
+                'user_birth_date.before' => 'Tanggal lahir tidak boleh kurang dari 1 Januari 2000 ',
+                'user_birth_date.date' => 'Format tanggal lahir tidak sesuai',
                 'user_sex.in' => 'Jenis kelamin tidak sesuai',
                 'user_phone.numeric' => 'Nomor telepon harus berupa angka',
                 'user_phone.digits_between' => 'Jumlah digit nomor telepon tidak sesuai',
@@ -362,6 +366,7 @@ class ApiController extends Controller
 
                 isset($validatorMessage['user_name']) ? ($errors->user_name = $validatorMessage['user_name'][0]) : $errors;
                 isset($validatorMessage['user_birth_place']) ? ($errors->user_birth_place = $validatorMessage['user_birth_place'][0]) : $errors;
+                isset($validatorMessage['user_birth_date']) ? ($errors->user_birth_date = $validatorMessage['user_birth_date'][0]) : $errors;
                 isset($validatorMessage['user_sex']) ? ($errors->user_sex = $validatorMessage['user_sex'][0]) : $errors;
                 isset($validatorMessage['user_phone']) ? ($errors->user_phone = $validatorMessage['user_phone'][0]) : $errors;
                 isset($validatorMessage['user_address']) ? ($errors->user_address = $validatorMessage['user_address'][0]) : $errors;
@@ -386,7 +391,7 @@ class ApiController extends Controller
 
         $userInformation->update([
             'born_place' => $request->user_birth_place ?? $userInformation->born_place,
-            'born_date' => $request->user_born_date ?? $userInformation->born_date,
+            'born_date' => $request->user_birth_date ?? $userInformation->born_date,
             'gender' => $request->user_sex ?? $userInformation->gender,
             'phone' => $request->user_phone ?? $userInformation->phone,
             'address' => $request->user_address ?? $userInformation->address,
