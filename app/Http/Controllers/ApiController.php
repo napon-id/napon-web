@@ -143,11 +143,21 @@ class ApiController extends Controller
      */
     public function getFaq()
     {
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'faq_list' => Faq::query()->get(['question AS faq_question', 'answer AS faq_answer']),
-        ]);
+        $faq = Faq::query()->get(['question AS faq_question', 'answer AS faq_answer']);
+
+        if ($faq) {
+            return response()->json([
+                'result_code' => 4,
+                'request_code' => 200,
+                'faq_list' => $faq
+            ]);
+        } else {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
@@ -157,11 +167,21 @@ class ApiController extends Controller
      */
     public function getDescription()
     {
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'description_list' => Description::query()->get(['img AS description_image', 'title AS description_title', 'text AS description_text'])
-        ]);
+        $description = Description::query()->get(['img AS description_image', 'title AS description_title', 'text AS description_text']);
+
+        if ($description) {
+            return response()->json([
+                'result_code' => 4,
+                'request_code' => 200,
+                'description_list' => $description
+            ]);
+        } else {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
@@ -319,7 +339,7 @@ class ApiController extends Controller
 
         if (!$request->user_name && !$request->user_birth_place && !$request->user_birth_date && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
             return response()->json([
-                'result_code' => 8,
+                'result_code' => 7,
                 'request_code' => 200,
                 'data' => [
                     'message' => 'Data not found'
@@ -447,7 +467,7 @@ class ApiController extends Controller
                 isset($validatorMessage['user_id_image']) ? ($errors->user_id_image = $validatorMessage['user_id_image'][0]) : $errors;
 
                 return response()->json([
-                    'result_code' => 6,
+                    'result_code' => 8,
                     'request_code' => 200,
                     'errors' => $errors
                 ]);
@@ -513,7 +533,7 @@ class ApiController extends Controller
                 isset($validatorMessage['user_image']) ? ($errors->user_image = $validatorMessage['user_image'][0]) : $errors;
 
                 return response()->json([
-                    'result_code' => 6,
+                    'result_code' => 8,
                     'request_code' => 200,
                     'errors' => $errors
                 ]);
@@ -720,11 +740,20 @@ class ApiController extends Controller
                         ) AS product_has_certificate')
             )
             ->get();
-        return response()->json([
-            'request_code' => 200,
-            'result_code' => 4,
-            'product_list' => $products,
-        ]);
+        
+        if ($products) {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 4,
+                'product_list' => $products,
+            ]);
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 9,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
@@ -733,14 +762,24 @@ class ApiController extends Controller
      */
     public function getProvinces()
     {
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'province_list' => Province::get([
-                'id AS province_id',
-                'name AS province_name'
-            ]),
+        $provinces = Province::get([
+            'id AS province_id',
+            'name AS province_name'
         ]);
+
+        if ($provinces) {
+            return response()->json([
+                'result_code' => 4,
+                'request_code' => 200,
+                'province_list' => $provinces
+            ]);
+        } else {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
@@ -772,9 +811,9 @@ class ApiController extends Controller
 
         } else {
             return response()->json([
-                'result_code' => 7,
+                'result_code' => 9,
                 'request_code' => 200,
-                'message' => 'Data not found'
+                'message' => 'There is no data'
             ]);
         }
     }
@@ -828,11 +867,19 @@ class ApiController extends Controller
             ->limit(4)
             ->get($this->getArticleArray());
 
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'article_list' => $articles
-        ]);
+        if ($articles) {
+            return response()->json([
+                'result_code' => 4,
+                'request_code' => 200,
+                'article_list' => $articles
+            ]);
+        } else {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
@@ -861,11 +908,19 @@ class ApiController extends Controller
 
         $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
 
-        return response()->json([
-            'result_code' => 4,
-            'request_code' => 200,
-            'article_list' => $articles
-        ]);
+        if ($articles) {
+            return response()->json([
+                'result_code' => 4,
+                'request_code' => 200,
+                'article_list' => $articles
+            ]);
+        } else {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
@@ -876,6 +931,7 @@ class ApiController extends Controller
     public function incrementArticleStatistic(Request $request)
     {
         $message = '';
+        $result = 0;
 
         if ($request->has('article_id')) {
             $article = Article::find($request->get('article_id'));
@@ -887,12 +943,14 @@ class ApiController extends Controller
             $article->increment('statistic', 1);
 
             $message = 'Add article statistic by 1';
+            $result = 4;
         } else {
             $message = 'Article not found';
+            $result = 9;
         }
 
         return response()->json([
-            'result_code' => 4,
+            'result_code' => $result,
             'request_code' => 200,
             'message' => $message
         ]);
@@ -913,11 +971,19 @@ class ApiController extends Controller
             )
             ->get();
 
-        return response()->json([
-            'request_code' => 200,
-            'result_code' => 4,
-            'banner_list' => $banners
-        ]);
+        if ($banners) {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 4,
+                'banner_list' => $banners
+            ]);
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 9,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**
