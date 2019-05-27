@@ -319,7 +319,7 @@ class ApiController extends Controller
 
         if (!$request->user_name && !$request->user_birth_place && !$request->user_birth_date && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
             return response()->json([
-                'result_code' => 7,
+                'result_code' => 8,
                 'request_code' => 200,
                 'data' => [
                     'message' => 'Data not found'
@@ -376,7 +376,7 @@ class ApiController extends Controller
                 isset($validatorMessage['user_id_number']) ? ($errors->user_id_number = $validatorMessage['user_id_number'][0]) : $errors;
 
                 return response()->json([
-                    'result_code' => 6,
+                    'result_code' => 8,
                     'request_code' => 200,
                     'errors' => $errors
                 ]);
