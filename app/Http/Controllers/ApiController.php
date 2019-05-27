@@ -396,7 +396,7 @@ class ApiController extends Controller
             'phone' => $request->user_phone ?? $userInformation->phone,
             'address' => $request->user_address ?? $userInformation->address,
             'city' => $request->user_city ?? $userInformation->city,
-            'province' => $request->user_state ?? $userInformation->province,
+            'province' => ($request->has('user_city') ? Cities::find($request->user_city)->province_id : $request->user_state) ?? $userInformation->province,
             'postal_code' => $request->user_zip_code ?? $userInformation->postal_code,
             'ktp' => $request->user_id_number ?? $userInformation->ktp
         ]);
