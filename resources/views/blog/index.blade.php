@@ -22,7 +22,7 @@
             <hr>
             <span class="text-muted">{{ $article->created_at ? $article->created_at->format('d/m/Y') : '' }}</span>
             <p>
-                {{ str_limit($article->description, 400)  }}
+                {!! str_limit(strip_tags($article->description), 400)  !!}
             </p>
         </div> <!-- container -->
         @endforeach
