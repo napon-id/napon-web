@@ -273,7 +273,7 @@ class UserController extends Controller
         if ($user) {
             $user->user_banks = $banks;
 
-            if (!empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number)) {
+            if (!empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
                 $user->user_data_filled = (bool)true;
             } else {
                 $user->user_data_filled = (bool)false;
@@ -341,7 +341,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'user_name' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
                 'user_birth_place' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
-                'user_birth_date' => 'nullable|date|before:' . now()->year(2000)->firstOfYear(),
+                'user_birth_date' => 'nullable|date|before:' . now()->subYears(17)->firstOfYear(),
                 'user_sex' => 'nullable|in:1,2',
                 'user_phone' => 'nullable|numeric|digits_between:8,14',
                 'user_address' => 'nullable',
@@ -354,7 +354,7 @@ class UserController extends Controller
                 'user_name.max' => 'Nama pengguna tidak boleh lebih dari :max karakter',
                 'user_birth_place.regex' => 'Tempat lahir tidak sesuai',
                 'user_birth_place.max' => 'Tempat lahir tidak boleh lebih dari :max karakter',
-                'user_birth_date.before' => 'Tanggal lahir tidak boleh kurang dari 1 Januari 2000 ',
+                'user_birth_date.before' => 'Tanggal lahir tidak boleh lebih dari ' . now()->subYears(17)->firstOfYear()->format('d/m/Y'),
                 'user_birth_date.date' => 'Format tanggal lahir tidak sesuai',
                 'user_sex.in' => 'Jenis kelamin tidak sesuai',
                 'user_phone.numeric' => 'Nomor telepon harus berupa angka',
