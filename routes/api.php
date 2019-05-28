@@ -13,6 +13,7 @@
 // User API    
 Route::post('login', 'Api\UserController@login')->name('api.login');
 Route::post('register', 'Api\UserController@register')->name('api.register');
+Route::post('register/firebase', 'Api\UserController@registerFromFirebase')->name('api.register.firebase');
 Route::post('user/details', 'Api\UserController@getUserDetail')->name('api.user.detail');
 Route::post('user/update', 'Api\UserController@updateUserDetail')->name('api.user.update');
 Route::post('user/update/id_image', 'Api\UserController@updateUserIdImage')->name('api.user.update.id_image');

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Traits;
 
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 trait UserApi
 {
     /**
      * get User email from User key
      *
-     * @param (string) user_key
+     * @param string user_key
      *
-     * @return (string) email
+     * @return string email
      */
     public function getUserEmail(string $user_key)
     {
@@ -52,4 +53,22 @@ trait UserApi
         return $key;
     }
 
+    /**
+     * register user from firebase
+     * 
+     * @param string user_key
+     * 
+     * @return App\User
+     */
+    public function registerUserFromFirebase($user_key, $email)
+    {
+        $user = User::create([
+            'name' => $email,
+            'email' => $email,
+            'password' => Hash::make($user_key),
+            'firebase_uid' => (string) $user_key
+        ]);
+
+        return $user;
+    }
 }

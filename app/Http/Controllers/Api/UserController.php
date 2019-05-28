@@ -116,7 +116,7 @@ class UserController extends Controller
 
         if ($user) {
             $user->sendEmailVerificationNotification();
-            $message = 'Register Successful';
+            $message = 'Register Success';
             $resultCode = 5;
         }
 
@@ -128,7 +128,57 @@ class UserController extends Controller
     }
 
     /**
+     * register user from firebase
+     * 
+     * @param Illuminate\Support\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function registerFromFirebase(Request $request)
+    {
+        if (!$request->has('user_key')) {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
+
+        $email = $this->getUserEmail((string)$request->user_key);
+
+        // check if registered user does not have User data
+        $userData = User::where('email', $email)->count();
+
+        if ($userData < 1) {
+            $user = $this->registerUserFromFirebase($request->user_key, $email);
+
+            if ($user) {
+                $user->sendEmailVerificationNotification();
+            }
+
+            return response()->json([
+                'result_code' => 5,
+                'request_code' => 200,
+                'message' => 'Register success'
+            ]);
+        } else {
+            if (isset( $userData->firebase_uid)) {
+                $userData->update([
+                    'firebase_uid' => $request->user_key
+                ]);
+            } else {
+                return response()->json([
+                    'result_code' => 6,
+                    'request_code' => 200,
+                    'message' => 'User already registered'
+                ]);
+            }
+        }
+    }
+
+    /**
      * get user detail based on email
+     * 
      * @return Illuminate\Http\Response
      */
     public function getUserDetail(Request $request)
@@ -149,12 +199,7 @@ class UserController extends Controller
         $userData = User::where('email', $email)->count();
 
         if ($userData < 1) {
-            $user = User::create([
-                'name' => $email,
-                'email' => $email,
-                'password' => Hash::make('katakunci123'),
-                'firebase_uid' => (string)$request->user_key
-            ]);
+            $user = $this->registerUserFromFirebase($request->user_key, $email);
 
             if ($user) {
                 $user->sendEmailVerificationNotification();
@@ -228,7 +273,7 @@ class UserController extends Controller
         if ($user) {
             $user->user_banks = $banks;
 
-            if (!empty($user->user_image) && !empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
+            if (!empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number)) {
                 $user->user_data_filled = (bool)true;
             } else {
                 $user->user_data_filled = (bool)false;
