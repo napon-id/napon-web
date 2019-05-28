@@ -341,7 +341,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'user_name' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
                 'user_birth_place' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
-                'user_birth_date' => 'nullable|date|before:' . now()->subYears(17)->firstOfYear(),
+                'user_birth_date' => 'nullable|date|before:' . now()->subYears(17),
                 'user_sex' => 'nullable|in:1,2',
                 'user_phone' => 'nullable|numeric|digits_between:8,14',
                 'user_address' => 'nullable',
