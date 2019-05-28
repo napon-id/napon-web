@@ -12,10 +12,10 @@
 */
     
 // Login Api
-Route::post('login', 'ApiController@login')->name('api.login');
+Route::post('login', 'Api\UserController@login')->name('api.login');
 
 // Register Api
-Route::post('register', 'ApiController@register')->name('api.register');
+Route::post('register', 'Api\UserController@register')->name('api.register');
     
 // Faq Api
 Route::get('faq', 'ApiController@getFaq')->name('api.faq');
@@ -49,11 +49,11 @@ Route::get('term_and_condition', 'ApiController@getTermAndCondition')->name('api
 
 // Routes that use user_key 
 // User Api
-Route::post('user/details', 'ApiController@getUserDetail')->name('api.user.detail');
-Route::get('user/banks', 'ApiController@getUserBank')->name('api.user.bank');
+Route::post('user/details', 'Api\UserController@getUserDetail')->name('api.user.detail');
+Route::get('user/banks', 'Api\UserController@getUserBank')->name('api.user.bank');
 Route::get('user/orders', 'ApiController@getUserOrder')->name('api.user.order');
-Route::post('user/update', 'ApiController@updateUserDetail')->name('api.user.update');
-Route::post('user/update/id_image', 'ApiController@updateUserIdImage')->name('api.user.update.id_image');
-Route::post('user/update/image', 'ApiController@updateUserImage')->name('api.user.update.image');
+Route::post('user/update', 'Api\UserController@updateUserDetail')->name('api.user.update');
+Route::post('user/update/id_image', 'Api\UserController@updateUserIdImage')->name('api.user.update.id_image');
+Route::post('user/update/image', 'Api\UserController@updateUserImage')->name('api.user.update.image');
 Route::post('user/order/product', 'ApiController@orderProduct')->name('api.user.order.product');
-Route::post('user/bank/add', 'ApiController@userAddBank')->name('api.user.bank.add');
+Route::post('user/bank/add', 'Api\UserController@userAddBank')->name('api.user.bank.add');
