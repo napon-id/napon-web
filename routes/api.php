@@ -34,9 +34,9 @@ Route::get('provinces', 'ApiController@getProvinces')->name('api.provinces');
 Route::get('cities', 'ApiController@getCities')->name('api.province.cities');
     
 // Article Api
-Route::get('articles/top', 'ApiController@getTopArticle')->name('api.articles.top');
-Route::get('articles', 'ApiController@getArticle')->name('api.articles');
-Route::post('articles/addview', 'ApiController@incrementArticleStatistic')->name('api.articles.statistic');
+Route::get('articles/top', 'Api\ArticleController@getTopArticle')->name('api.articles.top');
+Route::get('articles', 'Api\ArticleController@getArticle')->name('api.articles');
+Route::post('articles/addview', 'ArticleController@incrementArticleStatistic')->name('api.articles.statistic');
     
 // Banner Api
 Route::get('banners', 'ApiController@getBanner')->name('api.banners');
