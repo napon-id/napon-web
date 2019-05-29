@@ -111,7 +111,8 @@ class UserController extends Controller
         $user = User::create([
             'name' => rtrim(ltrim($request->user_name)),
             'email' => $request->user_email,
-            'password' => Hash::make($request->user_password)
+            'password' => Hash::make($request->user_password),
+            'user_key' => md5($request->user_email)
         ]);
 
         if ($user) {
