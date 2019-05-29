@@ -1,7 +1,7 @@
 <?php
 namespace App\Firebase;
 use Illuminate\Contracts\Auth\Authenticatable;
-class User implements Authenticatable
+class FirebaseUser implements Authenticatable
 {
     /**
      * The claims decoded from the JWT token.
