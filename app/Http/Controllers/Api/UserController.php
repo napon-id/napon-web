@@ -129,9 +129,91 @@ class UserController extends Controller
     }
 
     /**
+     * create user password
+     * 
+     * @param Illuminate\Http\Request
+     */
+    public function editPassword(Request $request)
+    {
+        if (!$request->has('user_key')) {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+
+        $email = $this->getUserEmail($request->user_key);
+
+        if ($email) {
+            $user = User::where('email', '=', $email)->first();
+
+            if ($user) {
+                $request->password = $user->password;
+                $validator = Validator::make($request->only('user_old_password', 'user_new_password', 'user_new_password_confirmation'), [
+                    'user_old_password' => [
+                        'required', 
+                        function ($attribute, $value, $fail) {
+                            if (!Hash::check($value, request()->password)) {
+                                $fail("Password lama tidak sesuai");
+                            }
+                        }
+
+                    ],
+                    'user_new_password' => 'required|min:6|alpha_num|confirmed|not_in:' . $request->user_old_password
+                ], [
+                    'user_old_password.required' => 'Password lama tidak boleh kosong',
+                    'user_new_password.required' => 'Password baru tidak boleh kosong',
+                    'user_new_password.min' => 'Password baru setidaknya terdiri dari :min karakter',
+                    'user_new_password.alpha_num' => 'Password baru harus berisikan huruf dan angka',
+                    'user_new_password.confirmed' => 'Konfirmasi password baru tidak sesuai',
+                    'user_new_password.not_in' => 'Password baru tidak boleh sama dengan password lama'
+                ]);
+
+                if ($validator->fails()) {
+                    $errors = (object)array();
+                    $validatorMessage = $validator->getMessageBag()->toArray();
+
+                    isset($validatorMessage['user_old_password']) ? ($errors->user_old_password = $validatorMessage['user_old_password'][0]) : $errors;
+                    isset($validatorMessage['user_new_password']) ? ($errors->user_new_password = $validatorMessage['user_new_password'][0]) : $errors;
+                    
+                    return response()->json([
+                        'result_code' => 8,
+                        'request_code' => 200,
+                        'errors' => $errors
+                    ]);
+                }
+
+                $user->update([
+                    'password' => Hash::make($request->user_new_password)
+                ]);
+
+                return response()->json([
+                    'result_code' => 3,
+                    'request_code' => 200,
+                    'message' => 'There is change on user profile, update user local data'
+                ]);
+
+            } else {
+                return response()->json([
+                    'result_code' => 2,
+                    'request_code' => 200,
+                    'message' => 'User not found'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+    }
+
+    /**
      * register user from firebase
      * 
-     * @param Illuminate\Support\Request
+     * @param Illuminate\Http\Request
      * 
      * @return Illuminate\Http\Response
      */

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Traits;
 
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 trait UserApi
 {
@@ -66,9 +68,23 @@ trait UserApi
             'name' => $email,
             'email' => $email,
             'password' => Hash::make($user_key),
-            'firebase_uid' => (string) $user_key
+            'firebase_uid' => (string) $user_key,
+            'user_key' => md5($email)
         ]);
 
         return $user;
+    }
+
+    /**
+     * Check whether password input match with current password
+     * 
+     * @param string input
+     * @param string password
+     * 
+     * @return bool
+     */
+    public function passwordCheck($input, $password)
+    {
+        return Hash::check($password, $input);
     }
 }

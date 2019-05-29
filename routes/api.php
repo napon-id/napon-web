@@ -20,6 +20,10 @@ Route::post('user/update/id_image', 'Api\UserController@updateUserIdImage')->nam
 Route::post('user/update/image', 'Api\UserController@updateUserImage')->name('api.user.update.image');
 Route::post('user/bank/add', 'Api\UserController@userAddBank')->name('api.user.bank.add');
 
+// Reset Password API
+Route::post('user/edit_password', 'Api\UserController@editPassword')->name('api.user.password.edit');
+Route::post('user/create_password', 'Api\UserController@createPassword')->name('api.user.password.create');
+
 // General API
 Route::get('faq', 'Api\GeneralController@getFaq')->name('api.faq');
 Route::get('descriptions', 'Api\GeneralController@getDescription')->name('api.description');
