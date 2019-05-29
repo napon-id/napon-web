@@ -129,9 +129,11 @@ class UserController extends Controller
     }
 
     /**
-     * create user password
+     * edit user password
      * 
      * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
      */
     public function editPassword(Request $request)
     {
@@ -160,7 +162,7 @@ class UserController extends Controller
                         }
 
                     ],
-                    'user_new_password' => 'required|min:6|alpha_num|confirmed|not_in:' . $request->user_old_password
+                    'user_new_password' => 'required|alpha_num|min:6|confirmed|not_in:' . $request->user_old_password
                 ], [
                     'user_old_password.required' => 'Password lama tidak boleh kosong',
                     'user_new_password.required' => 'Password baru tidak boleh kosong',
@@ -194,6 +196,78 @@ class UserController extends Controller
                     'message' => 'There is change on user profile, update user local data'
                 ]);
 
+            } else {
+                return response()->json([
+                    'result_code' => 2,
+                    'request_code' => 200,
+                    'message' => 'User not found'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+    }
+
+    /**
+     * create user password
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function createPassword(Request $request)
+    {
+        if (!$request->has('user_key')) {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+
+        $email = $this->getUserEmail($request->user_key);
+
+        if ($email) {
+            $user = User::where('email', $email)->first();
+
+            if ($user && isset($user->firebase_uid)) {
+                $validator = Validator::make($request->only(['user_password', 'user_password_confirmation']), [
+                    'user_password' => 'required|alpha_num|min:6|confirmed'
+                ], [
+                    'user_password.required' => 'Password tidak boleh kosong',
+                    'user_password.min' => 'Password setidaknya terdiri dari :min karakter',
+                    'user_password.alpha_num' => 'Password harus berisikan huruf dan angka',
+                    'user_password.confirmed' => 'Konfirmasi password tidak sesuai'
+                ]);
+
+                if ($validator->fails()) {
+                    $errors = (object)array();
+                    $validatorMessage = $validator->getMessageBag()->toArray();
+
+                    isset($validatorMessage['user_password']) ? ($errors->user_password = $validatorMessage['user_password'][0]) : $errors;
+
+                    return response()->json([
+                        'result_code' => 8,
+                        'request_code' => 200,
+                        'errors' => $errors
+                    ]);
+
+                }
+
+                $user->update([
+                    'password' => Hash::make($request->user_password)
+                ]);
+
+                return response()->json([
+                    'result_code' => 3,
+                    'request_code' => 200,
+                    'message' => 'There is change on user profile, update user local data'
+                ]);
+                
             } else {
                 return response()->json([
                     'result_code' => 2,
