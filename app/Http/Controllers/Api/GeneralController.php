@@ -10,6 +10,7 @@ use App\Description;
 use App\Product;
 use function GuzzleHttp\json_encode;
 use App\Setting;
+use DB;
 
 class GeneralController extends Controller
 {
