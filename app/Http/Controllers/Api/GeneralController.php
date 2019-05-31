@@ -149,9 +149,9 @@ class GeneralController extends Controller
                 ]);
             } else {
                 return response()->json([
-                    'result_code' => 7,
+                    'result_code' => 9,
                     'request_code' => 200,
-                    'message' => 'Data not found'
+                    'message' => 'There is no data'
                 ]);
             }
         } else {

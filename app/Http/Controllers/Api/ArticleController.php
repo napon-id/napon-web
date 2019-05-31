@@ -13,7 +13,7 @@ class ArticleController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-    public function getTopArticle(Request $request)
+    public function getTopArticle()
     {
         $articles = Article::orderBy('statistic', 'desc')
             ->limit(4)
@@ -94,10 +94,10 @@ class ArticleController extends Controller
         if (isset($article)) {
             $article->increment('statistic', 1);
 
-            $message = 'Add article statistic by 1';
+            $message = 'Add article view by 1';
             $result = 4;
         } else {
-            $message = 'Article not found';
+            $message = 'There is no data';
             $result = 9;
         }
 
