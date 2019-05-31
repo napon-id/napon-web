@@ -863,4 +863,52 @@ class UserController extends Controller
             ]);
         }
     }
+
+    /**
+     * delete user bank data
+     *
+     * @param Illuminate\Http\Request
+     *
+     * @return Illuminate\Http\Response
+     */
+    public function userDeleteBank(Request $request)
+    {
+        $email = $this->getUserEmail($request->user_key);
+
+        if (!$request->has('user_bank_id')) {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
+
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $account = Account::where('id', $request->user_bank_id)->where('user_id', $user->id)->first();
+
+            if ($account) {
+                $account->delete();
+
+                return response()->json([
+                    'result_code' => 3,
+                    'request_code' => 200,
+                    'message' => 'There is change on user profile, update user local data'
+                ]);
+            } else {
+                return response()->json([
+                    'result_code' => 9,
+                    'request_code' => 200,
+                    'message' => 'There is no data'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'message' => 'User not found'
+            ]);
+        }
+    }
 }
