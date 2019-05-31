@@ -19,6 +19,7 @@ Route::post('user/update', 'Api\UserController@updateUserDetail')->name('api.use
 Route::post('user/update/id_image', 'Api\UserController@updateUserIdImage')->name('api.user.update.id_image');
 Route::post('user/update/image', 'Api\UserController@updateUserImage')->name('api.user.update.image');
 Route::post('user/bank/add', 'Api\UserController@userAddBank')->name('api.user.bank.add');
+Route::post('user/bank/edit', 'Api\UserController@userEditBank')->name('api.user.bank.edit');
 
 // Reset Password API
 Route::post('user/edit_password', 'Api\UserController@editPassword')->name('api.user.password.edit');
