@@ -90,7 +90,7 @@
           <a href="{{ route('register') }}">Pendaftaran</a>
         </p>
         <p>
-          <a href="{{ url('https://blog.napon.id') }}" target="_blank">Blog <span class="fas fa-window"></span></a>
+          <a href="{{ route('blog.index') }}">Blog <span class="fas fa-window"></span></a>
         </p>
         <p>
           <a href="{{ route('layanan') }}">Simulasi Menabung</a>
