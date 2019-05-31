@@ -139,7 +139,7 @@ class OrderController extends Controller
         return response()->json([
             'request_code' => 200,
             'result_code' => 4,
-            'data' => $orders,
+            'product_list' => $orders,
         ]);
     }
 
@@ -181,8 +181,8 @@ class OrderController extends Controller
                     $user_order->product_tree_quantity = (int)$productQuery->tree_quantity;
                 }
             } else {
-                $resultCode = 4;
-                $message = 'Product not found';
+                $resultCode = 9;
+                $message = 'There is no data';
             }
         } else {
             $resultCode = 2;
