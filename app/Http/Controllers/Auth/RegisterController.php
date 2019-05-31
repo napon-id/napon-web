@@ -70,7 +70,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'user_key' => md5($data['email'])
+            'user_key' => md5($data['email']),
+            'has_created_password' => 1
         ]);
 
         $user->sendEmailVerificationNotification();

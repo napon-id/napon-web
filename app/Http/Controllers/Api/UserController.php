@@ -112,7 +112,8 @@ class UserController extends Controller
             'name' => rtrim(ltrim($request->user_name)),
             'email' => $request->user_email,
             'password' => Hash::make($request->user_password),
-            'user_key' => md5($request->user_email)
+            'user_key' => md5($request->user_email),
+            'has_created_password' => 1
         ]);
 
         if ($user) {
@@ -234,7 +235,7 @@ class UserController extends Controller
         if ($email) {
             $user = User::where('email', $email)->first();
 
-            if ($user && isset($user->firebase_uid)) {
+            if ($user && isset($user->firebase_uid) && !isset($user->has_created_password)) {
                 $validator = Validator::make($request->only(['user_password', 'user_password_confirmation']), [
                     'user_password' => 'required|alpha_num|min:6|confirmed'
                 ], [
@@ -259,7 +260,8 @@ class UserController extends Controller
                 }
 
                 $user->update([
-                    'password' => Hash::make($request->user_password)
+                    'password' => Hash::make($request->user_password),
+                    'has_created_password' => 1
                 ]);
 
                 return response()->json([
