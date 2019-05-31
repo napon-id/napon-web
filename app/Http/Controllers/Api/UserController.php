@@ -422,6 +422,7 @@ class UserController extends Controller
         $banks = DB::table('users')
             ->rightJoin('accounts', 'accounts.user_id', '=', 'users.id')
             ->select(
+                DB::raw('accounts.id AS user_bank_id'),
                 DB::raw('accounts.name AS user_bank_name'),
                 DB::raw('accounts.number AS user_bank_account_number'),
                 DB::raw('accounts.number AS user_bank_account_name')
@@ -744,7 +745,7 @@ class UserController extends Controller
                 isset($validatorMessage['user_bank_account_number']) ? ($errors->user_password = $validatorMessage['user_bank_account_number'][0]) : $errors;
 
                 return response()->json([
-                    'result_code' => 6,
+                    'result_code' => 7,
                     'request_code' => 200,
                     'errors' => $errors
                 ]);
@@ -754,7 +755,7 @@ class UserController extends Controller
                 'user_id' => $user->id,
                 'name' => $request->user_bank_name,
                 'holder_name' => $request->user_bank_account_name,
-                'number' => $request->user_bank_account_name
+                'number' => $request->user_bank_account_number
             ]);
 
             if ($account) {
