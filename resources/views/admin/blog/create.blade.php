@@ -48,7 +48,7 @@
                         <div class="col-md-3">
                             <label for="description">{{ __('Description') }}</label>
                         </div>
-                        <textarea name="description" class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}">{{ isset($blog) ? $blog->description : old('description') }}</textarea>
+                        <textarea name="description" id="editor" class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}">{{ isset($blog) ? $blog->description : old('description') }}</textarea>
                         @if ($errors->has('description'))
                         <span class="invalid-feedback">
                             <strong>{{ $errors->first('description') }}</strong>

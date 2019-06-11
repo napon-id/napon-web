@@ -163,10 +163,10 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /mnt/d/work/laravel/napon-web/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /mnt/d/work/laravel/napon-web/resources/sass/app.scss */"./resources/sass/app.scss");
-__webpack_require__(/*! /mnt/d/work/laravel/napon-web/resources/sass/home.scss */"./resources/sass/home.scss");
-module.exports = __webpack_require__(/*! /mnt/d/work/laravel/napon-web/resources/sass/dashboard.scss */"./resources/sass/dashboard.scss");
+__webpack_require__(/*! /home/nb/Documents/laravel/napon-web/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/nb/Documents/laravel/napon-web/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/nb/Documents/laravel/napon-web/resources/sass/home.scss */"./resources/sass/home.scss");
+module.exports = __webpack_require__(/*! /home/nb/Documents/laravel/napon-web/resources/sass/dashboard.scss */"./resources/sass/dashboard.scss");
 
 
 /***/ })

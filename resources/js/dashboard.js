@@ -16,3 +16,4 @@ require('./dashboard/datatables');
 require('./dashboard/copyToClipboard');
 require('./dashboard/withdrawStatus');
 require('./dashboard/cities.js');
+require('./dashboard/tinymce');

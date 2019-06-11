@@ -17,3 +17,6 @@ mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/home.scss', 'public/css')
    .js('resources/js/dashboard.js', 'public/js')
    .sass('resources/sass/dashboard.scss', 'public/css');
+
+let jsPath = 'public/js';
+mix.copy('node_modules/tinymce/skins', jsPath + '/skins');
