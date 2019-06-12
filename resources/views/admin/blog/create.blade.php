@@ -72,8 +72,11 @@
 
                     @if (isset($blog->img))
                     <div class="form-group">
-                        <div class="img-fluid">
-                            <img src="{{ $blog->img }}" alt="">
+                        <div class="col-md-3">
+                            <label>{{ __('Current image') }}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ $blog->img }}" class="img-thumbnail img-fluid" alt="">
                         </div>
                     </div>
                     @endif
