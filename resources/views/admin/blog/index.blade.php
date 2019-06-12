@@ -29,7 +29,6 @@
                         <thead>
                             <tr>
                                 <th data-field="title">{{ __('Title') }}</th>
-                                <th data-field="description">{{ __('Description') }}</th>
                                 <th data-field="img">{{ __('Image') }}</th>
                                 <th data-field="action">{{ __('Action') }}</th>
                             </tr>

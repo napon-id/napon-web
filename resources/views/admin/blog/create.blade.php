@@ -70,6 +70,14 @@
                         </div>
                     </div>
 
+                    @if (isset($blog->img))
+                    <div class="form-group">
+                        <div class="img-fluid">
+                            <img src="{{ $blog->img }}" alt="">
+                        </div>
+                    </div>
+                    @endif
+
                     <button type="submit" class="btn btn-info">
                         {{ __('Submit') }}
                     </button>
