@@ -10,7 +10,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// User API    
+// User API
 Route::post('login', 'Api\UserController@login')->name('api.login');
 Route::post('register', 'Api\UserController@register')->name('api.register');
 Route::post('register/firebase', 'Api\UserController@registerFromFirebase')->name('api.register.firebase');
@@ -35,6 +35,7 @@ Route::get('cities', 'Api\GeneralController@getCities')->name('api.province.citi
 Route::get('banners', 'Api\GeneralController@getBanner')->name('api.banners');
 Route::get('term_and_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
 Route::get('products', 'Api\GeneralController@getProduct')->name('api.product');
+Route::get('contacts', 'Api\GeneralController@getContact')->name('api.contact');
 
 // Article Api
 Route::get('articles/top', 'Api\ArticleController@getTopArticle')->name('api.articles.top');

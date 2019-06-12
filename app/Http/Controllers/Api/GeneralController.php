@@ -230,4 +230,22 @@ class GeneralController extends Controller
             ]);
         }
     }
+
+    /**
+     * get contact information
+     *
+     * @return Illuminate\Http\Response
+     */
+    public function getContact()
+    {
+        return response()->json([
+            'result_code' => 4,
+            'request_code' => 200,
+            'contacts' => [
+                'address' => Setting::where('key', 'contact_address')->first()->value,
+                'email' => Setting::where('key', 'contact_email')->first()->value,
+                'phone' => Setting::where('key', 'contact_phone')->first()->value,
+            ]
+        ]);
+    }
 }

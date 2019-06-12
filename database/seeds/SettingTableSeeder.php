@@ -73,5 +73,22 @@ class SettingTableSeeder extends Seeder
                 <p align="justify">Tanggal pembaharuan: 06/03/2019</p>
             '
         ]);
+
+        Setting::create([
+            'key' => 'contact_address',
+            'value' => 'Jl. Pattimura Raya, kompleks ruko Masjid Baitut Taqwa, Mapangan - Ungaran'
+        ]);
+
+        Setting::create([
+            'key' => 'contact_email',
+            'value' => 'naponindonesia@gmail.com'
+        ]);
+
+        Setting::create([
+            'key' => 'contact_phone',
+            'value' => '(024) 7590 1139'
+        ]);
+
+
     }
 }
