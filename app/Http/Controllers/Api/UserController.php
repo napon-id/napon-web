@@ -131,9 +131,9 @@ class UserController extends Controller
 
     /**
      * edit user password
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function editPassword(Request $request)
@@ -155,7 +155,7 @@ class UserController extends Controller
                 $request->password = $user->password;
                 $validator = Validator::make($request->only('user_old_password', 'user_new_password', 'user_new_password_confirmation'), [
                     'user_old_password' => [
-                        'required', 
+                        'required',
                         function ($attribute, $value, $fail) {
                             if (!Hash::check($value, request()->password)) {
                                 $fail("Password lama tidak sesuai");
@@ -179,7 +179,7 @@ class UserController extends Controller
 
                     isset($validatorMessage['user_old_password']) ? ($errors->user_old_password = $validatorMessage['user_old_password'][0]) : $errors;
                     isset($validatorMessage['user_new_password']) ? ($errors->user_new_password = $validatorMessage['user_new_password'][0]) : $errors;
-                    
+
                     return response()->json([
                         'result_code' => 8,
                         'request_code' => 200,
@@ -215,9 +215,9 @@ class UserController extends Controller
 
     /**
      * create user password
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function createPassword(Request $request)
@@ -269,7 +269,7 @@ class UserController extends Controller
                     'request_code' => 200,
                     'message' => 'There is change on user profile, update user local data'
                 ]);
-                
+
             } else {
                 return response()->json([
                     'result_code' => 2,
@@ -288,9 +288,9 @@ class UserController extends Controller
 
     /**
      * register user from firebase
-     * 
+     *
      * @param Illuminate\Http\Request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function registerFromFirebase(Request $request)
@@ -337,7 +337,7 @@ class UserController extends Controller
 
     /**
      * get user detail based on email
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function getUserDetail(Request $request)
@@ -841,7 +841,7 @@ class UserController extends Controller
                     'holder_name' => $request->has('user_bank_account_name') ? $request->user_bank_account_name : $account->holder_name,
                     'number' => $request->has('user_bank_account_number') ? $request->user_bank_account_number : $account->number
                 ]);
-                
+
                 return response()->json([
                     'result_code' => 3,
                     'request_code' => 200,
@@ -911,4 +911,55 @@ class UserController extends Controller
             ]);
         }
     }
+
+    /**
+     * resend email verification
+     *
+     * @param Illuminate\Http\Request
+     *
+     * @return Illuminate\Http\Response
+     */
+     public function resendVerificationEmail(Request $request)
+     {
+         $email = $this->getUserEmail((string)$request->user_key);
+
+         if ($email == '') {
+             return response()->json([
+                 'result_code' => 2,
+                 'request_code' => 200,
+                 'data' => [
+                     'message' => 'User not found'
+                 ]
+             ]);
+         }
+
+         $user = User::where('email', $email)->first();
+
+         if ($user) {
+             if (isset($user->email_verified_at)) {
+                 return response()->json([
+                     'result_code' => 4,
+                     'request_code' => 200,
+                     'message' => 'User already registered'
+                 ]);
+             } else {
+                 // code to send verification email
+                 $user->sendEmailVerificationNotification();
+
+                 return response()->json([
+                     'result_code' => 4,
+                     'request_code' => 200,
+                     'message' => 'Email verification sent'
+                 ]);
+             }
+         } else {
+             return response()->json([
+                 'result_code' => 2,
+                 'request_code' => 200,
+                 'data' => [
+                     'message' => 'User not found'
+                 ]
+             ]);
+         }
+     }
 }
