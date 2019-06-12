@@ -20,6 +20,10 @@
 
   @include('includes.home.footer')
 
+  <a href="https://wa.me/6285640541585?text=Saya%20ingin%20mengetahui%20lebih%20lanjut%20tentang%20Napon" class="wa-float" target="_blank" title="{{ __('Hubungi Kami') }}">
+      <i class="fab fa-whatsapp my-float"></i>
+  </a>
+
   <script src="{{ asset('js/home.js') }}"></script>
 </body>
 
