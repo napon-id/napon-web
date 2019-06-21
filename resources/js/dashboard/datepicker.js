@@ -2,7 +2,7 @@
     $(function () {
         $('.datepicker').datepicker({
             format: 'dd-mm-yyyy',
-            endDate: '+0d'
+            endDate: '-17y'
         });
     })
 }) (jQuery);

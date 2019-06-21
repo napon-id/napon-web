@@ -47,7 +47,7 @@
                     <div class="form-group row">
                         <label for="born_date" class="col-md-3">{{ __('Tanggal Lahir') }}</label>
                         <div class="col-md-3">
-                            <input type="text" class="datepicker form-control" name="born_date" class="form-control {{ $errors->has('born_date') ? 'is-invalid' : '' }}" value="{{ old('born_date') ?? $userInformation->born_date->format('d-m-Y') }}">
+                            <input type="text" class="datepicker form-control {{ $errors->has('born_date') ? 'is-invalid' : '' }}" name="born_date" class="form-control {{ $errors->has('born_date') ? 'is-invalid' : '' }}" value="{{ old('born_date') ?? ($userInformation->born_date ? $userInformation->born_date->format('d-m-Y') : '')  }}">
                             @if($errors->has('born_date'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('born_date') }}</strong>
@@ -72,18 +72,18 @@
                         </div>
                     </div>
 
-            <div class="form-group">
-                <input type="submit" class="btn btn-success" name="" value="Perbarui">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" name="" value="Perbarui">
+                    </div>
+                </form>
             </div>
-            </form>
-        </div>
 
-        <div class="card-footer">
-            <a href="{{ route('user.dashboard') }}" class="btn btn-info">
-                <i class="fas fa-arrow-left"></i> Dashboard
-            </a>
+            <div class="card-footer">
+                <a href="{{ route('user.dashboard') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
         </div>
     </div>
-</div>
 </div>
 @endsection

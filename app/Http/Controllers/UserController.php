@@ -94,7 +94,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'ktp' => 'required|numeric|digits:16|unique:user_informations,ktp,' . $userInformation->id,
-            'born_date' => 'nullable|date|before:' . now()->subYear(17),
+            'born_date' => 'nullable',
             'gender' => 'nullable'
         ]);
 
