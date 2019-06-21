@@ -134,6 +134,8 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     // user settings
     Route::get('/edit', 'UserController@edit')->name('user.edit');
     Route::post('/edit', 'UserController@editUpdate')->name('user.edit.update');
+    Route::get('/edit/contact', 'UserController@editContact')->name('user.edit.contact');
+    Route::post('/edit/contact', 'UserController@editContactUpdate')->name('user.edit.contact.update');
     Route::get('/edit/password', 'UserController@password')->name('user.password');
     Route::post('/edit/password', 'UserController@passwordUpdate')->name('user.password.update');
 

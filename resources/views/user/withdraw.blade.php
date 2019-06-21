@@ -44,7 +44,7 @@
 
                     <div class="form-group">
                         <label for="amount">{{ __('Jumlah pencairan') }}</label>
-                        <input type="text" class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" name="amount" value="{{ old('amount') }}">
+                        <input type="text" class="form-control currency {{ $errors->has('amount') ? 'is-invalid' : '' }}" name="amount" value="{{ old('amount') }}">
                         @if($errors->has('amount'))
                         <span class="invalid-feedback">
                             <strong>{{ $errors->first('amount') }}</strong>

@@ -17,3 +17,21 @@ require('./dashboard/copyToClipboard');
 require('./dashboard/withdrawStatus');
 require('./dashboard/cities.js');
 require('./dashboard/tinymce');
+
+// autonumeric
+import AutoNumeric from 'autonumeric';
+
+if ($('.currency').length > 0) {
+    const autoNumericOptions = {
+        digitGroupSeparator         : '.',
+        decimalCharacter            : ',',
+        decimalCharacterAlternative : '.',
+        unformatOnSubmit            : true,
+        maximumValue                : 9999999999999999,
+    };
+    AutoNumeric.multiple('.currency', autoNumericOptions);
+}
+
+// datepicker
+require('bootstrap-datepicker');
+require('./dashboard/datepicker');

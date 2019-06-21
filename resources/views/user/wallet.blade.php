@@ -22,7 +22,11 @@
             <div class="card-body text-center">
                 <table class="table table-hover">
                     <h5>Saldo</h5>
-                    <h2>{{ formatCurrency($user->balance()->first()->balance) }}</h2>
+                    <h2>
+                        <span class="currency">  
+                            {{ $user->balance->balance }}
+                        </span>
+                    </h2>
                 </table>
             </div> <!-- card-body -->
 
@@ -40,7 +44,7 @@
             <a class="btn btn-info float-right" href="{{ route('user.wallet.add') }}">Tambah rekening</a>
         </div> <!-- col-md-8 -->
 
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-hover">
                 <tr>
                     <th>Rekening</th>
@@ -82,7 +86,7 @@
                 {{ __('Riwayat Pencairan') }}
             </div> <!-- card-header -->
 
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="table table-hover">
                     <tr>
                         <td>{{ __('Tanggal') }}</td>

@@ -15,6 +15,7 @@ use App\Province;
 use App\Cities;
 use App\Log;
 use DB;
+use Illuminate\Support\Carbon as IlluminateCarbon;
 
 class UserController extends Controller
 {
@@ -43,20 +44,40 @@ class UserController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $userInformation = $user->userInformation()->first();
+
+        if ($userInformation->born_date != NULL) {
+            $userInformation->born_date = IlluminateCarbon::createFromFormat('Y-m-d', $userInformation->born_date);
+        }
+
         if ($userInformation->province != NULL) {
             $cities = Province::find($userInformation->province)->cities()->get(['id', 'name']);
         } else {
             $cities = [];
         }
 
-        // $bornCities = Cities::query()->get(['id', 'name']);
-
         return view('user.edit')
             ->with([
                 'userInformation' => $userInformation,
                 'provinces' => Province::query()->get(['id', 'name']),
-                'cities' => $cities,
-                // 'bornCities' => $bornCities
+                'cities' => $cities
+            ]);
+    }
+
+    public function editContact()
+    {
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+        if ($userInformation->province != NULL) {
+            $cities = Province::find($userInformation->province)->cities()->get(['id', 'name']);
+        } else {
+            $cities = [];
+        }
+
+        return view('user.edit-contact')
+            ->with([
+                'userInformation' => $userInformation,
+                'provinces' => Province::query()->get(['id', 'name']),
+                'cities' => $cities
             ]);
     }
 
@@ -65,13 +86,42 @@ class UserController extends Controller
         $user = User::find(auth()->user()->id);
         $userInformation = $user->userInformation()->first();
 
+        if ($request->has('born_date')) {
+            $request->merge([
+                'born_date' => IlluminateCarbon::createFromFormat('d-m-Y', $request->born_date)
+            ]);
+        }
+
         $validator = Validator::make($request->all(), [
             'ktp' => 'required|numeric|digits:16|unique:user_informations,ktp,' . $userInformation->id,
+            'born_date' => 'nullable|date|before:' . now()->subYear(17),
+            'gender' => 'nullable'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $userInformation->update($request->all());
+
+        return redirect()
+            ->route('user.edit', ['userInformation' => $userInformation])
+            ->with([
+                'status' => 'Informasi user berhasil diperbarui',
+            ]);
+    }
+
+    public function editContactUpdate(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $userInformation = $user->userInformation()->first();
+
+        $validator = Validator::make($request->all(), [
             'phone' => 'required|numeric',
             'address' => 'required',
             'born_place' => 'nullable|max:191',
-            'born_date' => 'nullable|date|before:' . now(),
-            'gender' => 'nullable',
             'city' => 'nullable|max:191',
             'province' => 'nullable|max:191',
             'postal_code' => 'nullable|numeric|digits:5',
@@ -86,7 +136,7 @@ class UserController extends Controller
         $userInformation->update($request->all());
 
         return redirect()
-            ->route('user.edit', ['userInformation' => $userInformation])
+            ->route('user.edit.contact', ['userInformation' => $userInformation])
             ->with([
                 'status' => 'Informasi user berhasil diperbarui',
             ]);
