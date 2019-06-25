@@ -67,11 +67,11 @@
                     @endif
                 </h5>
             </div>
-              <!-- Button -->
+              {{--<!-- Button -->
               <div class="text-center">
 
                   <a href="{{ route('user.product.order') }}" class="btn btn-light-green">Pesan <i class="fas fa-leaf"></i></a>
-              </div>
+              </div>--}}
             </div>
           </div> <!-- Card -->
           <br>
