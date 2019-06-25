@@ -20,6 +20,9 @@
         <div class="card mb-3">
             <div class="card-header">
                 Locations
+                <div class="float-right">
+                    <a class="btn btn-info" href="{{ route('locations.create') }}">Add Location</a>
+                </div>
             </div>
             <div class="card-body">
                 <table class="table table-hover table-striped">

@@ -42,7 +42,7 @@
 
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <textarea name="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" placeholder="Example: Lahan pepohonan km 12 ringroad Ungaran-Salatiga kecamatan Ungaran Kota Semarang">{{ $location->address ?? old('address') }}</textarea>
+                        <textarea name="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" placeholder="Alamat">{{ $location->address ?? old('address') }}</textarea>
                         @if($errors->has('address'))
                         <span class="invalid-feedback">
                             <strong>{{ $errors->first('address') }}</strong>
@@ -52,7 +52,7 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" placeholder="(Optional) Example : Pada tikungan pertama km 12 ringroad utara belok kiri terdapat keterangan lahan dan terdapat police line">{{ $location->description ?? old('description') }}</textarea>
+                        <textarea name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" placeholder="(Optional)">{{ $location->description ?? old('description') }}</textarea>
                         @if($errors->has('description'))
                         <span class="invalid-feedback">
                             <strong>{{ $errors->first('description') }}</strong>

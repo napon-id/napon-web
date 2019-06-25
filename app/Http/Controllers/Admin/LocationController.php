@@ -46,8 +46,8 @@ class LocationController extends Controller
             $validator = Validator::make($request->all(), [
                 'location' => 'required|max:255',
                 'address' => 'required',
-                'lat' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
-                'lng' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
+                'lat' => 'nullable|numeric',
+                'lng' => 'nullable|numeric',
             ]);
 
             if ($validator->fails()) {
