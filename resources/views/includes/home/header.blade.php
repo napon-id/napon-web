@@ -52,9 +52,9 @@
           </div>
         </li>
         @else
-        <li class="nav-item">
+        {{--<li class="nav-item">
           <a class="btn btn-light-green" href="{{ url('login') }}">Masuk | Mendaftar <span class="fas fa-sign-in-alt"></span></a>
-        </li>
+        </li>--}}
         @endauth
       </ul>
 
