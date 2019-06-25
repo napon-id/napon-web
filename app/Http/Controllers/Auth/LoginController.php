@@ -53,4 +53,20 @@ class LoginController extends Controller
         auth()->logout();
         return redirect('/');
     }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        // return $request->only($this->username(), 'password');
+        return [
+            'email' => $request->{$this->username()},
+            'password' => $request->password,
+            'role' => 'admin'
+        ];
+    }
 }
