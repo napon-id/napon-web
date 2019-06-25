@@ -154,7 +154,7 @@
         <div class="col-sm-10">
           <h4>Registrasi</h4>
           <p>
-            Anda dapat mendaftar pada platform {{ config('app.name') }} dengan menekan tombol <a href="{{ url('/register') }}" class="btn btn-light-green peach-gradient">Registrasi</a>
+            Anda dapat menggunakan aplikasi {{ config('app.name') }} secara gratis. <a href="{{ url('/') }}" class="btn btn-light-green peach-gradient"><i class="fas fa-download"></i> Unduh di Play Store</a>
           </p>
         </div>
       </div>
