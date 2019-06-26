@@ -127,6 +127,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     Route::get('term_and_condition', 'Admin\SettingController@termAndCondition')->name('admin.term_and_condition');
     Route::post('term_and_condition', 'Admin\SettingController@termAndConditionUpdate')->name('admin.term_and_condition.update');
+    Route::get('contact', 'Admin\SettingController@contact')->name('admin.contact');
+    Route::post('contact', 'Admin\SettingController@contactUpdate')->name('admin.contact.update');
 });
 
 // User routes
