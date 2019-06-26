@@ -76,15 +76,22 @@
             <a class="dropdown-item" href="{{ route('admin.order.index') }}">Orders</a>
           </div>
         </li>
-        {{--<li class="nav-item">
-          <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-        </li>--}}
+
         <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.blog.index') }}">
             <i class="fas fa-fw fa-table"></i>
             <span>Blog</span></a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="settingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-cogs"></i>
+            <span>Settings</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="settingDropdown">
+            <a class="dropdown-item" href="{{ route('admin.term_and_condition') }}">{{ __('Term And Condition') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.contact') }}">{{ __('Contact') }}</a>
+          </div>
         </li>
       </ul>
 
