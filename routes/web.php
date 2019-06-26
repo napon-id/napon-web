@@ -124,6 +124,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('{id}/edit', 'Admin\BlogController@edit')->name('admin.blog.edit');
         Route::delete('{id}', 'Admin\BlogController@destroy')->name('admin.blog.destroy');
     });
+
+    Route::get('term_and_condition', 'Admin\SettingController@termAndCondition')->name('admin.term_and_condition');
+    Route::post('term_and_condition', 'Admin\SettingController@termAndConditionUpdate')->name('admin.term_and_condition.update');
 });
 
 // User routes
