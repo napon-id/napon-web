@@ -10,6 +10,7 @@ use App\Product;
 use App\Order;
 use App\User;
 use DB;
+use GuzzleHttp\Client;
 
 class OrderController extends Controller
 {
@@ -165,10 +166,14 @@ class OrderController extends Controller
 
             if ($productQuery) {
                 $order = Order::create([
-                    'token' => base64_encode(now()),
+                    'token' => md5(now()),
                     'user_id' => $user->id,
                     'product_id' => $productQuery->id
                 ]);
+
+                $res = $this->requestMidTrans($order);
+
+                $result = json_decode($res->getBody());
 
                 if ($order) {
                     $resultCode = 4;
@@ -179,6 +184,9 @@ class OrderController extends Controller
                     $user_order->product_name = $productQuery->name;
                     $user_order->product_price = (double)$productQuery->tree_quantity * $productQuery->tree->price;
                     $user_order->product_tree_quantity = (int)$productQuery->tree_quantity;
+
+                    // midtrans
+                    $user_order->midtrans = $result;
                 }
             } else {
                 $resultCode = 9;
@@ -200,5 +208,43 @@ class OrderController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    protected function requestMidTrans(\App\Order $order)
+    {
+        $client = new Client();
+        $res = $client->request('POST', 'https://api.sandbox.midtrans.com/v2/charge', [
+            'auth' => [
+                'SB-Mid-server-2qBPvk5TYHAsxZIBOM4qYPln',
+                ''
+            ],
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ],
+            'json' => [
+                'payment_type' => 'echannel',
+                'transaction_details' => [
+                    'gross_amount' => $order->product->tree_quantity * $order->product->tree->price,
+                    'order_id' => $order->token
+                ],
+                'customer_details' => [
+                    'email' => $order->user->email,
+                    'phone' => $order->user->userInformation->phone
+                ],
+                'item_details' => [
+                    'id' => $order->product->name,
+                    'price' => $order->product->tree->price,
+                    'quantity' => $order->product->tree_quantity,
+                    'name' => $order->product->tree->name
+                ],
+                'echannel' => [
+                    'bill_info1' => 'Payment',
+                    'bill_info2' => $order->product->name
+                ]
+            ]
+        ]);
+
+        return $res;
     }
 }

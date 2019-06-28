@@ -176,3 +176,5 @@ Route::get('city', function () {
         ]);
     }
 })->name('city');
+
+Route::get('guzzle', 'Api\OrderController@testGuzzle');
