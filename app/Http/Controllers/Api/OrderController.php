@@ -203,7 +203,7 @@ class OrderController extends Controller
             'message' => $message
         ];
 
-        if ($user_order) {
+        if (isset($user_order)) {
             $response['user_order'] = $user_order;
         }
 
