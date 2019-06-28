@@ -156,12 +156,18 @@ class OrderController extends Controller
         $message = '';
         $resultCode = 0;
 
-        $email = $this->getUserEmail($request->user_key);
-        $product = $request->user_order;
+        if ($request->has('user_key')) {
+            $email = $this->getUserEmail($request->user_key);
+            $user = User::where('email', $email)->first();
+        }
 
-        $user = User::where('email', $email)->first();
+        if ($request->has('user_order')) {
+            $product = $request->user_order;
+        } else {
+            $product = '';
+        }
 
-        if ($user) {
+        if (isset($user)) {
             $productQuery = Product::where('name', '=', $product)->first();
 
             if ($productQuery) {
