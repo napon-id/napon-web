@@ -80,16 +80,6 @@ class User extends Authenticatable  implements MustVerifyEmail
     }
 
     /**
-     * get user log activities
-     * 
-     * @return HasMany App\Log
-     */
-    public function logs()
-    {
-        return $this->hasMany('App\Log');
-    }
-
-    /**
      * get user withdrawals
      * 
      * @return HasMany App\Withdraw

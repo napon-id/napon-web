@@ -13,7 +13,6 @@ use App\UserInformation;
 use App\User;
 use App\Province;
 use App\Cities;
-use App\Log;
 use DB;
 use Illuminate\Support\Carbon as IlluminateCarbon;
 

@@ -11,7 +11,6 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Order;
 use App\OrderUpdate;
-use App\Log;
 use Mail;
 
 class OrderEvent
@@ -52,11 +51,6 @@ class OrderEvent
         $transaction->order_id = $order->id;
         $transaction->total = $tree->price * $product->tree_quantity;
         $transaction->save();
-
-        $log = Log::create([
-            'user_id' => $order->user_id,
-            'activity' => 'Memesan produk tabungan : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
-        ]);
 
         $mail = new \App\Mail\OrderCreatedMail($order, $user);
         Mail::to($user->email)
