@@ -27,12 +27,12 @@ class DescriptionTableSeeder extends Seeder
             [
                 'img' => 'https://napon.id/images/media/icon/registrasi.png',
                 'title' => 'Registrasi',
-                'text' => 'Anda dapat mendaftar pada platform Napon.ID melalui Website atau Aplikasi.'
+                'text' => 'Anda dapat mendaftar pada platform Napon.ID melalui Aplikasi.'
             ],
             [
                 'img' => 'https://napon.id/images/media/icon/danai.png',
                 'title' => 'Menabung',
-                'text' => 'Anda dapat memulai menabung pohon melalui platform kami setelah melakukan verifikasi alamat email.'
+                'text' => 'Anda dapat memulai menabung pohon melalui platform kami setelah melakukan verifikasi alamat email dan melengkapi data yang dibutuhkan.'
             ],
             [
                 'img' => 'https://napon.id/images/media/icon/budidaya.png',
