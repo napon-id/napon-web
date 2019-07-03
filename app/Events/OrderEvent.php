@@ -46,10 +46,10 @@ class OrderEvent
         $user = \App\User::find($order->user_id);
 
         // create transaction for faster query purpose
-        $transaction = new \App\Transaction;
-        $transaction->order_id = $order->id;
-        $transaction->total = $tree->price * $product->tree_quantity;
-        $transaction->save();
+        // $transaction = new \App\Transaction;
+        // $transaction->order_id = $order->id;
+        // $transaction->total = $tree->price * $product->tree_quantity;
+        // $transaction->save();
 
         $mail = new \App\Mail\OrderCreatedMail($order, $user);
         Mail::to($user->email)
@@ -59,16 +59,16 @@ class OrderEvent
     public function orderUpdated(Order $order)
     {
         // get product
-        $product = $order->product()->first();
+        // $product = $order->product()->first();
         // get user
-        $user = \App\User::find($order->user_id);
+        // $user = \App\User::find($order->user_id);
+        $user = $order->user()->first();
 
-        if ($order->status == 'paid') {
-            $transaction = $order->transaction()->first()->update(['status' => 'paid']);
-
-        } else {
-            \Log::info('order update for ' . $order->id . ' fired');
-        }
+        // if ($order->status == 'paid') {
+        //     $transaction = $order->transaction()->first()->update(['status' => 'paid']);
+        // } else {
+        //     \Log::info('order update for ' . $order->id . ' fired');
+        // }
 
         $mail = new \App\Mail\OrderUpdatedMail($order, $user);
         Mail::to($user->email)
@@ -80,7 +80,7 @@ class OrderEvent
         // get product
         $product = $order->product()->first();
         // get user
-        $user = \App\User::find($order->user_id);
+        $user = $order->user()->first();
 
         $columns = $order->getDirty();
         foreach ($columns as $column => $newValue) {
