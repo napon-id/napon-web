@@ -18,6 +18,8 @@ class CreateWithdrawsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('account_id');
             $table->string('status')->default('waiting');
+            $table->bigInteger('amount');
+            $table->text('information')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

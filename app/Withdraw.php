@@ -8,7 +8,11 @@ use Event;
 class Withdraw extends Model
 {
     protected $fillable = [
-      'user_id', 'account_id', 'status', 'amount', 'information',
+      'user_id', 
+      'account_id', 
+      'status', 
+      'amount', 
+      'information'
     ];
 
     public function user()
