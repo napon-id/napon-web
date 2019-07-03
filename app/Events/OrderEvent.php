@@ -10,7 +10,6 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Order;
-use App\OrderUpdate;
 use Mail;
 
 class OrderEvent
@@ -95,66 +94,6 @@ class OrderEvent
                     $user->balance()->first()->update([
                         'balance' => $user->balance()->first()->balance + $selling_price,
                     ]);
-                }
-            }
-            if ($column == 'status') {
-                switch ($newValue) {
-                    case 'paid':
-                        if ($order->getOriginal('status') == 'waiting') {
-                            OrderUpdate::create([
-                                'order_id' => $order->id,
-                                'title' => 'Deposit berhasil',
-                                'description' => 'Selamat. Produk tabungan '.$product->name.' anda telah mulai berjalan. Saat ini kami sedang menanam pohon Anda.'
-                            ]);
-
-                            $log = Log::create([
-                                'user_id' => $order->user_id,
-                                'activity' => 'Deposit telah diterima : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
-                            ]);
-                        } else {
-                            \Log::info('reverse status change. It is prohibited');
-                        }
-
-                        \Log::info($newValue);
-                        break;
-
-                    case 'investing':
-                        if ($order->getOriginal('status') == 'paid') {
-                            OrderUpdate::create([
-                                'order_id' => $order->id,
-                                'title' => 'Proses penanaman telah selesai dilakukan',
-                                'description' => 'Pohon anda telah selesai kami tanam. Kami akan memberikan laporan rutin pohon Anda disini.'
-                            ]);
-
-                            $log = Log::create([
-                                'user_id' => $order->user_id,
-                                'activity' => 'Pohon telah ditanam : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
-                            ]);
-                        } else {
-                            \Log::info('reverse status change. It is prohibited');
-                        }
-                        break;
-
-                    case 'done':
-                        if ($order->getOriginal('status') == 'investing') {
-                            OrderUpdate::create([
-                                'order_id' => $order->id,
-                                'title' => 'Pohon telah siap dijual',
-                                'description' => 'Selamat. Pohon Anda telah memasuki masa panen. Tahap selanjutnya adalah tahap penjualan pohon. Kami akan tetap memberikan perkembangan informasi disini.'
-                            ]);
-
-                            $log = Log::create([
-                                'user_id' => $order->user_id,
-                                'activity' => 'Produk tabungan selesai : '. $product->name . ' ('. $product->tree_quantity .' pohon) dengan nomor transaksi : ' . $order->token,
-                            ]);
-                        } else {
-                            \Log::info('reverse status change. It is prohibited');
-                        }
-                        break;
-
-                    default:
-                        \Log::info($newValue);
-                        break;
                 }
             }
         }

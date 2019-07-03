@@ -109,19 +109,4 @@ class UserController extends Controller
             ])
             ->make(true);
     }
-
-    public function orderUpdates()
-    {
-        if (request()->has('id')) {
-            $order = Order::find(request()->get('id'));
-            $updates = $order->updates()->latest()->get();
-            return response()->json([
-                'order' => $order,
-                'updates' => $updates,
-            ]);
-        } else {
-            return response()->json('nothing found');
-        }
-        // return response()->json($order->updates()->get());
-    }
 }

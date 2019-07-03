@@ -121,17 +121,4 @@ class OrderController extends Controller
                 'order' => $order,
             ]);
     }
-
-    public function update($token, $id)
-    {
-        $order = Order::where('token', $token)
-            ->first();
-        $orderUpdate = $order->updates()->find($id);
-
-        return view('user.update')
-            ->with([
-                'order' => $order,
-                'orderUpdate' => $orderUpdate,
-            ]);
-    }
 }
