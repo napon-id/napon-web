@@ -107,32 +107,14 @@ class OrderController extends Controller
                     DB::raw('reports.tree_diameter AS report_tree_diameter'),
                     DB::raw('reports.tree_state AS report_tree_state'),
                     DB::raw('reports.weather AS report_weather'),
-                    DB::raw('reports.roi AS report_roi')
+                    DB::raw('reports.roi AS report_roi'),
+                    DB::raw('reports.report_image AS report_image'),
+                    DB::raw('reports.report_video AS report_video')
                 )
                 ->where('reports.order_id', '=', $order_id->id)
                 ->get();
 
             if ($reports) {
-                foreach ($reports as $report) {
-                    $displays = DB::table('displays')
-                        ->select(
-                            DB::raw('
-                                (
-                                    CASE
-                                        WHEN displays.is_video = 1
-                                        THEN "true"
-                                        ELSE "false"
-                                        END
-                                    ) AS video'),
-                            DB::raw('displays.display_url AS display_url')
-                        )
-                        ->where('displays.report_id', '=', $report->report_key)
-                        ->orderBy('displays.created_at', 'desc')
-                        ->get();
-
-                    $report->display_list = $displays;
-                }
-
                 $order->report_list = $reports;
             }
         }
