@@ -24,6 +24,8 @@ class CreateReportsTable extends Migration
             $table->text('tree_state')->nullable();
             $table->string('weather')->nullable();
             $table->integer('roi')->nullable();
+            $table->text('report_image');
+            $table->text('report_video');
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');
