@@ -19,10 +19,14 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->integer('tree_quantity');
             $table->string('img');
+            $table->text('secondary_img')->nullable();
+            $table->text('simulation_img')->nullable();
+            $table->text('img_android')->nullable();
             $table->text('description')->nullable();
             $table->string('time');
             $table->integer('percentage');
             $table->enum('available', ['yes', 'no'])->default('yes');
+            $table->boolean('has_certificate')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

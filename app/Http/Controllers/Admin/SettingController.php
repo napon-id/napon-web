@@ -32,7 +32,8 @@ class SettingController extends Controller
             ->with([
                 'address' => Setting::where('key', 'contact_address')->first(),
                 'email' => Setting::where('key', 'contact_email')->first(),
-                'phone' => Setting::where('key', 'contact_phone')->first()
+                'phone' => Setting::where('key', 'contact_phone')->first(),
+                'website' => Setting::where('key', 'contact_website')->first(),
             ]);
     }
 
@@ -49,6 +50,10 @@ class SettingController extends Controller
         $phone = Setting::where('key', 'contact_phone')->first();
         $phone->value = $request->phone;
         $phone->save();
+
+        $website = Setting::where('key', 'contact_website')->first();
+        $website->value = $request->website;
+        $website->save();
 
         return redirect()
             ->route('admin.contact')

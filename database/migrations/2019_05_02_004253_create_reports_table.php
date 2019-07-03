@@ -16,6 +16,7 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_id');
+            $table->string('report_key');
             $table->string('period');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
@@ -24,6 +25,8 @@ class CreateReportsTable extends Migration
             $table->text('tree_state')->nullable();
             $table->string('weather')->nullable();
             $table->integer('roi')->nullable();
+            $table->text('report_image');
+            $table->text('report_video');
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');

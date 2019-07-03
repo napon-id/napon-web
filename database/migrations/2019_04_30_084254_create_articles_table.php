@@ -19,6 +19,8 @@ class CreateArticlesTable extends Migration
             $table->text('img')->nullable();
             $table->text('description')->nullable();
             $table->bigInteger('statistic')->default(0);
+            $table->string('author')->nullable();
+            $table->string('slug')->nullable();
             $table->timestamps();
         });
     }

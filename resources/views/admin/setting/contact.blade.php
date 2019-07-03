@@ -35,6 +35,11 @@
                 <input type="text" name="phone" value="{{ $phone->value }}" class="form-control">
             </div>
 
+            <div class="form-group">
+                <label for="website">{{ __('Website') }}</label>
+                <input type="text" name="website" value="{{ $website->value }}" class="form-control">
+            </div>
+
             <input type="submit" name="update" value="Update" class="btn btn-info">
         </form>
     </div>

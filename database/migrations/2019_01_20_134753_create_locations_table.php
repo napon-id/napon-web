@@ -15,11 +15,10 @@ class CreateLocationsTable extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('country');
             $table->string('location');
             $table->text('address');
-            $table->float('lat', 10, 6)->nullable();
-            $table->float('lng', 10, 6)->nullable();
+            $table->string('lat')->nullable();
+            $table->string('lng')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

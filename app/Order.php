@@ -12,10 +12,8 @@ class Order extends Model
       'token',
       'product_id',
       'location_id',
-      'ip_address',
       'status',
-      'selling_price',
-      'certificate',
+      'selling_price'
     ];
 
     public function product()
