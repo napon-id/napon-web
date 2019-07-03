@@ -20,7 +20,6 @@ class UserInformation extends Model
         'phone',
         'address',
 		'ktp',
-		'born_place',
 		'born_date',
 		'gender',
 		'city',

@@ -21,7 +21,6 @@ class CreateUserInformationsTable extends Migration
             $table->string('ktp')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
-            $table->string('born_place')->nullable();
             $table->date('born_date')->nullable();
             $table->string('gender')->nullable();
             $table->string('city')->nullable();

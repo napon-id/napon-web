@@ -377,7 +377,6 @@ class UserController extends Controller
                 DB::raw('users.name AS user_name'),
                 DB::raw('users.email AS user_email'),
                 DB::raw('user_informations.user_image AS user_image'),
-                DB::raw('user_informations.born_place AS user_birth_place'),
                 DB::raw('user_informations.born_date AS user_birth_date'),
                 DB::raw('user_informations.gender AS user_sex'),
                 DB::raw('
@@ -433,7 +432,7 @@ class UserController extends Controller
         if ($user) {
             $user->user_banks = $banks;
 
-            if (!empty($user->user_birth_place) && !empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
+            if (!empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
                 $user->user_data_filled = (bool)true;
             } else {
                 $user->user_data_filled = (bool)false;
@@ -465,7 +464,6 @@ class UserController extends Controller
         /**
          * request param && mapping
          * - user_name => user->name
-         * - user_birth_place => userInformation->born_place
          * - user_birth_date => userInformation->born_date
          * - user_sex => userInformation->gender
          * - user_phone => userInformation->phone
@@ -485,7 +483,7 @@ class UserController extends Controller
             ]);
         }
 
-        if (!$request->user_name && !$request->user_birth_place && !$request->user_birth_date && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_cpde && !$request->user_id_number) {
+        if (!$request->user_name && !$request->user_birth_date && !$request->user_sex && !$request->user_phone && !$request->user_address && !$request->user_city && !$request->user_state && !$request->user_zip_code && !$request->user_id_number) {
             return response()->json([
                 'result_code' => 7,
                 'request_code' => 200,
@@ -500,7 +498,6 @@ class UserController extends Controller
         if ($user) {
             $validator = Validator::make($request->all(), [
                 'user_name' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
-                'user_birth_place' => 'nullable|regex:/^(\pL+\s?)*\s*$/|max:191',
                 'user_birth_date' => 'nullable|date|before:' . now()->subYears(17),
                 'user_sex' => 'nullable|in:1,2',
                 'user_phone' => 'nullable|numeric|digits_between:8,14',
@@ -512,8 +509,6 @@ class UserController extends Controller
             ], [
                 'user_name.regex' => 'Nama pengguna tidak sesuai',
                 'user_name.max' => 'Nama pengguna tidak boleh lebih dari :max karakter',
-                'user_birth_place.regex' => 'Tempat lahir tidak sesuai',
-                'user_birth_place.max' => 'Tempat lahir tidak boleh lebih dari :max karakter',
                 'user_birth_date.before' => 'Tanggal lahir tidak boleh lebih dari ' . now()->subYears(17)->firstOfYear()->format('d/m/Y'),
                 'user_birth_date.date' => 'Format tanggal lahir tidak sesuai',
                 'user_sex.in' => 'Jenis kelamin tidak sesuai',
@@ -533,7 +528,6 @@ class UserController extends Controller
                 $validatorMessage = $validator->getMessageBag()->toArray();
 
                 isset($validatorMessage['user_name']) ? ($errors->user_name = $validatorMessage['user_name'][0]) : $errors;
-                isset($validatorMessage['user_birth_place']) ? ($errors->user_birth_place = $validatorMessage['user_birth_place'][0]) : $errors;
                 isset($validatorMessage['user_birth_date']) ? ($errors->user_birth_date = $validatorMessage['user_birth_date'][0]) : $errors;
                 isset($validatorMessage['user_sex']) ? ($errors->user_sex = $validatorMessage['user_sex'][0]) : $errors;
                 isset($validatorMessage['user_phone']) ? ($errors->user_phone = $validatorMessage['user_phone'][0]) : $errors;
@@ -558,7 +552,6 @@ class UserController extends Controller
         $userInformation = $user->userInformation()->first();
 
         $userInformation->update([
-            'born_place' => $request->user_birth_place ?? $userInformation->born_place,
             'born_date' => $request->user_birth_date ?? $userInformation->born_date,
             'gender' => $request->user_sex ?? $userInformation->gender,
             'phone' => $request->user_phone ?? $userInformation->phone,
