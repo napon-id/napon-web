@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\ArticleDetail;
 
 class Article extends Model
 {
@@ -15,11 +14,6 @@ class Article extends Model
         'statistic',
         'author'
     ];
-
-    public function articleDetails()
-    {
-        return $this->hasMany(ArticleDetail::class);
-    }
 
     public function makeSlug($title)
     {
