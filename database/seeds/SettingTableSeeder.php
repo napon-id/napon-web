@@ -88,7 +88,10 @@ class SettingTableSeeder extends Seeder
             'key' => 'contact_phone',
             'value' => '(024) 7590 1139'
         ]);
-
-
+        
+        Setting::create([
+            'key' => 'contact_website',
+            'value' => 'https://napon.id'
+        ]);
     }
 }

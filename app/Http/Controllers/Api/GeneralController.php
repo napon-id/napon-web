@@ -245,6 +245,7 @@ class GeneralController extends Controller
                 'address' => Setting::where('key', 'contact_address')->first()->value,
                 'email' => Setting::where('key', 'contact_email')->first()->value,
                 'phone' => Setting::where('key', 'contact_phone')->first()->value,
+                'website' => Setting::where('key', 'contact_website')->first()->value
             ]
         ]);
     }
