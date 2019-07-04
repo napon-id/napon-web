@@ -23,6 +23,10 @@ Route::post('user/bank/edit', 'Api\UserController@userEditBank')->name('api.user
 Route::post('user/bank/delete', 'Api\UserController@userDeleteBank')->name('api.user.bank.delete');
 Route::post('user/verify', 'Api\UserController@resendVerificationEmail')->name('api.user.resend.verification');
 
+// Noifications API
+Route::get('user/notifications', 'Api\UserController@getNotifications')->name('api.user.notifications');
+Route::post('user/notifications/read', 'Api\UserController@markNotificationAsRead')->name('api.user.notifications.read');
+
 // Reset Password API
 Route::post('user/edit_password', 'Api\UserController@editPassword')->name('api.user.password.edit');
 Route::post('user/create_password', 'Api\UserController@createPassword')->name('api.user.password.create');
