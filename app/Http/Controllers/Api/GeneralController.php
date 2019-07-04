@@ -169,9 +169,9 @@ class GeneralController extends Controller
      */
     public function databaseStatus()
     {
-        $lastProduct = Product::latest()->first();
+        $lastProduct = Product::orderBy('updated_at', 'latest')->first();
 
-        $lastDescription = Description::latest()->first();
+        $lastDescription = Description::orderBy('updated_at', 'latest')->first();
 
         return response()->json([
             'request_code' => 200,
