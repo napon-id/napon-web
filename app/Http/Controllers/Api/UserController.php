@@ -355,100 +355,45 @@ class UserController extends Controller
             ]);
         }
 
-        // check if registered user does not have User data
-        $userData = User::where('email', $email)->count();
+        $user = User::where('email', $email)->first();
 
-        if ($userData < 1) {
-            $user = $this->registerUserFromFirebase($request->user_key, $email);
-
-            if ($user) {
-                $user->sendEmailVerificationNotification();
+        $userTrees = 0;
+        foreach ($user->orders as $order) {
+            if ($order->status > 2) {
+                $userTrees = $userTrees + $order->product->tree_quantity;
             }
         }
 
-        $user = DB::table('users')
-            ->leftJoin('user_informations', 'users.id', '=', 'user_informations.user_id')
-            ->leftJoin('cities', 'cities.id', '=', 'user_informations.city')
-            ->leftJoin('provinces', 'provinces.id', '=', 'cities.province_id')
-            ->leftJoin('orders', 'orders.user_id', '=', 'users.id')
-            ->leftJoin('products', 'products.id', '=', 'orders.product_id')
-            ->leftJoin('trees', 'trees.id', '=', 'products.tree_id')
-            ->leftJoin('balances', 'balances.id', '=', 'users.id')
-            ->select(
-                DB::raw('users.name AS user_name'),
-                DB::raw('users.email AS user_email'),
-                DB::raw('user_informations.user_image AS user_image'),
-                DB::raw('user_informations.born_date AS user_birth_date'),
-                DB::raw('user_informations.gender AS user_sex'),
-                DB::raw('
-                    (
-                        CASE
-                            WHEN user_informations.gender = "1"
-                            THEN "Laki-Laki"
-                            WHEN user_informations.gender = "2"
-                            THEN "Wanita"
-                            ELSE null
-                            END
-                        ) AS user_sex'),
-                DB::raw('user_informations.phone AS user_phone'),
-                DB::raw('user_informations.address AS user_address'),
-                DB::raw('cities.name AS user_city'),
-                DB::raw('provinces.name AS user_state'),
-                DB::raw('user_informations.postal_code AS user_zip_code'),
-                DB::raw('user_informations.ktp AS user_id_number'),
-                DB::raw('user_informations.user_id_image AS user_id_image'),
-                DB::raw('SUM(products.tree_quantity) AS user_total_tree'),
-                DB::raw('users.created_at AS user_join_date'),
-                DB::raw('balances.balance AS user_balance'),
-                DB::raw('
-                    SUM(trees.price)
-                    AS user_total_investment'),
-                DB::raw('
-                    (
-                        CASE
-                            WHEN users.email_verified_at IS NULL
-                            THEN false
-                            ELSE true
-                            END
-                        ) AS user_email_verified')
-            )
-            ->where('users.email', '=', $email)
-            ->groupBy(
-                'users.id',
-                'user_informations.id'
-            )
-            ->first();
-
-        $banks = DB::table('users')
-            ->rightJoin('accounts', 'accounts.user_id', '=', 'users.id')
-            ->select(
-                DB::raw('accounts.id AS user_bank_id'),
-                DB::raw('accounts.name AS user_bank_name'),
-                DB::raw('accounts.holder_name AS user_bank_account_name'),
-                DB::raw('accounts.number AS user_bank_account_number')
-            )
-            ->where('users.email', '=', $email)
-            ->get();
-
-        if ($user) {
-            $user->user_banks = $banks;
-
-            if (!empty($user->user_birth_date) && !empty($user->user_sex) && !empty($user->user_phone) && !empty($user->user_address) && !empty($user->user_city) && !empty($user->user_state) && !empty($user->user_zip_code) && !empty($user->user_id_number) && !empty($user->user_id_image)) {
-                $user->user_data_filled = (bool)true;
-            } else {
-                $user->user_data_filled = (bool)false;
-            }
-
-            // cast string to other data type
-            $user->user_balance = (double)$user->user_balance;
-            $user->user_total_tree = (int)$user->user_total_tree;
-            $user->user_total_investment = (double)$user->user_total_investment;
-            $user->user_email_verified = (bool)$user->user_email_verified;
-        }
+        $data = [
+            'user_name' => $user->name,
+            'user_email' => $user->email,
+            'user_image' => $user->userInformation->user_image,
+            'user_birth_date' => $user->userInformation->born_date,
+            'user_sex' => ( isset($user->userInformation->gender) ? ($user->userInformation->gender == 1 ? 'Laki-Laki' : 'Perempuan') : NULL),
+            'user_phone' => $user->userInformation->phone,
+            'user_address' => $user->userInformation->address,
+            'user_city' => $user->userInformation->city ? $user->userInformation->city->name : NULL,
+            'user_state' => $user->userInformation->city ? $user->userInformation->city->province->name : NULL,
+            'user_zip_code' => $user->userInformation->postal_code,
+            'user_id_number' => $user->userInformation->ktp,
+            'user_id_image' => $user->userInformation->user_id_image,
+            'user_total_tree' => $userTrees,
+            'user_join_date' => $user->created_at->format('Y-m-d h:i:s'),
+            'user_balance' => (double) $user->balance->balance,
+            'user_total_investment' => (double) $user->orders->sum('buy_price'),
+            'user_email_verified' => $user->email_verified_at ? true : false,
+            'user_banks' => $user->banks()->get([
+                'token AS user_bank_id',
+                'name AS user_bank_name',
+                'holder_name AS user_bank_account_name',
+                'number AS user_bank_account_number'
+            ]),
+            'user_data_filled' => ( (isset($user->born_date) && isset($user->userInformation->gender) && isset($user->userInformation->phone) && isset($user->userInformation->address) && isset($user->userInformation->city_id) && isset($user->userInformation->postal_code) && isset($user->userInformation->ktp) && isset($user->userInformation->user_id_image) ) ? true : false )
+        ];
 
         return response()->json([
             'request_code' => 200,
-            'data' => $user,
+            'data' => $data,
             'result_code' => 4,
         ]);
     }
@@ -711,58 +656,67 @@ class UserController extends Controller
      */
     public function userAddBank(Request $request)
     {
-        $email = $this->getUserEmail($request->user_key);
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail($request->user_key);
 
-        $user = User::where('email', $email)->first();
-
-        if ($user) {
-            $validator = Validator::make($request->all(), [
-                'user_bank_name' => 'required|string|max:191',
-                'user_bank_account_name' => 'required|string|max:191',
-                'user_bank_account_number' => 'required|numeric|digits_between:10,15'
-            ], [
-                'user_bank_name.required' => 'Nama Bank tidak boleh kosong',
-                'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
-                'user_bank_account_name.required' => 'Nama pemilik rekening tidak boleh kosong',
-                'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',
-                'user_bank_account_number.required' => 'Nomor rekening tidak boleh kosong',
-                'user_bank_account_number.numeric' => 'Nomor rekening harus berupa angka',
-                'user_bank_account_number.digits_between' => 'Nomor rekening harus berada di antara :min hingga :max digit'
-            ]);
-
-            if ($validator->fails()) {
-                $errors = (object)array();
-                $validatorMessage = $validator->getMessageBag()->toArray();
-
-                isset($validatorMessage['user_bank_name']) ? ($errors->user_name = $validatorMessage['user_bank_name'][0]) : $errors;
-                isset($validatorMessage['user_bank_account_name']) ? ($errors->user_email = $validatorMessage['user_bank_account_name'][0]) : $errors;
-                isset($validatorMessage['user_bank_account_number']) ? ($errors->user_password = $validatorMessage['user_bank_account_number'][0]) : $errors;
-
+            if ($email == '') {
                 return response()->json([
-                    'result_code' => 7,
                     'request_code' => 200,
-                    'errors' => $errors
+                    'result_code' => 2,
+                    'message' => 'User not found'
                 ]);
-            }
+            } else {
+                $user = User::where('email', $email)->first();
 
-            $account = Account::create([
-                'user_id' => $user->id,
-                'name' => $request->user_bank_name,
-                'holder_name' => $request->user_bank_account_name,
-                'number' => $request->user_bank_account_number
-            ]);
-
-            if ($account) {
-                return response()->json([
-                    'result_code' => 4,
-                    'request_code' => 200,
-                    'message' => 'Bank created'
+                $validator = Validator::make($request->only(['user_bank_name', 'user_bank_account_name', 'user_bank_account_number']), [
+                    'user_bank_name' => 'required|string|max:191',
+                    'user_bank_account_name' => 'required|string|max:191',
+                    'user_bank_account_number' => 'required|numeric|digits_between:10,15'
+                ], [
+                    'user_bank_name.required' => 'Nama Bank tidak boleh kosong',
+                    'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
+                    'user_bank_account_name.required' => 'Nama pemilik rekening tidak boleh kosong',
+                    'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',
+                    'user_bank_account_number.required' => 'Nomor rekening tidak boleh kosong',
+                    'user_bank_account_number.numeric' => 'Nomor rekening harus berupa angka',
+                    'user_bank_account_number.digits_between' => 'Nomor rekening harus berada di antara :min hingga :max digit'
                 ]);
+
+                if ($validator->fails()) {
+                    $errors = (object) array();
+                    $validatorMessage = $validator->getMessageBag()->toArray();
+
+                    isset($validatorMessage['user_bank_name']) ? ($errors->user_bank_name = $validatorMessage['user_bank_name'][0]) : $errors;
+                    isset($validatorMessage['user_bank_account_name']) ? ($errors->user_bank_account_name = $validatorMessage['user_bank_account_name'][0]) : $errors;
+                    isset($validatorMessage['user_bank_account_number']) ? ($errors->user_bank_account_number = $validatorMessage['user_bank_account_number'][0]) : $errors;
+
+                    return response()->json([
+                        'result_code' => 7,
+                        'request_code' => 200,
+                        'errors' => $errors
+                    ]);
+                }
+
+                $account = Account::create([
+                    'user_id' => $user->id,
+                    'token' => md5(now()),
+                    'name' => $request->user_bank_name,
+                    'holder_name' => $request->user_bank_account_name,
+                    'number' => $request->user_bank_account_number
+                ]);
+
+                if ($account) {
+                    return response()->json([
+                        'result_code' => 4,
+                        'request_code' => 200,
+                        'message' => 'Bank created'
+                    ]);
+                }
             }
         } else {
             return response()->json([
-                'result_code' => 2,
                 'request_code' => 200,
+                'result_code' => 2,
                 'message' => 'User not found'
             ]);
         }

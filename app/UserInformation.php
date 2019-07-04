@@ -33,4 +33,9 @@ class UserInformation extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function city()
+    {
+        return $this->belongsTo('App\Cities', 'city_id');
+    }
 }

@@ -23,7 +23,7 @@ class CreateUserInformationsTable extends Migration
             $table->text('address')->nullable();
             $table->date('born_date')->nullable();
             $table->string('gender')->nullable();
-            $table->string('city')->nullable();
+            $table->unsignedInteger('city_id')->nullable();
             $table->string('province')->nullable();
             $table->string('postal_code')->nullable();
             $table->timestamps();
