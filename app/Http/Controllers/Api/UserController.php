@@ -699,7 +699,7 @@ class UserController extends Controller
 
                 $account = Account::create([
                     'user_id' => $user->id,
-                    'token' => md5(now()),
+                    'token' => md5('Bank-' . now()),
                     'name' => $request->user_bank_name,
                     'holder_name' => $request->user_bank_account_name,
                     'number' => $request->user_bank_account_number
@@ -786,7 +786,7 @@ class UserController extends Controller
                     return response()->json([
                         'request_code' => 200,
                         'result_code' => 9,
-                        'message' => 'Bank not found'
+                        'message' => 'There is no data'
                     ]);
                 }
             } else {
@@ -814,7 +814,50 @@ class UserController extends Controller
      */
     public function userDeleteBank(Request $request)
     {
-        $email = $this->getUserEmail($request->user_key);
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail($request->user_key);
+            
+            if ($email == '') {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2, 
+                    'message' => 'User not found'
+                ]);
+            } else {
+                $user = User::where('email', $email)->first();
+
+                if ($request->has('user_bank_id') && $request->user_bank_id != '') {
+                    $bank = $user->banks()->where('token', $request->user_bank_id)->first();
+
+                    if (isset($bank)) {
+                        $bank->delete();
+                        return response()->json([
+                            'request_code' => 200,
+                            'result_code' => 4,
+                            'message' => 'Bank deleted'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'request_code' => 200,
+                            'result_code' => 9,
+                            'message' => 'There is no data'
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 9,
+                        'message' => 'There is no data'
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'message' => 'User not found'
+            ]);
+        }
 
         if (!$request->has('user_bank_id')) {
             return response()->json([
@@ -862,44 +905,39 @@ class UserController extends Controller
      */
     public function resendVerificationEmail(Request $request)
     {
-        $email = $this->getUserEmail((string)$request->user_key);
-
-        if ($email == '') {
-            return response()->json([
-                'result_code' => 2,
-                'request_code' => 200,
-                'data' => [
-                    'message' => 'User not found'
-                ]
-            ]);
-        }
-
-        $user = User::where('email', $email)->first();
-
-        if ($user) {
-            if (isset($user->email_verified_at)) {
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail((string)$request->user_key);
+            
+            if ($email == '') {
                 return response()->json([
-                    'result_code' => 4,
                     'request_code' => 200,
-                    'message' => 'User already registered'
+                    'result_code' => 2,
+                    'message' => 'User not found'
                 ]);
             } else {
-                // code to send verification email
-                $user->sendEmailVerificationNotification();
+                $user = User::where('email', $email)->first();
 
-                return response()->json([
-                    'result_code' => 4,
-                    'request_code' => 200,
-                    'message' => 'Email verification sent'
-                ]);
+                if (isset($user->email_verified_at)) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'message' => 'User already registered'
+                    ]);
+                } else {
+                    $user->sendEmailVerificationNotification();
+
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'message' => 'Email verification sent'
+                    ]);
+                }
             }
         } else {
             return response()->json([
-                'result_code' => 2,
                 'request_code' => 200,
-                'data' => [
-                    'message' => 'User not found'
-                ]
+                'result_code' => 2,
+                'message' => 'User not found'
             ]);
         }
     }
@@ -913,7 +951,7 @@ class UserController extends Controller
      */
     public function getNotifications(Request $request)
     {
-        if ($request->has('user_key')) {
+        if ($request->has('user_key') && $request->user_key != '') {
             $email = $this->getUserEmail((string) $request->user_key);
 
             if ($email == '') {
