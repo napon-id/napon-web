@@ -13,6 +13,7 @@ class Order extends Model
       'product_id',
       'location_id',
       'status',
+      'buy_price',
       'selling_price'
     ];
 

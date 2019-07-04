@@ -153,12 +153,26 @@ class OrderController extends Controller
                     ->select([
                         DB::raw('orders.token AS transaction_id'),
                         DB::raw('orders.created_at AS transaction_date'),
-                        DB::raw('orders.status AS transaction_status')
+                        DB::raw('orders.status AS transaction_status'),
+                        DB::raw('orders.buy_price AS transaction_total_payment')
                     ])
                     ->orderBy('orders.created_at', 'DESC')
                     ->where('orders.user_id', '=', $user->id)
                     ->get();
                 
+                foreach ($orders as $order) {
+                    $product = Order::where('token', $order->transaction_id)
+                        ->first()
+                        ->product()
+                        ->first();
+                    $product_array = [
+                        'product_name' => $product->name,
+                        'product_image_black' => $product->img,
+                    ];
+                    $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $product->id);
+                    $order->product = $product_array;
+                }
+
                 return response()->json([
                     'result_code' => 4,
                     'request_code' => 200,
@@ -206,7 +220,8 @@ class OrderController extends Controller
                 $order = Order::create([
                     'token' => md5(now()),
                     'user_id' => $user->id,
-                    'product_id' => $productQuery->id
+                    'product_id' => $productQuery->id,
+                    'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price
                 ]);
 
                 $res = $this->requestMidTrans($order);
