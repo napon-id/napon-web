@@ -48,5 +48,6 @@ Route::get('articles', 'Api\ArticleController@getArticle')->name('api.articles')
 Route::post('articles/addview', 'ArticleController@incrementArticleStatistic')->name('api.articles.statistic');
 
 // Order detail
+Route::get('user/transactions', 'Api\OrderController@getUserTransactions')->name('api.user.transaction');
 Route::get('user/orders', 'Api\OrderController@getUserOrder')->name('api.user.order');
 Route::post('user/order/product', 'Api\OrderController@orderProduct')->name('api.user.order.product');

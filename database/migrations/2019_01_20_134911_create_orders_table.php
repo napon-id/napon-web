@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('location_id')->nullable();
             $table->bigInteger('selling_price')->nullable();
-            $table->string('status')->default('waiting');
+            $table->integer('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
 

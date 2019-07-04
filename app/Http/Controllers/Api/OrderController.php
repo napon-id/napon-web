@@ -127,6 +127,56 @@ class OrderController extends Controller
     }
 
     /**
+     * get user transactions (all user orders)
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getUserTransactions(Request $request)
+    {
+        if ($request->has('user_key')) {
+            $email = $this->getUserEmail((string) $request->user_key);
+
+            if ($email == '') {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2,
+                    'data' => [
+                        'message' => 'User not found'
+                    ]
+                ]);
+            } else {
+                $user = User::where('email', $email)->first();
+
+                $orders = DB::table('orders')
+                    ->select([
+                        DB::raw('orders.token AS transaction_id'),
+                        DB::raw('orders.created_at AS transaction_date'),
+                        DB::raw('orders.status AS transaction_status')
+                    ])
+                    ->orderBy('orders.created_at', 'DESC')
+                    ->where('orders.user_id', '=', $user->id)
+                    ->get();
+                
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'transaction_list' => $orders
+                ]);
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
+    }
+
+    /**
      * create user order process
      *
      * @param Illuminate\Http\Request
