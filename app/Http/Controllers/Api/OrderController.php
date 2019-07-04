@@ -11,10 +11,11 @@ use App\Order;
 use App\User;
 use DB;
 use GuzzleHttp\Client;
+use App\Http\Controllers\Traits\MidTrans;
 
 class OrderController extends Controller
 {
-    use Firebase, UserApi;
+    use Firebase, UserApi, MidTrans;
 
     /**
      * get user orders based on email
@@ -180,11 +181,15 @@ class OrderController extends Controller
                         ->first()
                         ->product()
                         ->first();
+
+                    $order_data = Order::where('token', $order->transaction_id)
+                        ->first();
+
                     $product_array = [
                         'product_name' => $product->name,
                         'product_image_black' => $product->img,
                     ];
-                    $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $product->id);
+                    $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $order_data->id);
                     $order->product = $product_array;
                 }
 
@@ -239,22 +244,19 @@ class OrderController extends Controller
                     'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price
                 ]);
 
-                $res = $this->requestMidTrans($order);
+                $res = $this->orderMidTrans($order);
 
                 $result = json_decode($res->getBody());
 
                 if ($order) {
                     $resultCode = 4;
-                    $message = 'Product ordered successfully';
-
-                    $user_order = (object)array();
-
-                    $user_order->product_name = $productQuery->name;
-                    $user_order->product_price = (double)$productQuery->tree_quantity * $productQuery->tree->price;
-                    $user_order->product_tree_quantity = (int)$productQuery->tree_quantity;
-
-                    // midtrans
-                    $user_order->midtrans = $result;
+                    $message = 'Order success';
+                    $transaction_data = [
+                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                        'transaction_key' => $order->token,
+                        'transaction_total_payment' => (double) $productQuery->tree_quantity * $productQuery->tree->price,
+                        'transaction_va_number' => $result->va_numbers[0]->va_number
+                    ];
                 }
             } else {
                 $resultCode = 9;
@@ -271,8 +273,8 @@ class OrderController extends Controller
             'message' => $message
         ];
 
-        if (isset($user_order)) {
-            $response['user_order'] = $user_order;
+        if (isset($transaction_data)) {
+            $response['transaction_data'] = $transaction_data;
         }
 
         return response()->json($response);
@@ -332,11 +334,13 @@ class OrderController extends Controller
                     $resultCode = 4;
                     $message = 'Product ordered successfully';
 
-                    $user_order = (object) array();
-
-                    $user_order->product_name = $productQuery->name;
-                    $user_order->product_price = (float) $productQuery->tree_quantity * $productQuery->tree->price;
-                    $user_order->product_tree_quantity = (int) $productQuery->tree_quantity;
+                    $resultCode = 4;
+                    $message = 'Order success';
+                    $transaction_data = [
+                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                        'transaction_key' => $order->token,
+                        'transaction_total_payment' => (double) $productQuery->tree_quantity * $productQuery->tree->price
+                    ];
                 }
             } else {
                 $resultCode = 9;
@@ -353,48 +357,10 @@ class OrderController extends Controller
             'message' => $message
         ];
 
-        if (isset($user_order)) {
-            $response['user_order'] = $user_order;
+        if (isset($transaction_data)) {
+            $response['transaction_data'] = $transaction_data;
         }
 
         return response()->json($response);
-    }
-
-    protected function requestMidTrans(\App\Order $order)
-    {
-        $client = new Client();
-        $res = $client->request('POST', 'https://api.sandbox.midtrans.com/v2/charge', [
-            'auth' => [
-                'SB-Mid-server-2qBPvk5TYHAsxZIBOM4qYPln',
-                ''
-            ],
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ],
-            'json' => [
-                'payment_type' => 'echannel',
-                'transaction_details' => [
-                    'gross_amount' => $order->product->tree_quantity * $order->product->tree->price,
-                    'order_id' => $order->token
-                ],
-                'customer_details' => [
-                    'email' => $order->user->email,
-                    'phone' => $order->user->userInformation->phone
-                ],
-                'item_details' => [
-                    'id' => $order->product->name,
-                    'price' => $order->product->tree->price,
-                    'quantity' => $order->product->tree_quantity,
-                    'name' => $order->product->tree->name
-                ],
-                'echannel' => [
-                    'bill_info1' => 'Payment',
-                    'bill_info2' => $order->product->name
-                ]
-            ]
-        ]);
-
-        return $res;
     }
 }

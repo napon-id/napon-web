@@ -242,10 +242,10 @@ class GeneralController extends Controller
             'result_code' => 4,
             'request_code' => 200,
             'contacts' => [
-                'address' => Setting::where('key', 'contact_address')->first()->value,
-                'email' => Setting::where('key', 'contact_email')->first()->value,
-                'phone' => Setting::where('key', 'contact_phone')->first()->value,
-                'website' => Setting::where('key', 'contact_website')->first()->value
+                'company_address' => Setting::where('key', 'contact_address')->first()->value,
+                'company_email' => Setting::where('key', 'contact_email')->first()->value,
+                'company_phone' => Setting::where('key', 'contact_phone')->first()->value,
+                'company_website' => Setting::where('key', 'contact_website')->first()->value
             ]
         ]);
     }

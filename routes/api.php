@@ -52,3 +52,7 @@ Route::get('user/transactions', 'Api\OrderController@getUserTransactions')->name
 Route::get('user/orders', 'Api\OrderController@getUserOrder')->name('api.user.order');
 Route::post('user/order/product', 'Api\OrderController@orderProduct')->name('api.user.order.product');
 Route::post('user/order/product_balance', 'Api\OrderController@orderProductByBalance')->name('api.user.order.product');
+
+// User balance
+Route::post('user/topup', 'Api\BalanceController@topup')->name('api.user.topup');
+Route::post('user/withdraw', 'Api\BalanceController@withdraw')->name('api.user.withdraw');
