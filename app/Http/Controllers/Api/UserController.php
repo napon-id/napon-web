@@ -731,82 +731,75 @@ class UserController extends Controller
      */
     public function userEditBank(Request $request)
     {
-        $email = $this->getUserEmail($request->user_key);
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail($request->user_key);
+            $user = User::where('email', $email)->first();
 
-        if (!$request->has('user_bank_id')) {
-            return response()->json([
-                'result_code' => 9,
-                'request_code' => 200,
-                'message' => 'There is no data'
-            ]);
-        } else {
-            if (!$request->has('user_bank_name') && !$request->has('user_bank_account_name') && !$request->has('user_bank_account_number')) {
-                return response()->json([
-                    'result_code' => 9,
-                    'request_code' => 200,
-                    'message' => 'There is no data'
-                ]);
-            }
-        }
+            if ($request->has('user_bank_id') && $request->user_bank_id != '') {
+                $bank = $user->banks()->where('token', $request->user_bank_id)->first();
 
-        $user = User::where('email', $email)->first();
+                if (isset($bank)) {
+                    $validator = Validator::make($request->only([
+                        'user_bank_name',
+                        'user_bank_account_name',
+                        'user_bank_account_number'
+                    ]), [
+                        'user_bank_name' => 'nullable|string|max:191',
+                        'user_bank_account_name' => 'nullable|string|max:191',
+                        'user_bank_account_number' => 'nullable|numeric|digits_between:10,15'
+                    ], [
+                        'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
+                        'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',
+                        'user_bank_account_number.numeric' => 'Nomor rekening harus berupa angka',
+                        'user_bank_account_number.digits_between' => 'Nomor rekening harus berada di antara :min hingga :max digit'
+                    ]);
 
-        if ($user) {
-            $validator = Validator::make($request->all(), [
-                'user_bank_name' => 'nullable|string|max:191',
-                'user_bank_account_name' => 'nullable|string|max:191',
-                'user_bank_account_number' => 'nullable|numeric|digits_between:10,15'
-            ], [
-                // 'user_bank_name.required' => 'Nama Bank tidak boleh kosong',
-                'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
-                // 'user_bank_account_name.required' => 'Nama pemilik rekening tidak boleh kosong',
-                'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',
-                // 'user_bank_account_number.required' => 'Nomor rekening tidak boleh kosong',
-                'user_bank_account_number.numeric' => 'Nomor rekening harus berupa angka',
-                'user_bank_account_number.digits_between' => 'Nomor rekening harus berada di antara :min hingga :max digit'
-            ]);
+                    if ($validator->fails()) {
+                        $errors = (object) array();
+                        $validatorMessage = $validator->getMessageBag()->toArray();
 
-            if ($validator->fails()) {
-                $errors = (object)array();
-                $validatorMessage = $validator->getMessageBag()->toArray();
+                        isset($validatorMessage['user_bank_name']) ? ($errors->user_bank_name = $validatorMessage['user_bank_name'][0]) : $errors;
+                        isset($validatorMessage['user_bank_account_name']) ? ($errors->user_bank_account_name = $validatorMessage['user_bank_account_name'][0]) : $errors;
+                        isset($validatorMessage['user_bank_account_number']) ? ($errors->user_bank_account_number = $validatorMessage['user_bank_account_number'][0]) : $errors;
 
-                isset($validatorMessage['user_bank_name']) ? ($errors->user_name = $validatorMessage['user_bank_name'][0]) : $errors;
-                isset($validatorMessage['user_bank_account_name']) ? ($errors->user_email = $validatorMessage['user_bank_account_name'][0]) : $errors;
-                isset($validatorMessage['user_bank_account_number']) ? ($errors->user_password = $validatorMessage['user_bank_account_number'][0]) : $errors;
+                        return response()->json([
+                            'result_code' => 7,
+                            'request_code' => 200,
+                            'errors' => $errors
+                        ]);
+                    }
 
-                return response()->json([
-                    'result_code' => 7,
-                    'request_code' => 200,
-                    'errors' => $errors
-                ]);
-            }
+                    $bank->update([
+                        'name' => $request->has('user_bank_name') ? $request->user_bank_name : $bank->name,
+                        'holder_name' => $request->has('user_bank_account_name') ? $request->user_bank_account_name : $bank->holder_name,
+                        'number' => $request->has('user_bank_account_number') ? $request->user_bank_account_number : $bank->number
+                    ]);
 
-            $account = Account::where('id', $request->user_bank_id)->where('user_id', $user->id)->first();
-
-            if ($account) {
-                $account->update([
-                    'name' => $request->has('user_bank_name') ? $request->user_bank_name : $account->name,
-                    'holder_name' => $request->has('user_bank_account_name') ? $request->user_bank_account_name : $account->holder_name,
-                    'number' => $request->has('user_bank_account_number') ? $request->user_bank_account_number : $account->number
-                ]);
-
-                return response()->json([
-                    'result_code' => 3,
-                    'request_code' => 200,
-                    'message' => 'There is change on user profile, update user local data'
-                ]);
+                    if ($bank) {
+                        return response()->json([
+                            'result_code' => 3,
+                            'request_code' => 200,
+                            'message' => 'There is change on user profile, update user local data'
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 9,
+                        'message' => 'Bank not found'
+                    ]);
+                }
             } else {
                 return response()->json([
-                    'result_code' => 9,
                     'request_code' => 200,
+                    'result_code' => 9,
                     'message' => 'There is no data'
                 ]);
             }
-
         } else {
             return response()->json([
-                'result_code' => 2,
                 'request_code' => 200,
+                'result_code' => 2,
                 'message' => 'User not found'
             ]);
         }
