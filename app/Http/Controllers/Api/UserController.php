@@ -979,7 +979,10 @@ class UserController extends Controller
                 ]);
             } else {
                 $user = User::where('email', $email)->first();
-                $notifications = $user->notifications()->get([
+                $notifications = $user
+                    ->notifications()
+                    ->orderBy('created_at', 'DESC')
+                    ->get([
                     'token AS notification_id',
                     'status AS notification_status',
                     'title AS notification_title',
