@@ -56,3 +56,6 @@ Route::post('user/order/product_balance', 'Api\OrderController@orderProductByBal
 // User balance
 Route::post('user/topup', 'Api\BalanceController@topup')->name('api.user.topup');
 Route::post('user/withdraw', 'Api\BalanceController@withdraw')->name('api.user.withdraw');
+
+// MidTrans webhook
+Route::post('midtrans/webhook', 'Api\GeneralController@midtransWebhook')->name('api.midtrans.webhook');
