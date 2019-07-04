@@ -233,7 +233,7 @@ class OrderController extends Controller
 
             if ($productQuery) {
                 $order = Order::create([
-                    'token' => md5(now()),
+                    'token' => md5('Order-' . now()),
                     'user_id' => $user->id,
                     'product_id' => $productQuery->id,
                     'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price
@@ -311,7 +311,7 @@ class OrderController extends Controller
                 // check current user balance
                 if ($balance >= $needPaid) {
                     $order = Order::create([
-                        'token' => md5(now()),
+                        'token' => md5('Order-' . now()),
                         'user_id' => $user->id,
                         'product_id' => $productQuery->id,
                         'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price,
