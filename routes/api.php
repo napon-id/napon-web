@@ -38,7 +38,7 @@ Route::get('database_status', 'Api\GeneralController@databaseStatus')->name('api
 Route::get('provinces', 'Api\GeneralController@getProvinces')->name('api.provinces');
 Route::get('cities', 'Api\GeneralController@getCities')->name('api.province.cities');
 Route::get('banners', 'Api\GeneralController@getBanner')->name('api.banners');
-Route::get('term_and_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
+Route::get('term_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
 Route::get('products', 'Api\GeneralController@getProduct')->name('api.product');
 Route::get('contacts', 'Api\GeneralController@getContact')->name('api.contact');
 
