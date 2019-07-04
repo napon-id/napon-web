@@ -90,6 +90,14 @@ class User extends Authenticatable  implements MustVerifyEmail
     }
 
     /**
+     * retrieve notifications
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
      * static function for Event
      */
     public static function boot()

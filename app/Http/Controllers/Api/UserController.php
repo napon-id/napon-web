@@ -13,6 +13,7 @@ use App\User;
 use App\Cities;
 use App\Account;
 use DB;
+use App\Notification;
 
 class UserController extends Controller
 {
@@ -912,47 +913,147 @@ class UserController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-     public function resendVerificationEmail(Request $request)
-     {
-         $email = $this->getUserEmail((string)$request->user_key);
+    public function resendVerificationEmail(Request $request)
+    {
+        $email = $this->getUserEmail((string)$request->user_key);
 
-         if ($email == '') {
-             return response()->json([
-                 'result_code' => 2,
-                 'request_code' => 200,
-                 'data' => [
-                     'message' => 'User not found'
-                 ]
-             ]);
-         }
+        if ($email == '') {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
 
-         $user = User::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
 
-         if ($user) {
-             if (isset($user->email_verified_at)) {
-                 return response()->json([
-                     'result_code' => 4,
-                     'request_code' => 200,
-                     'message' => 'User already registered'
-                 ]);
-             } else {
-                 // code to send verification email
-                 $user->sendEmailVerificationNotification();
+        if ($user) {
+            if (isset($user->email_verified_at)) {
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'message' => 'User already registered'
+                ]);
+            } else {
+                // code to send verification email
+                $user->sendEmailVerificationNotification();
 
-                 return response()->json([
-                     'result_code' => 4,
-                     'request_code' => 200,
-                     'message' => 'Email verification sent'
-                 ]);
-             }
-         } else {
-             return response()->json([
-                 'result_code' => 2,
-                 'request_code' => 200,
-                 'data' => [
-                     'message' => 'User not found'
-                 ]
-             ]);
-         }
-     }
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'message' => 'Email verification sent'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result_code' => 2,
+                'request_code' => 200,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * get all notifications based on user key
+     * 
+     * @param Iluminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getNotifications(Request $request)
+    {
+        if ($request->has('user_key')) {
+            $email = $this->getUserEmail((string) $request->user_key);
+
+            if ($email == '') {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2,
+                    'data' => [
+                        'message' => 'User not found'
+                    ]
+                ]);
+            } else {
+                $user = User::where('email', $email)->first();
+                $notifications = $user
+                    ->notifications()
+                    ->orderBy('created_at', 'DESC')
+                    ->get([
+                    'token AS notification_id',
+                    'status AS notification_status',
+                    'title AS notification_title',
+                    'subtitle AS notification_subtitle',
+                    'content AS notification_content',
+                    'created_at AS notification_time'
+                ]);
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 4,
+                    'notification_list' => $notifications
+                ]);
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * mark notification as read
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function markNotificationAsRead(Request $request)
+    {
+        if ($request->has('notification_id')) {
+            $notification = Notification::where('token', $request->notification_id)->first();
+
+            if (isset($notification)) {
+                if ($notification->status != 1) {
+                    $notification->update([
+                        'status' => 1
+                    ]);
+
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'message' => 'Read notification'
+                    ]);
+                } else {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'message' => 'Notification already read'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 9,
+                    'data' => [
+                        'message' => 'There is no data'
+                    ]
+                ]);
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 9,
+                'data' => [
+                    'message' => 'There is no data'
+                ]
+            ]);
+        }
+    }
 }
