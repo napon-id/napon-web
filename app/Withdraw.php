@@ -9,6 +9,7 @@ class Withdraw extends Model
 {
     protected $fillable = [
       'user_id', 
+      'token',
       'account_id', 
       'status', 
       'amount', 

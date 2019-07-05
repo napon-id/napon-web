@@ -54,7 +54,7 @@ class User extends Authenticatable  implements MustVerifyEmail
      * 
      * @return HasMany App\Account
      */
-    public function accounts()
+    public function banks()
     {
         return $this->hasMany('App\Account');
     }
@@ -67,6 +67,16 @@ class User extends Authenticatable  implements MustVerifyEmail
     public function withdraw()
     {
         return $this->hasMany('App\Withdraw');
+    }
+
+    /**
+     * get user top-ups
+     * 
+     * @return HasMany App\Topup
+     */
+    public function topup()
+    {
+        return $this->hasMany('App\Topup');
     }
 
     /**

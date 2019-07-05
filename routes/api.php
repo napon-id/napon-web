@@ -38,7 +38,7 @@ Route::get('database_status', 'Api\GeneralController@databaseStatus')->name('api
 Route::get('provinces', 'Api\GeneralController@getProvinces')->name('api.provinces');
 Route::get('cities', 'Api\GeneralController@getCities')->name('api.province.cities');
 Route::get('banners', 'Api\GeneralController@getBanner')->name('api.banners');
-Route::get('term_and_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
+Route::get('term_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
 Route::get('products', 'Api\GeneralController@getProduct')->name('api.product');
 Route::get('contacts', 'Api\GeneralController@getContact')->name('api.contact');
 
@@ -48,5 +48,14 @@ Route::get('articles', 'Api\ArticleController@getArticle')->name('api.articles')
 Route::post('articles/addview', 'ArticleController@incrementArticleStatistic')->name('api.articles.statistic');
 
 // Order detail
+Route::get('user/transactions', 'Api\OrderController@getUserTransactions')->name('api.user.transaction');
 Route::get('user/orders', 'Api\OrderController@getUserOrder')->name('api.user.order');
 Route::post('user/order/product', 'Api\OrderController@orderProduct')->name('api.user.order.product');
+Route::post('user/order/product_balance', 'Api\OrderController@orderProductByBalance')->name('api.user.order.product');
+
+// User balance
+Route::post('user/topup', 'Api\BalanceController@topup')->name('api.user.topup');
+Route::post('user/withdraw', 'Api\BalanceController@withdraw')->name('api.user.withdraw');
+
+// MidTrans webhook
+Route::post('midtrans/webhook', 'Api\GeneralController@midtransWebhook')->name('api.midtrans.webhook');

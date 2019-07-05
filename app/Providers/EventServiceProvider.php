@@ -36,6 +36,9 @@ class EventServiceProvider extends ServiceProvider
         'withdraw.updated' => [
             'App\Events\WithdrawEvent@withdrawUpdated',
         ],
+        'topup.updating' => [
+            'App\Events\TopupEvent@topupUpdating'
+        ]
     ];
 
     /**

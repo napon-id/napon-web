@@ -11,10 +11,11 @@ use App\Order;
 use App\User;
 use DB;
 use GuzzleHttp\Client;
+use App\Http\Controllers\Traits\MidTrans;
 
 class OrderController extends Controller
 {
-    use Firebase, UserApi;
+    use Firebase, UserApi, MidTrans;
 
     /**
      * get user orders based on email
@@ -26,7 +27,7 @@ class OrderController extends Controller
         if ($request->has('user_key')) {
             $email = $this->getUserEmail($request->user_key);
 
-            if (!$email) {
+            if ($email == '') {
                 return response()->json([
                     'result_code' => 2,
                     'request_code' => 200,
@@ -60,63 +61,78 @@ class OrderController extends Controller
 
         $orders = DB::table('users')
             ->rightJoin('orders', 'orders.user_id', '=', 'users.id')
-            ->join('products', 'products.id', '=', 'orders.product_id')
-            ->leftJoin('locations', 'locations.id', '=', 'orders.location_id')
             ->select(
                 DB::raw('orders.token AS user_product_key'),
-                DB::raw('products.created_at AS user_product_start_date'),
-                DB::raw('locations.location AS user_product_location'),
-                DB::raw('orders.updated_at AS user_product_harvest_date'),
+                DB::raw('orders.created_at AS user_product_start_date'),
                 DB::raw('
-                    (CASE
-                        WHEN orders.status = "done"
-                        THEN true
-                        ELSE false
-                        END
-                    ) AS user_product_is_ready_to_harvest
+                    CASE
+                        WHEN orders.status = 4 THEN 1
+                        ELSE 0
+                    END AS user_product_status
                 ')
             )
             ->where('users.email', '=', $email)
+            ->where('orders.status', '!=', '1')
+            ->where('orders.status', '!=', '2')
             ->limit($dataPerPage)
             ->offset($offset)
             ->get();
-
+        
         foreach ($orders as $order) {
-            $order->user_product_is_ready_to_harvest = (bool)$order->user_product_is_ready_to_harvest;
-            $order_id = DB::table('orders')
+            $order_data = DB::table('orders')
                 ->select('orders.*')
                 ->where('orders.token', '=', $order->user_product_key)
                 ->first();
-
+            
+            // product
             $product = DB::table('products')
-                ->select(
-                    DB::raw('products.name AS product_name'),
-                    DB::raw('products.img AS product_image_black')
-                )
-                ->where('products.id', '=', $order_id->product_id)
+                ->select([
+                    'products.name AS product_name',
+                    'products.img AS product_image_black'
+                ])
+                ->where('products.id', '=', $order_data->product_id)
                 ->first();
+            
             $order->product = $product;
+            
+            // location
+            $location = DB::table('locations')
+                ->select([
+                    DB::raw('location AS location_name'),
+                    DB::raw('lat AS latitude'),
+                    DB::raw('lng AS longitude')
+                ])
+                ->where('locations.id', '=', $order_data->id)
+                ->first();
+            // cast variables
+            $location->latitude = (double) $location->latitude;
+            $location->longitude = (double) $location->longitude;
 
-            $reports = DB::table('reports')
-                ->select(
-                    DB::raw('reports.id AS report_key'),
-                    DB::raw('reports.period AS report_period'),
-                    DB::raw('reports.start_date AS report_start_date'),
-                    DB::raw('reports.end_date AS report_end_date'),
-                    DB::raw('reports.tree_height AS report_tree_height'),
-                    DB::raw('reports.tree_diameter AS report_tree_diameter'),
-                    DB::raw('reports.tree_state AS report_tree_state'),
-                    DB::raw('reports.weather AS report_weather'),
-                    DB::raw('reports.roi AS report_roi'),
-                    DB::raw('reports.report_image AS report_image'),
-                    DB::raw('reports.report_video AS report_video')
-                )
-                ->where('reports.order_id', '=', $order_id->id)
+            $order->location = $location;
+
+            // report list
+            $report = DB::table('reports')
+                ->select([
+                    'reports.report_key AS report_key',
+                    'reports.period AS report_period',
+                    'reports.start_date AS report_start_date',
+                    'reports.end_date AS report_end_date',
+                    'reports.tree_height AS report_tree_height',
+                    'reports.tree_diameter AS report_tree_diameter',
+                    'reports.tree_state AS report_tree_state',
+                    'reports.weather AS report_weather',
+                    'reports.report_image AS report_image',
+                    'reports.report_video AS report_video'
+                ])
+                ->where('reports.order_id', '=', $order_data->id)
                 ->get();
 
-            if ($reports) {
-                $order->report_list = $reports;
+            foreach ($report as $data) {
+                $data->report_tree_height = (double) $data->report_tree_height;
+                $data->report_tree_diameter = (double) $data->report_tree_diameter;
             }
+
+            $order->report_list = $report;
         }
 
         return response()->json([
@@ -124,6 +140,74 @@ class OrderController extends Controller
             'result_code' => 4,
             'product_list' => $orders,
         ]);
+    }
+
+    /**
+     * get user transactions (all user orders)
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getUserTransactions(Request $request)
+    {
+        if ($request->has('user_key')) {
+            $email = $this->getUserEmail((string) $request->user_key);
+
+            if ($email == '') {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2,
+                    'data' => [
+                        'message' => 'User not found'
+                    ]
+                ]);
+            } else {
+                $user = User::where('email', $email)->first();
+
+                $orders = DB::table('orders')
+                    ->select([
+                        DB::raw('orders.token AS transaction_id'),
+                        DB::raw('orders.created_at AS transaction_date'),
+                        DB::raw('orders.status AS transaction_status'),
+                        DB::raw('orders.buy_price AS transaction_total_payment')
+                    ])
+                    ->orderBy('orders.created_at', 'DESC')
+                    ->where('orders.user_id', '=', $user->id)
+                    ->get();
+                
+                foreach ($orders as $order) {
+                    $product = Order::where('token', $order->transaction_id)
+                        ->first()
+                        ->product()
+                        ->first();
+
+                    $order_data = Order::where('token', $order->transaction_id)
+                        ->first();
+
+                    $product_array = [
+                        'product_name' => $product->name,
+                        'product_image_black' => $product->img,
+                    ];
+                    $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $order_data->id);
+                    $order->product = $product_array;
+                }
+
+                return response()->json([
+                    'result_code' => 4,
+                    'request_code' => 200,
+                    'transaction_list' => $orders
+                ]);
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'data' => [
+                    'message' => 'User not found'
+                ]
+            ]);
+        }
     }
 
     /**
@@ -154,27 +238,25 @@ class OrderController extends Controller
 
             if ($productQuery) {
                 $order = Order::create([
-                    'token' => md5(now()),
+                    'token' => md5('Order-' . now()),
                     'user_id' => $user->id,
-                    'product_id' => $productQuery->id
+                    'product_id' => $productQuery->id,
+                    'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price
                 ]);
 
-                $res = $this->requestMidTrans($order);
+                $res = $this->orderMidTrans($order);
 
                 $result = json_decode($res->getBody());
 
                 if ($order) {
                     $resultCode = 4;
-                    $message = 'Product ordered successfully';
-
-                    $user_order = (object)array();
-
-                    $user_order->product_name = $productQuery->name;
-                    $user_order->product_price = (double)$productQuery->tree_quantity * $productQuery->tree->price;
-                    $user_order->product_tree_quantity = (int)$productQuery->tree_quantity;
-
-                    // midtrans
-                    $user_order->midtrans = $result;
+                    $message = 'Order success';
+                    $transaction_data = [
+                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                        'transaction_key' => $order->token,
+                        'transaction_total_payment' => (double) $productQuery->tree_quantity * $productQuery->tree->price,
+                        'transaction_va_number' => $result->va_numbers[0]->va_number
+                    ];
                 }
             } else {
                 $resultCode = 9;
@@ -191,48 +273,94 @@ class OrderController extends Controller
             'message' => $message
         ];
 
-        if (isset($user_order)) {
-            $response['user_order'] = $user_order;
+        if (isset($transaction_data)) {
+            $response['transaction_data'] = $transaction_data;
         }
 
         return response()->json($response);
     }
 
-    protected function requestMidTrans(\App\Order $order)
+    /**
+     * create user order by balance
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function orderProductByBalance(Request $request)
     {
-        $client = new Client();
-        $res = $client->request('POST', 'https://api.sandbox.midtrans.com/v2/charge', [
-            'auth' => [
-                'SB-Mid-server-2qBPvk5TYHAsxZIBOM4qYPln',
-                ''
-            ],
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ],
-            'json' => [
-                'payment_type' => 'echannel',
-                'transaction_details' => [
-                    'gross_amount' => $order->product->tree_quantity * $order->product->tree->price,
-                    'order_id' => $order->token
-                ],
-                'customer_details' => [
-                    'email' => $order->user->email,
-                    'phone' => $order->user->userInformation->phone
-                ],
-                'item_details' => [
-                    'id' => $order->product->name,
-                    'price' => $order->product->tree->price,
-                    'quantity' => $order->product->tree_quantity,
-                    'name' => $order->product->tree->name
-                ],
-                'echannel' => [
-                    'bill_info1' => 'Payment',
-                    'bill_info2' => $order->product->name
-                ]
-            ]
-        ]);
+        $message = '';
+        $resultCode = 0;
 
-        return $res;
+        if ($request->has('user_key')) {
+            $email = $this->getUserEmail($request->user_key);
+            $user = User::where('email', $email)->first();
+        }
+
+        if ($request->has('user_order')) {
+            $product = $request->user_order;
+        } else {
+            $product = '';
+        }
+
+        if (isset($user)) {
+            $productQuery = Product::where('name', '=', $product)->first();
+
+            if ($productQuery) {
+                $needPaid = (double) $productQuery->tree_quantity * $productQuery->tree->price;
+                $balance = (double) $user->balance->balance;
+                
+                // check current user balance
+                if ($balance >= $needPaid) {
+                    $order = Order::create([
+                        'token' => md5('Order-' . now()),
+                        'user_id' => $user->id,
+                        'product_id' => $productQuery->id,
+                        'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price,
+                        'status' => 3
+                    ]);
+
+                    // decrement user balance
+                    $user->balance->decrement('balance', $needPaid);
+                } else {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'message' => 'Insufficient balance'
+                    ]);
+                }
+
+                if (isset($order)) {
+                    $resultCode = 4;
+                    $message = 'Product ordered successfully';
+
+                    $resultCode = 4;
+                    $message = 'Order success';
+                    $transaction_data = [
+                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                        'transaction_key' => $order->token,
+                        'transaction_total_payment' => (double) $productQuery->tree_quantity * $productQuery->tree->price
+                    ];
+                }
+            } else {
+                $resultCode = 9;
+                $message = 'There is no data';
+            }
+        } else {
+            $resultCode = 2;
+            $message = 'User account not found';
+        }
+
+        $response = [
+            'result_code' => $resultCode,
+            'request_code' => 200,
+            'message' => $message
+        ];
+
+        if (isset($transaction_data)) {
+            $response['transaction_data'] = $transaction_data;
+        }
+
+        return response()->json($response);
     }
 }

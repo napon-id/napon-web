@@ -16,7 +16,6 @@ class Report extends Model
         'tree_diameter',
         'tree_state',
         'weather',
-        'roi',
         'report_image',
         'report_video'
     ];

@@ -11,6 +11,8 @@ use App\Product;
 use function GuzzleHttp\json_encode;
 use App\Setting;
 use DB;
+use App\Order;
+use App\Topup;
 
 class GeneralController extends Controller
 {
@@ -242,11 +244,58 @@ class GeneralController extends Controller
             'result_code' => 4,
             'request_code' => 200,
             'contacts' => [
-                'address' => Setting::where('key', 'contact_address')->first()->value,
-                'email' => Setting::where('key', 'contact_email')->first()->value,
-                'phone' => Setting::where('key', 'contact_phone')->first()->value,
-                'website' => Setting::where('key', 'contact_website')->first()->value
+                'company_address' => Setting::where('key', 'contact_address')->first()->value,
+                'company_email' => Setting::where('key', 'contact_email')->first()->value,
+                'company_phone' => Setting::where('key', 'contact_phone')->first()->value,
+                'company_website' => Setting::where('key', 'contact_website')->first()->value
             ]
+        ]);
+    }
+
+    /**
+     * retrieve midtrans payment notification 
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function midtransWebhook(Request $request)
+    {
+        $receivedData = $request->json()->all();
+        
+        $id = $receivedData['order_id'];
+        $status = $receivedData['transaction_status'];
+
+        // check if id is for order
+        $order = Order::where('token', $id)->first();
+
+        if (isset($order)) {
+            if ($order->status == 1) { 
+                if ($status == 'settlement') {
+                    $order->status = 3;
+                } else if ($status == 'failure' || $status == 'cancel') {
+                    $order->status = 2;
+                }
+                $order->save();
+            }
+        } else {
+            $topup = Topup::where('token', $id)->first();
+
+            if (isset($topup)) {
+                if ($topup->status == 1) {
+                    if ($status == 'settlement') {
+                        $topup->status = 2;
+                    } else if ($status == 'failure' || $status == 'cancel') {
+                        $topup->status = 3;
+                    }
+                    $topup->save();
+                }
+            }
+        }
+
+        return response()->json([
+            'id' => $id,
+            'response' => $receivedData
         ]);
     }
 }
