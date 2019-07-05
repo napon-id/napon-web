@@ -264,13 +264,18 @@ class GeneralController extends Controller
         $receivedData = $request->json()->all();
         
         $id = $receivedData['order_id'];
+        $status = $receivedData['transaction_status'];
 
         // check if id is for order
         $order = Order::where('token', $id)->first();
 
         if (isset($order)) {
-            if ($order->status == 1) {
-                $order->status = 3;
+            if ($order->status == 1) { 
+                if ($status == 'settlement') {
+                    $order->status = 3;
+                } else if ($status == 'failure' || $status == 'cancel') {
+                    $order->status = 2;
+                }
                 $order->save();
             }
         } else {
@@ -278,7 +283,11 @@ class GeneralController extends Controller
 
             if (isset($topup)) {
                 if ($topup->status == 1) {
-                    $topup->status = 2;
+                    if ($status == 'settlement') {
+                        $topup->status = 2;
+                    } else if ($status == 'failure' || $status == 'cancel') {
+                        $topup->status = 3;
+                    }
                     $topup->save();
                 }
             }
