@@ -158,9 +158,9 @@ class GeneralController extends Controller
             }
         } else {
             return response()->json([
-                'result_code' => 9,
+                'result_code' => 7,
                 'request_code' => 200,
-                'message' => 'There is no data'
+                'message' => 'Bad request'
             ]);
         }
     }
