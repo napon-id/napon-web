@@ -19,7 +19,7 @@ Anda telah memesan tabungan {{ $order->product()->first()->name }}
 
 <br>
 Silakan melakukan deposit sebesar :
-<br>{{ formatCurrency($order->transaction()->first()->total + $order->transaction()->first()->id) }}
+<br>{{ formatCurrency($order->buy_price }}
 
 ke salah satu rekening {{ config('app.name') }} berikut:
 @component('mail::table')
