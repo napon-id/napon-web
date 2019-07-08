@@ -45,20 +45,20 @@ class ArticleController extends Controller
         $dataPerPage = $offset = 0;
         $page = 1;
 
-        if ($request->has('count_per_page')) {
+        if ($request->has('count_per_page') && $request->count_per_page != '' && is_numeric($request->count_per_page)) {
             $dataPerPage = $request->count_per_page;
         } else {
             $dataPerPage = 5;
         }
 
-        if ($request->has('page')) {
+        if ($request->has('page') && $request->page != '' && is_numeric($request->page)) {
             $page = $request->page;
             $offset = ($page - 1) * $dataPerPage;
         } else {
             $offset = ($page - 1) * $dataPerPage;
         }
 
-        $articles = Article::orderBy('id', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
+        $articles = Article::orderBy('created_at', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
 
         if ($articles) {
             return response()->json([

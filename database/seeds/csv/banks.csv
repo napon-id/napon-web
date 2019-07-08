@@ -1,0 +1,148 @@
+002,bank_bri,Bank BRI
+014,bank_bca,Bank BCA
+008,bank_mandiri,Bank Mandiri
+009,bank_bni,Bank BNI
+427,bank_bni_syariah,Bank BNI Syariah
+451,bank_mandiri_syariah,Bank Mandiri Syariah
+022,bank_cimb,Bank CIMB Niaga
+022,bank_cimb_syariah,Bank CIMB Niaga Syariah
+147,bank_muamalat,Bank Muamalat
+213,bank_btpn,Bank BTPN
+547,bank_btpn_syariah,Bank BTPN Syariah
+213,jenius,Jenius
+422,bank_bri_syariah,Bank BRI Syariah
+200,bank_btn,Bank BTN
+013,bank_permata,Bank Permata
+011,bank_danamon,Bank Danamon
+016,bank_bii_maybank,Bank BII Maybank
+426,bank_mega,Bank Mega
+153,bank_sinarmas,Bank Sinarmas
+950,bank_commonwealth,Bank Commonwealth
+028,bank_ocbc_nisp,Bank OCBC NISP
+441,bank_bukopin,Bank Bukopin
+521,bank_bukopin_syariah,Bank Bukopin Syariah
+536,bank_bca_syariah,Bank BCA Syariah
+026,bank_lippo,Bank Lippo
+031,bank_citibank,Bank Citibank
+789,indosat_dompetku,Indosat Dompetku
+911,telkomsel_tcash,Telkomsel TCash
+911,linkaja,LinkAja
+110,bank_jabar,Bank Jabar
+111,bank_dki_jakarta,Bank DKI Jakarta
+112,bank_bpd_diy,Bank BPD DIY (Yogyakarta)
+113,bank_jateng,Bank Jateng (Jawa Tengah)
+114,bank_jatim,Bank Jatim (Jawa Timur)
+115,bank_bpd_jambi,Bank BPD Jambi
+116,bank_bpd_aceh,Bank BPD Aceh
+116,bank_bpd_aceh_syariah,Bank BPD Aceh Syariah
+117,bank_sumut,Bank Sumut (Sumatra Utara)
+118,bank_sumbar,Bank Nagari (Sumbar)
+119,bank_riau_kepri,Bank Riau Kepri
+120,bank_sumsel_babel,Bank Sumsel Babel (Sumatra Selatan)
+121,bank_lampung,Bank Lampung
+122,bank_kalsel,Bank Kalsel (Kalimantan Selatan)
+123,bank_kalbar, Bank Kalbar (Kalimantan Barat)
+124,bank_kalimatra,Bank Kalimatra (Kalimantan Timur dan Utara)
+125,bank_kalteng,Bank Kalteng (Kalimantan Tengah)
+126,bank_sulselbar,Bank Sulselbar (Sulawesi Selatan dan Barat)
+127,bank_sulutgo,Bank Sulutgo (Sulawesi Selatan dan Gorontalo)
+128,bank_ntb,Bank NTB
+128,bank_ntb_syariah,Bank NTB Syariah
+129,bank_bpd_bali,Bank BPD Bali
+130,bank_ntt,Bank NTT
+131,bank_maluku_malut,Bank Maluku Malut
+132,bank_papua,Bank Papua
+133,bank_bengkulu,Bank Bengkulu
+134,bank_sulteng,Bank Sulteng (Sulawesi Tengah)
+135,bank_sultra,Bank Sultra
+137,bank_bpd_banten,Bank BPD Banten
+003,bank_ekspor_indonesia,Bank Ekspor Indonesia
+019,panin,Bank Panin
+517,bank_panin_dubai_syariah,Bank Panin Dubai Syariah
+020,bank_arta_niaga_kencana,Bank Arta Niaga Kencana
+023,bank_uob,Bank UOB Indonesia (Bank Buana Indonesia)
+030,bank_american_express,Bank American Express Ltd
+031,bank_citibank,Citibank, N.A
+032,bank_jp_morgan_chase_bank,JP. Morgan Chase Bank, N.A
+033,bank_america,Bank Of America, N.A
+034,ing_indonesia_bank,ING Indonesia Bank
+036,bank_multicor,Bank Multicor
+037,bank_artha_graha_internasional,Bank Artha Graha Internasional
+039,bank_credit_agricole_indosuez,Bank Credit Agricole Indosuez
+040,bangkok_bank_comp,The Bangkok Comp.Ltd
+041,bank_hsbc,Bank HSBC
+042,bank_of_tokyo_mitsubishi,Bank of Tokyo Mitsubishi UFJ Ltd
+045,bank_sumitomo_mitsui,Bank Sumitomo Mitsui Indonesia
+046,bank_dbs,Bank DBS Indonesia
+046,digibank,Digibank
+047,bank_resona_perdana,Bank Resona Perdana
+048,bank_mizuho,Bank Mizuho Indonesia
+050,standard_chartered,Standard Chartered Bank
+052,bank_abn_amro,Bank ABN Amro
+053,bank_keppel_tatlee_buana,Bank Keppel Tatlee Buana
+054,bank_capital,Bank Capital Indonesia
+057,bank_bnp_parinas,Bank BNP Parinas Indonesia
+059,bank_korea_exchange_danamon,Bank Korea Exchange Bank Danamon
+060,rabobank_internasional,Rabobank Internasional Indonesia
+061,bank_anz,Bank ANZ Indonesia
+068,bank_woori,Bank Woori Saudara
+069,bank_china,Bank Of China
+076,bumi_arta,Bank Bumi Arta
+087,bank_ekonomi,Bank Ekonomi
+088,bank_antardaerah,Bank Antardaerah
+089,bank_haga,Bank Haga
+093,bank_ifi,Bank IFI
+095,century,Bank Century
+097,bank_mayapada,Bank Mayapada
+145,bank_nusantara_parahyangan,Bank Nusantara Parahyangan
+146,bank_swadesi,Bank Swadesi (Bank of India Indonesia)
+151,bank_mestika_dharma,Bank Mestika Dharma
+152,bank_shinhan,Bank Shinhan Indonesia (Bank Metro Express)
+157,bank_maspion,Bank Maspion Indonesia
+159,bank_hagakita,Bank Hagakita
+161,bank_ganesha,Bank Ganesha
+162,bank_windu_kentjana,Bank Windu Kentjana
+164,bank_icbc_indonesia,Bank ICBC Indonesia (Halim Indonesia Bank)
+166,bank_harmoni_international,Bank Harmoni International
+167,bank_qnb_kesawan,Bank QNB Kesawan (Bank QNB Indonesia)
+212,bank_himpunan_saudara_1906,Bank Himpunan Saudara 1906
+405,bank_swaguna,Bank Swaguna
+459,bank_bisnis_internasional,Bank Bisnis Internasional
+466,bank_sri_partha,Bank Sri Partha
+472,bank_jasa_jakarta,Bank Jasa Jakarta
+484,bank_bintang_manunggal,Bank Bintang Manunggal
+485,bank_mnc_internasional,Bank MNC Internasional (Bank Bumiputera)
+490,bank_yudha_bhakti,Bank Yudha Bhakti
+491,bank_mitraniaga,Bank Mitraniaga
+494,bank_bri_ago_niaga,Bank BRI Agro Niaga
+498,bank_sbi_indonesia,Bank SBI Indonesia (Bank Indomonex)
+501,bank_royal_indonesia,Bank Royal Indonesia
+503,bank_national_nobu,Bank National Nobu
+506,bank_mega_syariah,Bank Mega Syariah
+513,bank_ina_perdana,Bank INA Perdana
+517,bank_harfa,Bank Harfa
+520,prima_master_bank,Prima Master Bank
+521,bank_persyarikatan_indonesia,Bank Persyarikatan Indonesia
+525,bank_akita,Bank Akita
+526,liman_international_bank,Liman International Bank
+531,anglomas_internasional_bank,Anglomas Internasional Bank
+523,bank_sahabat_sampoerna,Bank Sahabat Sampoerna (Bank Dipo International)
+535,bank_kesejahteraan_ekonomi,Bank Kesejahteraan Ekonomi
+542,bank_artos_indonesia,Bank Artos Indonesia
+547,bank_purba_danarta,Bank Purba Danarta
+548,bank_multi_arta_sentosa,Bank Multi Arta Sentosa
+553,bank_mayora_indonesia,Bank Mayora Indonesia
+555,bank_index_selindo,Bank Index Selindo
+556,bank_victoria_international,Bank Victoria International
+558,bank_eksekutif,Bank Eksekutif
+559,centratama_nasional_bank,Centratama Nasional Bank
+562,bank_fama_internasional,Bank Fama Internasional
+564,bank_mandiri_taspen_pos,Bank Mandiri Taspen POS (Bank Sinar harapan Bali)
+567,bank_harda,Bank Harda
+945,bank_agris,Bank Agris (Bank Finconesia)
+946,bank_merincorp,Bank Merincorp
+947,bank_maybank_indocorp,Bank Maybank Indocorp
+948,bank_ocbc, Bank OCBC - Indonesia
+949,bank_ctbc, Bank CTBC (China Trust) Indonesia
+425,bank_bjb_syariah,Bank BJB Syariah
+688,bpr_ks,BPR KS (Karyajatnika Sedaya)
