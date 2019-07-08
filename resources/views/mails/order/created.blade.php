@@ -30,10 +30,6 @@ ke salah satu rekening {{ config('app.name') }} berikut:
 @endforeach
 @endcomponent
 
-<br>Untuk mempercepat konfirmasi, pada kolom berita tuliskan:
-<br>NPID{{ $order->user()->first()->id }}TR{{ $order->transaction()->first()->id }}
-
-
 Terima kasih,<br>
 {{ config('app.name') }}
 @endcomponent
