@@ -12,11 +12,21 @@ class UserController extends Controller
 {
     use UserData;
 
+    /**
+     * user index
+     * 
+     * @return Illuminate\View\View
+     */
     public function index()
     {
         return view('admin.user.index');
     }
 
+    /**
+     * display datatable of user
+     * 
+     * @return DataTable
+     */
     public function table()
     {
         return DataTables::of(User::where('role', 'user'))
@@ -35,6 +45,9 @@ class UserController extends Controller
                         <a class="btn" href="'.route('admin.user.balance', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="'. __('Saldo') .'">
                             <i class="fas fa-money-bill"></i>
                         </a>
+                        <a class="btn" href="'.route('admin.user.notification', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="'. __('Notifikasi') .'">
+                            <i class="fas fa-bell"></i>
+                        </a>
                     </div>
                 ';
             })
@@ -45,18 +58,39 @@ class UserController extends Controller
             ->make(true);
     }
 
+    /**
+     * show user detail
+     * 
+     * @param App\User
+     * 
+     * @return array user
+     */
     public function detail(User $user)
     {
         return view('admin.user.detail')
             ->with('user', $this->getUserData($user));
     }
 
+    /**
+     * show user orders data
+     * 
+     * @param App\User
+     * 
+     * @return App\User
+     */
     public function order(User $user)
     {
         return view('admin.user.order')
             ->with('user', $user);
     }
 
+    /**
+     * display datatable of user order
+     * 
+     * @param App\User
+     * 
+     * @return DataTable
+     */
     public function orderTable(User $user)
     {
         return DataTables::of($user->orders()->get())
@@ -111,4 +145,52 @@ class UserController extends Controller
             ])
             ->make(true);
     }
+
+    /**
+     * show user notifications data
+     * 
+     * @param App\User
+     * 
+     * @return Illuminate\View\View
+     */
+    public function notification(User $user)
+    {
+        return view('admin.user.notification')
+            ->with('user', $user);
+    }
+
+    /**
+     * get datatable of notifications
+     * 
+     * @param App\User
+     * 
+     * @return DataTable
+     */
+    public function notificationTable(User $user)
+    {
+        return DataTables::of($user->notifications()->get())
+            ->editColumn('status', function ($notification) {
+                return $notification->status == 1 ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>';
+            })
+            ->editColumn('created_at', function ($notification) {
+                return $notification->created_at->format('d-m-Y h:i:s');
+            })
+            ->addColumn('action', function ($notification) {
+                return '
+                    <div class="btn-group">
+                        <form action="'.route('admin.user.notification.destroy', [$notification->user()->first(), $notification]).'" method="post">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button class="btn" data-toggle="tooltip" data-placement="bottom" title="'.__('Hapus').'">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                ';
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
+    }
+
+    // TODO: Add User delete button on datatable and method
 }

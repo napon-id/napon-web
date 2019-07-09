@@ -69,13 +69,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     // User prefixed
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', 'Admin\UserController@index')->name('admin.user');
-        Route::get('/table', 'Admin\UserController@table')->name('admin.user.table');
         Route::get('/detail/{user}', 'Admin\UserController@detail')->name('admin.user.detail');
         Route::get('/order/updates', 'Admin\UserController@orderUpdates')->name('admin.user.order.updates');
+        Route::get('/notification/{user}', 'Admin\UserController@notification')->name('admin.user.notification');
+
         Route::get('/order/{user}', 'Admin\UserController@order')->name('admin.user.order');
+        Route::get('/balance/{user}', 'Admin\BalanceController@index')->name('admin.user.balance');
+
+        // table
+        Route::get('/table', 'Admin\UserController@table')->name('admin.user.table');
         Route::get('/order/{user}/table', 'Admin\UserController@orderTable')->name('admin.user.order.table');
         Route::get('/balance/{user}/table', 'Admin\BalanceController@table')->name('admin.user.balance.table');
-        Route::get('/balance/{user}', 'Admin\BalanceController@index')->name('admin.user.balance');
+        Route::get('/notification/{user}/table', 'Admin\UserController@notificationTable')->name('admin.user.notification.table');
+
+        // notification
+        Route::get('/notification/{user}/create', 'Admin\NotificationController@create')->name('admin.user.notification.create');
+        Route::post('/notification/{user}/post', 'Admin\NotificationController@store')->name('admin.user.notification.store');
+        Route::delete('/notification/{user}/delete/{notification}', 'Admin\NotificationController@destroy')->name('admin.user.notification.destroy');
     });
 
     // Invest
