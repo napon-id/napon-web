@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         return DataTables::of(User::where('role', 'user'))
             ->addColumn('created_at', function ($user) {
-                return $user->created_at->format('d-m-Y h:i:sa');
+                return $user->created_at->format('d-m-Y h:i:s');
             })
             ->addColumn('detail', function ($user) {
                 return '
@@ -39,9 +39,9 @@ class UserController extends Controller
                 ';
             })
             ->addColumn('verified', function ($user){
-                return $user->email_verified_at;
+                return $user->email_verified_at ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>';
             })
-            ->rawColumns(['detail'])
+            ->rawColumns(['detail', 'verified'])
             ->make(true);
     }
 

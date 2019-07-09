@@ -17,11 +17,11 @@
         <table class="datatable table table-display" data-url="{{ route('admin.user.table') }}" id="userTable">
             <thead>
                 <tr>
-                    <th data-field="user_key">ID</th>
-                    <th data-field="name">Name</th>
-                    <th data-field="email">Email</th>
-                    <th data-field="created_at">Register date</th>
-                    <th data-field="verified">Verified</th>
+                    <th data-field="user_key">{{ __('ID User') }}</th>
+                    <th data-field="name">{{ __('Nama') }}</th>
+                    <th data-field="email">{{ __('Email') }}</th>
+                    <th data-field="created_at">{{ __('Tanggal Bergabung') }}</th>
+                    <th data-field="verified">Verifikasi</th>
                     <th data-field="detail">Detail</th>
                 </tr>
             </thead>

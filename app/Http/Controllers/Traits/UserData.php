@@ -35,12 +35,6 @@ trait UserData
             'user_balance' => (float) $user->balance->balance,
             'user_total_investment' => (float) $user->orders->sum('buy_price'),
             'user_email_verified' => $user->email_verified_at ? true : false,
-            // 'user_banks' => $user->banks()->get([
-            //     'token AS user_bank_id',
-            //     'name AS user_bank_name',
-            //     'holder_name AS user_bank_account_name',
-            //     'number AS user_bank_account_number'
-            // ]),
             'user_banks' => \DB::table('accounts')
                 ->leftJoin('bank_lists', 'accounts.name', '=', 'bank_lists.bank_name')
                 ->select([
