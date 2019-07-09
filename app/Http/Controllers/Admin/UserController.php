@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
-use App\Order;
 use DataTables;
+use App\Http\Controllers\Traits\UserData;
 
 class UserController extends Controller
 {
+    use UserData;
+
     public function index()
     {
         return view('admin.user.index');
@@ -24,13 +26,13 @@ class UserController extends Controller
             ->addColumn('detail', function ($user) {
                 return '
                     <div class="btn-group">
-                        <button class="btn detail" data-id="'.$user->id.'" data-toggle="tooltip" data-placement="bottom" title="Detail">
-                            <span class="fas fa-fw fa-eye" data-toggle="modal" data-target="#userDetail"></span>
-                        </button>
-                        <a class="btn" href="'.route('admin.user.order', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Orders">
+                        <a class="btn" href="' . route('admin.user.detail', [$user]) . '" target="_blank" data-toggle="tooltip" data-placement="bottom" title="' . __('Detail') . '">
+                            <i class="fas fa-fw fa-eye"></i>
+                        </a>
+                        <a class="btn" href="'.route('admin.user.order', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="'. __('Tabungan') .'">
                             <i class="fas fa-list"></i>
                         </a>
-                        <a class="btn" href="'.route('admin.user.balance', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Balance">
+                        <a class="btn" href="'.route('admin.user.balance', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="'. __('Saldo') .'">
                             <i class="fas fa-money-bill"></i>
                         </a>
                     </div>
@@ -43,10 +45,10 @@ class UserController extends Controller
             ->make(true);
     }
 
-    public function detail()
+    public function detail(User $user)
     {
-        $id = request()->get('id');
-        return User::findOrFail($id)->userInformation()->first();
+        return view('admin.user.detail')
+            ->with('user', $this->getUserData($user));
     }
 
     public function order(User $user)

@@ -70,7 +70,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', 'Admin\UserController@index')->name('admin.user');
         Route::get('/table', 'Admin\UserController@table')->name('admin.user.table');
-        Route::get('/detail', 'Admin\UserController@detail')->name('admin.user.detail');
+        Route::get('/detail/{user}', 'Admin\UserController@detail')->name('admin.user.detail');
         Route::get('/order/updates', 'Admin\UserController@orderUpdates')->name('admin.user.order.updates');
         Route::get('/order/{user}', 'Admin\UserController@order')->name('admin.user.order');
         Route::get('/order/{user}/table', 'Admin\UserController@orderTable')->name('admin.user.order.table');

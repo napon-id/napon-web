@@ -22,7 +22,7 @@ class UserInformation extends Model
 		'ktp',
 		'born_date',
 		'gender',
-		'city',
+		'city_id',
 		'province',
         'postal_code',
         'user_image',
