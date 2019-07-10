@@ -11,6 +11,7 @@ use DataTables;
 use App\Report;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -54,7 +55,7 @@ class OrderController extends Controller
             ->addColumn('action', function ($report) {
                 return '
                     <div class="btn-group">
-                        <a class="btn" href="" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">
+                        <a class="btn" href="'.route('admin.user.order.report.edit', [$report->order->user, $report->order, $report]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                         <form action="'.route('admin.user.order.report.destroy', [$report->order->user, $report->order, $report]).'" method="post">
@@ -113,13 +114,11 @@ class OrderController extends Controller
                 ->withInput();
         }
 
-        // image upload functionalities
         if ($request->has('report_image')) {
             $path = $request->file('report_image')->store('public/report');
             $image = basename($path);
         }
 
-        // video upload functionalities
         if ($request->has('report_video')) {
             $path = $request->file('report_video')->store('public/report');
             $video = basename($path);
@@ -179,9 +178,46 @@ class OrderController extends Controller
      * 
      * @return Illuminate\View\View
      */
-    public function reportUpdate(User $user, Order $order, Report $report)
+    public function reportUpdate(User $user, Order $order, Report $report, Request $request)
     {
-        // TODO: Update functionalities
+        $validator = $this->validator($request, $report);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        if ($request->has('report_image')) {
+            $this->deleteFile($report->report_image);
+
+            $imagePath = $request->file('report_image')->store('public/report');
+            $image = basename($imagePath);
+        }
+
+        if ($request->has('report_video')) {
+            $this->deleteFile($report->report_video);
+
+            $videoPath = $request->file('report_video')->store('public/report');
+            $video = basename($videoPath);
+        }
+
+        $report->update([
+            'period' => $request->has('period') ? $request->period : $report->period,
+            'start_date' => $request->has('start_date') ? Carbon::createFromFormat('d-m-Y', $request->start_date)->format('Y-m-d') : $report->start_date,
+            'end_date' => $request->has('end_date') ? Carbon::createFromFormat('d-m-Y', $request->end_date)->format('Y-m-d') : $report->end_date,
+            'tree_height' => $request->has('tree_height') ? $request->tree_height : $report->tree_height,
+            'tree_diameter' => $request->has('tree_diameter') ? $request->tree_diameter : $report->tree_diameter,
+            'tree_state' => $request->has('tree_state') ? $request->tree_state : $report->tree_state,
+            'weather' => $request->has('weather') ? $request->weather : $report->weather,
+            'report_image' => $request->has('report_image') ? (config('app.url') . '/report/' . $image) : $report->report_image,
+            'report_video' => $request->has('report_video') ? (config('app.url') . '/report/' . $video) : $report->report_video
+        ]);
+
+        return redirect()
+            ->route('admin.user.order.report', [$user, $order])
+            ->with('status', __('Laporan diedit'));
     }
 
     /**
@@ -195,6 +231,14 @@ class OrderController extends Controller
      */
     public function reportDestroy(User $user, Order $order, Report $report)
     {
+        if (isset($report->report_video)) {
+            $this->deleteFile($report->report_video);
+        }
+
+        if (isset($report->report_image)) {
+            $this->deleteFile($report->report_image);
+        }
+        
         $report->delete();
         
         return redirect()
@@ -287,8 +331,14 @@ class OrderController extends Controller
      * 
      * @return Illuminate\Suport\Facades\Validator
      */
-    protected function validator(Request $request)
+    protected function validator(Request $request, $report = NULL)
     {
+        if (isset($report)) {
+            $fileRule = 'nullable';
+        } else {
+            $fileRule = 'required';
+        }
+
         return Validator::make($request->only([
             'period',
             'start_date',
@@ -307,8 +357,22 @@ class OrderController extends Controller
             'tree_diameter' => 'required|numeric',
             'tree_state' => 'required|string|max:191',
             'weather' => 'required|string|max:191',
-            'report_image' => 'required|file|mimetypes:image/jpeg,image/png|max:2048',
-            'report_video' => 'required|file|mimetypes:video/mp4'
+            'report_image' => array($fileRule, 'file', 'mimetypes:image/jpeg,image/png', 'max:2048'),
+            'report_video' => array($fileRule, 'file', 'mimetypes:video/mp4')
         ]);
     }
+
+    /**
+     * delete file based on dir
+     * 
+     * @param string file
+     * 
+     * @return void
+     */
+    protected function deleteFile($file)
+    {
+        $oldFile = trim($file, config('app.url'));
+        Storage::delete('public/' . $oldFile);
+    }
+
 }

@@ -149,6 +149,9 @@ class UserController extends Controller
                         <a class="btn" href="'.route('admin.user.order.report', [$order->user()->first(), $order]).'" data-toggle="tooltip" data-placement="bottom" title="'. __('Laporan') .'">
                             <i class="fas fa-list"></i>
                         </a>
+                        <a class="btn" href="'.route('admin.user.order.location', [$order->user, $order]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Lokasi').'">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </a>
                     </div>
                 ';
             })

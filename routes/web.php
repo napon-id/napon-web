@@ -98,6 +98,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/order/{user}/report/{order}/edit/{report}', 'Admin\OrderController@reportEdit')->name('admin.user.order.report.edit');
         Route::put('/order/{user}/report/{order}/edit/{report}', 'Admin\OrderController@reportUpdate')->name('admin.user.order.report.update');
         Route::delete('/order/{user}/report/{order}/delete/{report}', 'Admin\OrderController@reportDestroy')->name('admin.user.order.report.destroy');
+
+        // location
+        Route::get('/order/{user}/location/{order}', 'Admin\LocationController@index')->name('admin.user.order.location');
+        Route::get('/order/{user}/location/{order}/create', 'Admin\LocationController@create')->name('admin.user.order.location.create');
+        Route::post('/order/{user}/location/{order}/store', 'Admin\LocationController@store')->name('admin.user.order.location.store');
+        Route::get('/order/{user}/location/{order}/edit/{location}', 'Admin\LocationController@edit')->name('admin.user.order.location.edit');
+        Route::put('/order/{user}/location/{order}/edit/{location}', 'Admin\LocationController@update')->name('admin.user.order.location.update');
+        Route::delete('/order/{user}/location/{order}/delete/{location}', 'Admin\LocationController@destroy')->name('admin.user.order.location.destroy');
         
         // balance
         Route::get('/balance/{user}', 'Admin\BalanceController@index')->name('admin.user.balance');
@@ -143,8 +151,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::put('{order}/{id}/edit', 'Admin\OrderUpdateController@update')->name('admin.order.update.update');
         Route::delete('{order}/{id}', 'Admin\OrderUpdateController@destroy')->name('admin.order.update.destroy');
     });
-
-    Route::resource('locations', 'Admin\LocationController');
 
     // Blog
     Route::group(['prefix' => 'blog'], function () {
