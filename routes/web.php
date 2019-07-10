@@ -50,6 +50,22 @@ Route::get('images/blog/{filename}', function ($filename) {
     return $response;
 });
 
+Route::get('report/{filename}', function ($filename) {
+    $path = storage_path('app/public/report/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
 // Front pages
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/tentang-kami', 'HomeController@about')->name('tentang-kami');
@@ -69,18 +85,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     // User prefixed
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', 'Admin\UserController@index')->name('admin.user');
+        Route::delete('/delete/{user}', 'Admin\UserController@destroy')->name('admin.user.destroy');
         Route::get('/detail/{user}', 'Admin\UserController@detail')->name('admin.user.detail');
         Route::get('/order/updates', 'Admin\UserController@orderUpdates')->name('admin.user.order.updates');
         Route::get('/notification/{user}', 'Admin\UserController@notification')->name('admin.user.notification');
 
+        // order
         Route::get('/order/{user}', 'Admin\UserController@order')->name('admin.user.order');
+        Route::get('/order/{user}/report/{order}', 'Admin\OrderController@report')->name('admin.user.order.report');
+        Route::get('/order/{user}/report/{order}/create', 'Admin\OrderController@reportCreate')->name('admin.user.order.report.create');
+        Route::post('/order/{user}/report/{order}/create', 'Admin\OrderController@reportStore')->name('admin.user.order.report.store');
+        Route::get('/order/{user}/report/{order}/edit/{report}', 'Admin\OrderController@reportEdit')->name('admin.user.order.report.edit');
+        Route::put('/order/{user}/report/{order}/edit/{report}', 'Admin\OrderController@reportUpdate')->name('admin.user.order.report.update');
+        Route::delete('/order/{user}/report/{order}/delete/{report}', 'Admin\OrderController@reportDestroy')->name('admin.user.order.report.destroy');
+        
+        // balance
         Route::get('/balance/{user}', 'Admin\BalanceController@index')->name('admin.user.balance');
-
+        
         // table
         Route::get('/table', 'Admin\UserController@table')->name('admin.user.table');
         Route::get('/order/{user}/table', 'Admin\UserController@orderTable')->name('admin.user.order.table');
         Route::get('/balance/{user}/table', 'Admin\BalanceController@table')->name('admin.user.balance.table');
         Route::get('/notification/{user}/table', 'Admin\UserController@notificationTable')->name('admin.user.notification.table');
+        Route::get('/order/{user}/report/{order}/table', 'Admin\OrderController@reportTable')->name('admin.user.order.report.table');
 
         // notification
         Route::get('/notification/{user}/create', 'Admin\NotificationController@create')->name('admin.user.notification.create');

@@ -19,4 +19,14 @@ class Report extends Model
         'report_image',
         'report_video'
     ];
+
+    /**
+     * get order detail
+     * 
+     * @return BelongsTo App\Order
+     */
+    public function order()
+    {
+        return $this->belongsTo('App\Order');
+    }
 }

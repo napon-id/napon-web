@@ -9,7 +9,7 @@
         <a href="{{ route('admin.user') }}">User</a>
     </li>
     <li class="breadcrumb-item">
-        {{ $user->email }}
+        {{ __('Tabungan') }}
     </li>
 </ol>
 @endsection
@@ -26,15 +26,14 @@
                 <div class="table-responsive">
                     <table class="datatable table table-hover table-striped" data-url="{{ route('admin.user.order.table', [$user]) }}">
                         <thead>
-                            <th data-field="date">Order Date</th>
-                            <th data-field="last_update">Last Update</th>
-                            <th data-field="product_name">Name</th>
-                            <th data-field="status">Status</th>
-                            <th data-field="location">Location</th>
-                            <th data-field="trees">Trees</th>
-                            <th data-field="price">Price</th>
-                            <th data-field="selling_price">Selling Price</th>
-                            <th data-field="details">Details</th>
+                            <th data-field="token">{{ __('ID') }}</th>
+                            <th data-field="product_name">{{ __('Produk') }}</th>
+                            <th data-field="buy_price">{{ __('Harga Awal') }}</th>
+                            <th data-field="selling_price">{{ __('Harga Akhir') }}</th>
+                            <th data-field="created_at">{{ __('Tanggal') }}</th>
+                            <th data-field="updated_at">{{ __('Perubahan Terakhir') }}</th>
+                            <th data-field="status">{{ __('Status') }}</th>
+                            <th data-field="details">{{ __('Detail') }}</th>
                         </thead>
                     </table>
                 </div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use DataTables;
 use App\Http\Controllers\Traits\UserData;
+use App\Notification;
 
 class UserController extends Controller
 {
@@ -48,6 +49,13 @@ class UserController extends Controller
                         <a class="btn" href="'.route('admin.user.notification', [$user]).'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="'. __('Notifikasi') .'">
                             <i class="fas fa-bell"></i>
                         </a>
+                        <form action="'.route('admin.user.destroy', [$user]).'" method="post">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button class="btn" data-toggle="tooltip" data-placement="bottom" title="'.__('Hapus').'">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 ';
             })
@@ -94,51 +102,55 @@ class UserController extends Controller
     public function orderTable(User $user)
     {
         return DataTables::of($user->orders()->get())
-            ->addColumn('date', function ($order) {
-                return $order->created_at->format('d-m-Y h:i:sa');
-            })
-            ->addColumn('last_update', function ($order) {
-                return $order->updated_at->format('d-m-Y h:i:sa');
-            })
-            ->addColumn('status', function ($order) {
-                switch ($order->status) {
-                    case 'waiting':
-                        return '<span class="badge badge-warning">Waiting</span>';
-                        break;
-                    case 'paid':
-                        return '<span class="badge badge-info">Paid</span>';
-                        break;
-                    case 'investing':
-                        return '<span class="badge badge-primary">Investing</span>';
-                        break;
-                    case 'done':
-                        return '<span class="badge badge-success">Done</span>';
-                        break;
-                    default:
-                        return $order->status;
-                        break;
-                }
-            })
-            ->addColumn('product_name', function ($order) {
-                return $order->product()->first()->name;
-            })
-            ->addColumn('location', function ($order) {
-                return $order->location()->first()->address ?? '-';
-            })
-            ->addColumn('trees', function ($order) {
-                return $order->product()->first()->tree_quantity;
-            })
-            ->addColumn('price', function ($order) {
-                return formatCurrency($order->transaction()->first()->total);
-            })
-            ->addColumn('selling_price', function ($order) {
-                return formatCurrency($order->selling_price);
-            })
+            
             ->addColumn('details', function ($order) {
                 return '
                 <button class="btn updates" data-id="'.$order->id.'" data-toggle="modal" data-target="#updatesModal">
                     <i class="fas fa-eye"></i>
                 </button>';
+            })
+            ->addColumn('product_name', function ($order) {
+                return $order->product->name;
+            })
+            ->editColumn('buy_price', function ($order) {
+                return formatCurrency($order->buy_price, 'IDR');
+            })
+            ->editColumn('selling_price', function ($order) {
+                return formatCurrency($order->selling_price, 'IDR');
+            })
+            ->editColumn('created_at', function ($order) {
+                return $order->created_at->format('d-m-Y h:i:s');
+            })
+            ->editColumn('updated_at', function ($order) {
+                return $order->updated_at->format('d-m-Y h:i:s');
+            })
+            ->editColumn('status', function ($order) {
+                switch ($order->status) {
+                    case 1:
+                        return 'Menunggu pembayaran';
+                        break;
+                    case 2: 
+                        return 'Tidak dibayar';
+                        break;
+                    case 3:
+                        return 'Berjalan';
+                        break;
+                    case 4:
+                        return 'Selesai';
+                        break;
+                    default:
+                        return 'undefined';
+                        break;
+                }
+            })
+            ->addColumn('details', function ($order) {
+                return '
+                    <div class="btn-group">
+                        <a class="btn" href="'.route('admin.user.order.report', [$order->user()->first(), $order]).'" data-toggle="tooltip" data-placement="bottom" title="'. __('Laporan') .'">
+                            <i class="fas fa-list"></i>
+                        </a>
+                    </div>
+                ';
             })
             ->rawColumns([
                 'status', 'details'
@@ -168,7 +180,7 @@ class UserController extends Controller
      */
     public function notificationTable(User $user)
     {
-        return DataTables::of($user->notifications()->get())
+        return DataTables::eloquent(Notification::query()->where('user_id', '=', $user->id)->orderBy('created_at', 'desc'))
             ->editColumn('status', function ($notification) {
                 return $notification->status == 1 ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>';
             })
@@ -192,5 +204,19 @@ class UserController extends Controller
             ->make(true);
     }
 
-    // TODO: Add User delete button on datatable and method
+    /**
+     * destroy selected user
+     * 
+     * @param App\User
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()
+            ->route('admin.user')
+            ->with('status', __('User dihapus'));
+    }
 }

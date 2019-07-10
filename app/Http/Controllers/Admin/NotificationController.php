@@ -58,7 +58,7 @@ class NotificationController extends Controller
 
         Notification::create([
             'user_id' => $user->id,
-            'token' => 'Notification-' . md5(now()),
+            'token' => md5('Notification-' . now()),
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'content' => $request->content
