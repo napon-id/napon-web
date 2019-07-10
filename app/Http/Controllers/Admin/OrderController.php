@@ -77,6 +77,62 @@ class OrderController extends Controller
     }
 
     /**
+     * edit order 
+     * 
+     * @param App\User
+     * @param App\Order
+     * 
+     * @return Illuminate\View\View
+     */
+    public function orderEdit(User $user, Order $order)
+    {
+        if ($order->status < 3) {
+            return redirect()
+                ->route('admin.user.order', [$user]);
+        }
+        return view('admin.user.order.edit')
+            ->with([
+                'user' => $user,
+                'order' => $order
+            ]);
+    }
+
+    /**
+     * update order
+     * 
+     * @param App\User $user
+     * @param App\Order $order
+     * @param Illuminate\Http\Request $request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function orderUpdate(User $user, Order $order, Request $request)
+    {
+        $validator = Validator::make($request->only([
+            'status',
+            'selling_price'
+        ]), [
+            'selling_price' => 'nullable|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $order->update([
+            'status' => $request->has('status') ? 4 : 3,
+            'selling_price' => $request->selling_price
+        ]);
+
+        return redirect()
+            ->route('admin.user.order', [$user])
+            ->with('status', __('Tabungan diedit'));
+    }
+
+    /**
      * add order report
      * 
      * @param App\User

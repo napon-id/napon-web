@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function table()
     {
-        return DataTables::of(User::where('role', 'user'))
+        return DataTables::eloquent(User::query()->where('role', 'user')->orderBy('created_at', 'desc'))
             ->addColumn('created_at', function ($user) {
                 return $user->created_at->format('d-m-Y h:i:s');
             })
@@ -113,7 +113,7 @@ class UserController extends Controller
                 return $order->product->name;
             })
             ->addColumn('location', function ($order) {
-                return $order->location->location;
+                return $order->location->location ?? '-';
             })
             ->editColumn('buy_price', function ($order) {
                 return formatCurrency($order->buy_price, 'IDR');
@@ -149,6 +149,9 @@ class UserController extends Controller
             ->addColumn('details', function ($order) {
                 return '
                     <div class="btn-group">
+                        <a class="btn" href="'.route('admin.user.order.edit', [$order->user, $order]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
                         <a class="btn" href="'.route('admin.user.order.report', [$order->user()->first(), $order]).'" data-toggle="tooltip" data-placement="bottom" title="'. __('Laporan') .'">
                             <i class="fas fa-list"></i>
                         </a>
