@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Order;
 use DataTables;
 use App\Http\Controllers\Traits\UserData;
 use App\Notification;
@@ -101,8 +102,7 @@ class UserController extends Controller
      */
     public function orderTable(User $user)
     {
-        return DataTables::of($user->orders()->get())
-            
+        return DataTables::eloquent(Order::query()->where('user_id', $user->id)->orderBy('created_at', 'desc'))
             ->addColumn('details', function ($order) {
                 return '
                 <button class="btn updates" data-id="'.$order->id.'" data-toggle="modal" data-target="#updatesModal">
@@ -111,6 +111,9 @@ class UserController extends Controller
             })
             ->addColumn('product_name', function ($order) {
                 return $order->product->name;
+            })
+            ->addColumn('location', function ($order) {
+                return $order->location->location;
             })
             ->editColumn('buy_price', function ($order) {
                 return formatCurrency($order->buy_price, 'IDR');

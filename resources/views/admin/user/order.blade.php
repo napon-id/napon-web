@@ -31,6 +31,7 @@
                             <th data-field="buy_price">{{ __('Harga Awal') }}</th>
                             <th data-field="selling_price">{{ __('Harga Akhir') }}</th>
                             <th data-field="created_at">{{ __('Tanggal') }}</th>
+                            <th data-field="location">{{ __('Lokasi') }}</th>
                             <th data-field="updated_at">{{ __('Perubahan Terakhir') }}</th>
                             <th data-field="status">{{ __('Status') }}</th>
                             <th data-field="details">{{ __('Detail') }}</th>
