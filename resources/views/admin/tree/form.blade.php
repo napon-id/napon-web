@@ -3,16 +3,13 @@
 @section('breadcrumbs')
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+        <a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{ route('admin.invest') }}">Invest</a>
+        <a href="{{ route('trees.index') }}">{{ __('Pohon') }}</a>
     </li>
-    <li class="breadcrumb-item">
-        <a href="{{ route('trees.index') }}">Tree</a>
-    </li>
-    <li class="breadcrumb-item">
-        {{ isset($tree) ? 'Edit' : 'Create' }}
+    <li class="breadcrumb-item active">
+        {{ isset($tree) ? 'Edit' : __('Tambah') }}
     </li>
 </ol>
 @endsection

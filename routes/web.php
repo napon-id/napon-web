@@ -124,10 +124,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/notification/{user}/post', 'Admin\NotificationController@store')->name('admin.user.notification.store');
         Route::delete('/notification/{user}/delete/{notification}', 'Admin\NotificationController@destroy')->name('admin.user.notification.destroy');
     });
+    
+    
+    Route::resource('trees', 'Admin\TreeController')->except(['show']);
 
     // Invest
     Route::group(['prefix' => 'invest'], function () {
-        Route::resource('trees', 'Admin\TreeController')->except(['show']);
         Route::get('products/tree/{tree}', 'Admin\ProductController@index')->name('products.index');
         Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
     });
@@ -170,4 +172,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::post('term_and_condition', 'Admin\SettingController@termAndConditionUpdate')->name('admin.term_and_condition.update');
     Route::get('contact', 'Admin\SettingController@contact')->name('admin.contact');
     Route::post('contact', 'Admin\SettingController@contactUpdate')->name('admin.contact.update');
+    
+    // banner
+    Route::get('banners/table', 'Admin\BannerController@table')->name('admin.banner.table');
+    Route::get('banners', 'Admin\BannerController@index')->name('admin.banner.index');
+    Route::get('banners/create', 'Admin\BannerController@create')->name('admin.banner.create');
+    Route::post('banners/create', 'Admin\BannerController@store')->name('admin.banner.store');
+    Route::get('banners/{banner}/edit', 'Admin\BannerController@edit')->name('admin.banner.edit');
+    Route::put('banners/{banner}/edit', 'Admin\BannerController@update')->name('admin.banner.update');
+    Route::delete('banners/{banner}/delete', 'Admin\BannerController@destroy')->name('admin.banner.destroy');
 });

@@ -3,16 +3,13 @@
 @section('breadcrumbs')
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+        <a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{ route('admin.invest') }}">Invest</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="{{ route('trees.index') }}">{{ $tree->name }}</a>
+        <a href="{{ route('trees.index') }}">{{ __('Pohon') }}</a>
     </li>
     <li class="breadcrumb-item active">
-        Products
+        {{ __('Tabungan') }}
     </li>
 </ol>
 @endsection
@@ -29,47 +26,49 @@
             </div> <!-- card-header -->
 
             <div class="card-body">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Trees</th>
-                        <th>img</th>
-                        <th>Percentage</th>
-                        <th>Available</th>
-                        <th>Has certificate</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody>
-                        @foreach($tree->products()->get() as $product)
-                        <tr>
-                            <td>{{ $product->name }}</td>
-                            <td>{{ $product->description }}</td>
-                            <td>{{ $product->tree_quantity }}</td>
-                            <td><a href="{{ $product->img }}" target="_blank">{{ $product->img }}</a></td>
-                            <td>{{ $product->percentage }}%</td>
-                            <td>{{ $product->available }}</td>
-                            <td>{{ $product->has_certificate ? 'yes' : 'no' }}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <a class="btn" href="{{ route('products.edit', [$product, 'tree' => $tree]) }}">
-                                        <i class="far fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
-                                    </a>
-                                    @if($product->orders()->count() == 0)
-                                        <form action="{{ route('products.destroy', [$product]) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn" onclick="return confirm('Are you sure?')">
-                                                <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Trees</th>
+                            <th>img</th>
+                            <th>Percentage</th>
+                            <th>Available</th>
+                            <th>Has certificate</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            @foreach($tree->products()->get() as $product)
+                            <tr>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->description }}</td>
+                                <td>{{ $product->tree_quantity }}</td>
+                                <td><a href="{{ $product->img }}" target="_blank">{{ $product->img }}</a></td>
+                                <td>{{ $product->percentage }}%</td>
+                                <td>{{ $product->available }}</td>
+                                <td>{{ $product->has_certificate ? 'yes' : 'no' }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn" href="{{ route('products.edit', [$product, 'tree' => $tree]) }}">
+                                            <i class="far fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
+                                        </a>
+                                        @if($product->orders()->count() == 0)
+                                            <form action="{{ route('products.destroy', [$product]) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn" onclick="return confirm('Are you sure?')">
+                                                    <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div> <!-- card-body -->
         </div> <!-- card -->
     </div> <!-- col-12 -->
