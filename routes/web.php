@@ -66,6 +66,39 @@ Route::get('report/{filename}', function ($filename) {
     return $response;
 });
 
+Route::get('banner/{filename}', function ($filename) {
+    $path = storage_path('app/public/banner/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
+Route::get('description/{filename}', function ($filename) {
+    $path = storage_path('app/public/description/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
+
 // Front pages
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/tentang-kami', 'HomeController@about')->name('tentang-kami');
@@ -181,4 +214,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('banners/{banner}/edit', 'Admin\BannerController@edit')->name('admin.banner.edit');
     Route::put('banners/{banner}/edit', 'Admin\BannerController@update')->name('admin.banner.update');
     Route::delete('banners/{banner}/delete', 'Admin\BannerController@destroy')->name('admin.banner.destroy');
+
+    // description
+    Route::get('descriptions/table', 'Admin\DescriptionController@table')->name('admin.description.table');
+    Route::get('descriptions', 'Admin\DescriptionController@index')->name('admin.description.index');
+    Route::get('descriptions/create', 'Admin\DescriptionController@create')->name('admin.description.create');
+    Route::post('descriptions/create', 'Admin\DescriptionController@store')->name('admin.description.store');
+    Route::get('descriptions/{description}/edit', 'Admin\DescriptionController@edit')->name('admin.description.edit');
+    Route::put('descriptions/{description}/update', 'Admin\DescriptionController@update')->name('admin.description.update');
+    Route::delete('descriptions/{description}/delete', 'Admin\DescriptionController@destroy')->name('admin.description.destroy');
 });

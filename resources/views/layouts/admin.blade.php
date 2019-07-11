@@ -105,9 +105,10 @@
             <span>Settings</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="settingDropdown">
-            <a class="dropdown-item" href="{{ route('admin.term_and_condition') }}">{{ __('Term And Condition') }}</a>
-            <a class="dropdown-item" href="{{ route('admin.contact') }}">{{ __('Contact') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.term_and_condition') }}">{{ __('Syarat dan Ketentuan') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.contact') }}">{{ __('Kontak') }}</a>
             <a class="dropdown-item" href="{{ route('admin.banner.index') }}">{{ __('Banner') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.description.index') }}">{{ __('Deskripsi') }}</a>
           </div>
         </li>
       </ul>
