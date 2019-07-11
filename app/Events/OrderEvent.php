@@ -68,17 +68,28 @@ class OrderEvent
 
         $columns = $order->getDirty();
         foreach ($columns as $column => $newValue) {
+
+            // TODO: Fix this ambiguities on setting up balance
             if ($column == 'selling_price') {
-                if ($order->status == 'done') {
-                    \Log::info('triggering balance update');
-                    \Log::info('new selling price ' . $newValue);
-                    \Log::info('old selling price ' . $order->getOriginal('selling_price'));
-                    $selling_price = $newValue - $order->getOriginal('selling_price');
-                    \Log::info('difference in selling price ' . $selling_price);
-                    $user->balance()->first()->update([
-                        'balance' => $user->balance()->first()->balance + $selling_price,
+                if ($order->status == 4) {
+                    $currentBalance = $user->balance->balance;
+                    $oldValue = $order->getOriginal('selling_price');
+                    $user->balance->update([
+                        'balance' => $currentBalance + $newValue - $oldValue
                     ]);
                 }
+            }
+
+            if ($column == 'status' && $order->selling_price > 0) {
+                if ($newValue == 4) {
+                    $addToBalance = $order->getOriginal('selling_price');
+                    $currentBalance = $user->balance->balance;
+
+                    $user->balance->update([
+                        'balance' => $addToBalance + $currentBalance
+                    ]);
+                }
+
             }
         }
         \Log::info($columns);

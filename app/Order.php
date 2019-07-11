@@ -27,9 +27,9 @@ class Order extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function updates()
+    public function reports()
     {
-        return $this->hasMany('App\OrderUpdate');
+        return $this->hasMany('App\Report');
     }
 
     public function location()

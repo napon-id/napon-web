@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Location;
-use Validator;
 use DB;
+use App\User;
+use App\Order;
+use Illuminate\Support\Facades\Validator;
 
 class LocationController extends Controller
 {
@@ -15,12 +17,15 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user, Order $order)
     {
-        return view('admin.location.index')
-            ->with([
-                'locations' => Location::all(),
-            ]);
+        if (empty($order->location_id)) {
+            return redirect()
+                ->route('admin.user.order.location.create', [$user, $order]);
+        } else {
+            return redirect()
+                ->route('admin.user.order.location.edit', [$user, $order, $order->location_id]);
+        }
     }
 
     /**
@@ -28,9 +33,14 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('admin.location.form');
+    public function create(User $user, Order $order)
+    {   
+        // return view('admin.location.form');
+        return view('admin.user.location.create')
+            ->with([
+                'user' => $user,
+                'order' => $order
+            ]);
     }
 
     /**
@@ -39,16 +49,12 @@ class LocationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(User $user, Order $order, Request $request)
     {
+        // TODO: Refactor Location storing method
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'location' => 'required|max:255',
-                'address' => 'required',
-                'lat' => 'nullable|numeric',
-                'lng' => 'nullable|numeric',
-            ]);
+            $validator = $this->validator($request);
 
             if ($validator->fails()) {
                 return redirect()
@@ -65,11 +71,15 @@ class LocationController extends Controller
                 'description' => $request->description ?? NULL,
             ]);
 
+            $order->update([
+                'location_id' => $location->id
+            ]);
+
             DB::commit();
 
             return redirect()
-                ->route('locations.index')
-                ->with('status', 'Location added : ' . $location);
+                ->route('admin.user.order', [$user, $order])
+                ->with('status', __('Lokasi ditambahkan'));
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -79,47 +89,39 @@ class LocationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  App\User $user
+     * @param App\Order $order
+     * @param App\Location $location
+     * 
+     * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(User $user, Order $order, Location $location)
     {
-        return view('admin.location.form')
+        return view('admin.user.location.create')
             ->with([
-                'location' => Location::find($id),
+                'user' => $user,
+                'order' => $order,
+                'location' => $location
             ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param App\User $user
+     * @param App\Order $order
+     * @param App\Location $location
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(User $user, Order $order, Location $location, Request $request)
     {
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'location' => 'required|max:255',
-                'address' => 'required',
-                'lat' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
-                'lng' => 'nullable|numeric|between:-9999999999.99,9999999999.99',
-            ]);
+            $validator = $this->validator($request);
 
             if ($validator->fails()) {
                 return redirect()
@@ -127,19 +129,20 @@ class LocationController extends Controller
                 ->withErrors($validator)
                 ->withInput();
             }
-            $location = Location::find($id)->update([
-                'location' => $request->location,
-                'address' => $request->address,
-                'lat' => $request->lat ?? NULL,
-                'lng' => $request->lng ?? NULL,
-                'description' => $request->description ?? NULL,
+
+            $location->update([
+                'location' => $request->location ?? $location->location,
+                'address' => $request->address ?? $location->address,
+                'lat' => $request->lat ?? $location->lat,
+                'lng' => $request->lng ?? $location->lng,
+                'description' => $request->description ?? $location->description
             ]);
 
             DB::commit();
 
             return redirect()
-                ->route('locations.index')
-                ->with('status', 'Location edited : ' . $location);
+                ->route('admin.user.order', [$user, $order])
+                ->with('status', __('Lokasi diedit'));
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -177,6 +180,28 @@ class LocationController extends Controller
             DB::rollback();
             abort(402, $e);
         }
+    }
 
+    /**
+     * validation rule
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Support\Facades\Validator
+     */
+    protected function validator(Request $request)
+    {
+        return Validator::make($request->only([
+            'location',
+            'address',
+            'description',
+            'latitude',
+            'longitude'
+        ]), [
+            'location' => 'required|max:255',
+            'address' => 'required',
+            'lat' => 'nullable|numeric',
+            'lng' => 'nullable|numeric',
+        ]);
     }
 }

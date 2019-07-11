@@ -14,10 +14,11 @@ use App\Cities;
 use App\Account;
 use DB;
 use App\Notification;
+use App\Http\Controllers\Traits\UserData;
 
 class UserController extends Controller
 {
-    use Firebase, RegistersUsers, UserApi;
+    use Firebase, RegistersUsers, UserApi, UserData;
 
     /**
      * login user through Api Post
@@ -364,32 +365,7 @@ class UserController extends Controller
             }
         }
 
-        $data = [
-            'user_name' => $user->name,
-            'user_email' => $user->email,
-            'user_image' => $user->userInformation->user_image,
-            'user_birth_date' => $user->userInformation->born_date,
-            'user_sex' => ( isset($user->userInformation->gender) ? ($user->userInformation->gender == 1 ? 'Laki-Laki' : 'Perempuan') : NULL),
-            'user_phone' => $user->userInformation->phone,
-            'user_address' => $user->userInformation->address,
-            'user_city' => $user->userInformation->city ? $user->userInformation->city->name : NULL,
-            'user_state' => $user->userInformation->city ? $user->userInformation->city->province->name : NULL,
-            'user_zip_code' => $user->userInformation->postal_code,
-            'user_id_number' => $user->userInformation->ktp,
-            'user_id_image' => $user->userInformation->user_id_image,
-            'user_total_tree' => $userTrees,
-            'user_join_date' => $user->created_at->format('Y-m-d h:i:s'),
-            'user_balance' => (double) $user->balance->balance,
-            'user_total_investment' => (double) $user->orders->sum('buy_price'),
-            'user_email_verified' => $user->email_verified_at ? true : false,
-            'user_banks' => $user->banks()->get([
-                'token AS user_bank_id',
-                'name AS user_bank_name',
-                'holder_name AS user_bank_account_name',
-                'number AS user_bank_account_number'
-            ]),
-            'user_data_filled' => ( (isset($user->born_date) && isset($user->userInformation->gender) && isset($user->userInformation->phone) && isset($user->userInformation->address) && isset($user->userInformation->city_id) && isset($user->userInformation->postal_code) && isset($user->userInformation->ktp) && isset($user->userInformation->user_id_image) ) ? true : false )
-        ];
+        $data = $this->getUserData($user);
 
         return response()->json([
             'request_code' => 200,
@@ -502,7 +478,7 @@ class UserController extends Controller
             'gender' => $request->user_sex ?? $userInformation->gender,
             'phone' => $request->user_phone ?? $userInformation->phone,
             'address' => $request->user_address ?? $userInformation->address,
-            'city' => $request->user_city ?? $userInformation->city,
+            'city_id' => $request->user_city ?? $userInformation->city,
             'province' => ($request->has('user_city') ? Cities::find($request->user_city)->province_id : $request->user_state) ?? $userInformation->province,
             'postal_code' => $request->user_zip_code ?? $userInformation->postal_code,
             'ktp' => $request->user_id_number ?? $userInformation->ktp

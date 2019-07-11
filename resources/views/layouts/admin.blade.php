@@ -60,7 +60,23 @@
                 <span>User</span>
             </a>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('trees.index') }}">
+            <i class="fas fa-fw fa-tree"></i> 
+            <span>{{ __('Pohon') }}</span>
+          </a>
+        </li>
+        {{--<li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="layananDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tree"></i>
+            <span>{{ __('Layanan') }}</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="layananDropdown">
+            <a class="dropdown-item" href="{{ route('trees.index') }}">{{ __('Pohon') }}</a>
+            <a class="dropdown-item" href=""></a>
+          </div>
+        </li>--}}
+        {{--<li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="tabunganDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-tree"></i>
             <span>Invest</span>
@@ -75,7 +91,7 @@
             <a class="dropdown-item" href="{{ route('admin.transaction') }}">Transactions</a>
             <a class="dropdown-item" href="{{ route('admin.order.index') }}">Orders</a>
           </div>
-        </li>
+        </li>--}}
 
         <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.blog.index') }}">
@@ -89,8 +105,10 @@
             <span>Settings</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="settingDropdown">
-            <a class="dropdown-item" href="{{ route('admin.term_and_condition') }}">{{ __('Term And Condition') }}</a>
-            <a class="dropdown-item" href="{{ route('admin.contact') }}">{{ __('Contact') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.term_and_condition') }}">{{ __('Syarat dan Ketentuan') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.contact') }}">{{ __('Kontak') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.banner.index') }}">{{ __('Banner') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.description.index') }}">{{ __('Deskripsi') }}</a>
           </div>
         </li>
       </ul>
@@ -119,7 +137,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
+              <span>Copyright © {{ config('app.name') }}</span>
             </div>
           </div>
         </footer>
