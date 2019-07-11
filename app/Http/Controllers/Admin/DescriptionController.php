@@ -149,7 +149,7 @@ class DescriptionController extends Controller
                         <a class="btn" href="'.route('admin.description.edit', [$description]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <form action="'.route('admin.description.destroy', [$description]).'">
+                        <form action="'.route('admin.description.destroy', [$description]).'" method="post">
                             '.csrf_field().'
                             '.method_field('DELETE').'
                             <button class="btn" data-toggle="tooltip" data-placement="bottom" title="'.__('Hapus').'">
