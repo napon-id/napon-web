@@ -9,15 +9,13 @@ class Product extends Model
     protected $fillable = [
       'tree_id',
       'name',
-      'img',
       'tree_quantity',
       'description',
-      'time',
-      'percentage',
       'available',
-      'has_certificate',
-      'img_android',
-      'slogan',
+      'price',
+      'img_black',
+      'img_white',
+      'img_background'
     ];
 
     public function tree()
@@ -28,5 +26,10 @@ class Product extends Model
     public function orders()
     {
         return $this->hasMany('App\Order');
+    }
+
+    public function simulations()
+    {
+        return $this->hasMany('App\Simulation');
     }
 }

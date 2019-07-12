@@ -17,35 +17,36 @@ use App\Topup;
 class GeneralController extends Controller
 {
     public function getProduct()
-    {
-        $products = DB::table('products')
-            ->join('trees', 'trees.id', '=', 'products.tree_id')
-            ->select(
-                DB::raw('products.id AS product_id'),
-                DB::raw('products.name AS product_name'),
-                DB::raw('products.tree_quantity AS product_tree_quantity'),
-                DB::raw('products.img AS product_image_black'),
-                DB::raw('products.secondary_img AS product_image_white'),
-                DB::raw('products.img_android AS product_background'),
-                DB::raw('products.simulation_img AS product_simulation'),
-                DB::raw('products.description AS product_description'),
-                DB::raw('CAST(products.tree_quantity AS unsigned) * CAST(trees.price AS unsigned) AS product_price'),
-                DB::raw('
-                (
-                        CASE
-                            WHEN products.has_certificate = "1"
-                            THEN "true"
-                            ELSE "false"
-                            END
-                        ) AS product_has_certificate')
-            )
-            ->get();
+    {   
+        $productArray = [];
 
-        if ($products) {
+        foreach (Product::all() as $product) {
+            $array = [
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'product_tree_quantity' => $product->tree_quantity,
+                'product_image_black' => $product->img_black,
+                'product_image_white' => $product->img_white,
+                'product_background' => $product->img_background,
+                'product_description' => $product->description,
+                'product_price' => $product->price,
+                'product_simulation' => $product->simulations()
+                    ->orderBy('year', 'asc')
+                    ->get([
+                        'year AS simulation_year',
+                        'min AS simulation_min_roi',
+                        'max AS simulation_max_roi'
+                    ])
+            ];
+
+            array_push($productArray, $array);
+        }
+
+        if ($productArray) {
             return response()->json([
                 'request_code' => 200,
                 'result_code' => 4,
-                'product_list' => $products,
+                'product_list' => $productArray,
             ]);
         } else {
             return response()->json([
