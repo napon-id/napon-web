@@ -30,7 +30,7 @@ class ProductTableSeeder extends Seeder
                 'description' => 'Nikmati menabung dari hal yang kecil. Tabung 2 pohon, anda mendukung go green.',
                 'available' => 'yes',
                 'img_black' => 'https://napon.id/images/media/product/akarku-black.png',
-                'img_white' => 'https://napon.id/images/media/product/akarku-white.jpg',
+                'img_white' => 'https://napon.id/images/media/product/akarku-white.png',
                 'img_background' => 'https://napon.id/images/media/product/akarku-background.png',
                 'price' => 400000
             ],[
@@ -40,7 +40,7 @@ class ProductTableSeeder extends Seeder
                 'description' => 'Menabung pohon memberikan dampak yang positif. Tabung 10 pohon, anda mendukung menanamkan pohon.',
                 'available' => 'yes',
                 'img_black' => 'https://napon.id/images/media/product/batangku-black.png',
-                'img_white' => 'https://napon.id/images/media/product/batangku-white.jpg',
+                'img_white' => 'https://napon.id/images/media/product/batangku-white.png',
                 'img_background' => 'https://napon.id/images/media/product/batangku-background.png',
                 'price' => 2000000
             ],[
@@ -51,7 +51,7 @@ class ProductTableSeeder extends Seeder
                 ',
                 'available' => 'yes',
                 'img_black' => 'https://napon.id/images/media/product/rantingku-black.png',
-                'img_white' => 'https://napon.id/images/media/product/rantingku-white.jpg',
+                'img_white' => 'https://napon.id/images/media/product/rantingku-white.png',
                 'img_background' => 'https://napon.id/images/media/product/rantingku-background.png',
                 'price' => 5000000
             ],[
@@ -61,7 +61,7 @@ class ProductTableSeeder extends Seeder
                 'description' => 'Kesadaran menabung pohon memberikan banyak manfaat. Tabung 50 pohon, anda membantu meningkatkan kualitas udara (menyerap CO2).',
                 'available' => 'yes',
                 'img_black' => 'https://napon.id/images/media/product/daunku-black.png',
-                'img_white' => 'https://napon.id/images/media/product/daunku-white.jpg',
+                'img_white' => 'https://napon.id/images/media/product/daunku-white.png',
                 'img_background' => 'https://napon.id/images/media/product/daunku-background.png',
                 'price' => 10000000
             ],[
@@ -71,7 +71,7 @@ class ProductTableSeeder extends Seeder
                 'description' => 'Menabung pohon menjadi nilai investasi yang menguntungkan. Tabung 100 pohon, anda telah menyelamatkan bumi dan memberikan dampak terhadap lingkungan sekitar.',
                 'available' => 'yes',
                 'img_black' => 'https://napon.id/images/media/product/hutanku-black.png',
-                'img_white' => 'https://napon.id/images/media/product/hutanku-white.jpg',
+                'img_white' => 'https://napon.id/images/media/product/hutanku-white.png',
                 'img_background' => 'https://napon.id/images/media/product/hutanku-background.png',
                 'price' => 20000000
             ]
