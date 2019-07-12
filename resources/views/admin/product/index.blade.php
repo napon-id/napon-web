@@ -19,54 +19,28 @@
     <div class="col-12">
         <div class="card mb-3">
             <div class="card-header">
-                {{ __('Products') }}
+                {{ __('Tabungan') }}
                 <a href="{{ route('products.create', ['tree' => $tree]) }}" class="btn btn-info float-right">
-                    <i class="fas fa-plus-square"></i> Add new Product
+                    <i class="fas fa-plus-square"></i>
                 </a>
             </div> <!-- card-header -->
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover table-striped">
+                    <table class="datatable table table-striped table-hover" data-url="{{ route('products.table') }}">
                         <thead>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Trees</th>
-                            <th>img</th>
-                            <th>Percentage</th>
-                            <th>Available</th>
-                            <th>Has certificate</th>
-                            <th>Action</th>
-                        </thead>
-                        <tbody>
-                            @foreach($tree->products()->get() as $product)
                             <tr>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>{{ $product->tree_quantity }}</td>
-                                <td><a href="{{ $product->img }}" target="_blank">{{ $product->img }}</a></td>
-                                <td>{{ $product->percentage }}%</td>
-                                <td>{{ $product->available }}</td>
-                                <td>{{ $product->has_certificate ? 'yes' : 'no' }}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn" href="{{ route('products.edit', [$product, 'tree' => $tree]) }}">
-                                            <i class="far fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
-                                        </a>
-                                        @if($product->orders()->count() == 0)
-                                            <form action="{{ route('products.destroy', [$product]) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn" onclick="return confirm('Are you sure?')">
-                                                    <i class="far fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                </td>
+                                <th data-field="id">{{ __('ID') }}</th>
+                                <th data-field="name">{{ __('Nama') }}</th>
+                                <th data-field="tree_quantity">{{ __('Jumlah Pohon') }}</th>
+                                <th data-field="description">{{ __('Deskripsi') }}</th>
+                                <th data-field="price">{{ __('Harga') }}</th>
+                                <th data-field="img_black">{{ __('Img Black') }}</th>
+                                <th data-field="img_white">{{ __('Img White') }}</th>
+                                <th data-field="img_background">{{ __('Img Background') }}</th>
+                                <th data-field="action">{{ __('Aksi') }}</th>
                             </tr>
-                            @endforeach
-                        </tbody>
+                        </thead>
                     </table>
                 </div>
             </div> <!-- card-body -->

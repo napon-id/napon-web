@@ -194,7 +194,7 @@ class BlogController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:191',
             'description' => 'required',
-            'img' => 'nullable|file'
+            'img' => 'required|file'
         ]);
 
         return $validator;

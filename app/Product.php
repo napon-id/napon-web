@@ -9,14 +9,13 @@ class Product extends Model
     protected $fillable = [
       'tree_id',
       'name',
-      'img',
       'tree_quantity',
       'description',
-      'time',
-      'percentage',
       'available',
-      'has_certificate',
-      'img_android'
+      'price',
+      'img_black',
+      'img_white',
+      'img_background'
     ];
 
     public function tree()
