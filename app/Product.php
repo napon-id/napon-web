@@ -16,8 +16,7 @@ class Product extends Model
       'percentage',
       'available',
       'has_certificate',
-      'img_android',
-      'slogan',
+      'img_android'
     ];
 
     public function tree()
@@ -28,5 +27,10 @@ class Product extends Model
     public function orders()
     {
         return $this->hasMany('App\Order');
+    }
+
+    public function simulations()
+    {
+        return $this->hasMany('App\Simulation');
     }
 }
