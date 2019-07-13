@@ -272,8 +272,10 @@ class ProductController extends Controller
     {
         if (isset($product)) {
             $requiredRule = 'nullable';
+            $nameValidation = 'required|max:191|alpha_dash|unique:products,name,' . $product->id;
         } else {
             $requiredRule = 'required';
+            $nameValidation = 'required|max:191|alpha_dash|unique:products';
         }
 
         return Validator::make($request->only([
@@ -285,7 +287,7 @@ class ProductController extends Controller
             'img_white',
             'img_background'
         ]), [
-            'name' => 'required|max:191',
+            'name' => $nameValidation,
             'tree_quantity' => 'required|numeric|min:0',
             'description' => 'required',
             'price' => 'required|numeric|min:0',
