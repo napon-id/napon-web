@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Setting;
+use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
@@ -18,12 +19,25 @@ class SettingController extends Controller
 
     public function termAndConditionUpdate(Request $request)
     {
+        $validator = Validator::make($request->only([
+            'term_and_condition'
+        ]), [
+            'term_and_condition' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $data = Setting::where('key', 'term_and_condition')->first();
         $data->value = $request->term_and_condition;
         $data->save();
 
         return redirect()->route('admin.term_and_condition')
-            ->with('status', 'Term And Condition updated');
+            ->with('status', __('Term And Condition diperbarui'));
     }
 
     public function contact()
@@ -39,6 +53,25 @@ class SettingController extends Controller
 
     public function contactUpdate(Request $request)
     {
+        $validator = Validator::make($request->only([
+            'address',
+            'email',
+            'phone',
+            'website'
+        ]), [
+            'address' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'website' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $address = Setting::where('key', 'contact_address')->first();
         $address->value = $request->address;
         $address->save();

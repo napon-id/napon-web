@@ -17,8 +17,6 @@ class CreateTreesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price', 16, 2);
-            $table->enum('available', ['yes', 'no'])->default('yes');
             $table->timestamps();
             $table->softDeletes();
         });

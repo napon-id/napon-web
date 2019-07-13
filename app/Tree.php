@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tree extends Model
 {
     protected $fillable = [
-      'name', 'description', 'available', 'price'
+      'name', 'description'
     ];
 
     public function products()

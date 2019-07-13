@@ -69,7 +69,8 @@ class OrderController extends Controller
                         WHEN orders.status = 4 THEN 1
                         ELSE 0
                     END AS user_product_status
-                ')
+                '),
+                DB::raw('orders.img_certificate AS user_product_sertificate')
             )
             ->where('users.email', '=', $email)
             ->where('orders.status', '!=', '1')
@@ -88,7 +89,7 @@ class OrderController extends Controller
             $product = DB::table('products')
                 ->select([
                     'products.name AS product_name',
-                    'products.img AS product_image_black'
+                    'products.img_black AS product_image_black'
                 ])
                 ->where('products.id', '=', $order_data->product_id)
                 ->first();
@@ -104,11 +105,16 @@ class OrderController extends Controller
                 ])
                 ->where('locations.id', '=', $order_data->id)
                 ->first();
-            // cast variables
-            $location->latitude = (double) $location->latitude;
-            $location->longitude = (double) $location->longitude;
+            
+            if (isset($location)) {
+                // cast variables
+                $location->latitude = (double) $location->latitude;
+                $location->longitude = (double) $location->longitude;
 
-            $order->location = $location;
+                $order->location = $location;
+            } else {
+                $order->location = NULL;
+            }
 
             // report list
             $report = DB::table('reports')

@@ -23,6 +23,11 @@
             <div class="form-group">
                 <label for="term_and_condition">{{ __('Term And Condition') }}</label>
                 <textarea name="term_and_condition" id="editor">{{ $data->value }}</textarea>
+                @if ($errors->has('term_and_condition'))
+                <span class="text-danger">
+                    <strong>{{ $errors->first('term_and_condition') }}</strong>
+                </span>
+                @endif
             </div>
 
             <input class="btn btn-info" type="submit" name="update" value="{{ __('Update') }}">

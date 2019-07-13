@@ -34,6 +34,7 @@
                             <th data-field="location">{{ __('Lokasi') }}</th>
                             <th data-field="updated_at">{{ __('Perubahan Terakhir') }}</th>
                             <th data-field="status">{{ __('Status') }}</th>
+                            <th data-field="img_certificate">{{ __('Sertifikat') }}</th>
                             <th data-field="details">{{ __('Detail') }}</th>
                         </thead>
                     </table>
