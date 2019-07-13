@@ -18,7 +18,7 @@
             <div class="card-header">
                 {{ __('Trees') }}
                 <a href="{{ route('trees.create') }}" class="btn btn-info float-right">
-                    <i class="fas fa-plus-square"></i> Add new Tree
+                    <i class="fas fa-plus-square"></i>
                 </a>
             </div> <!-- card-header -->
 
@@ -27,8 +27,6 @@
                     <thead>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Price</th>
-                        <th>Availability</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -36,25 +34,21 @@
                         <tr>
                             <td>{{ $tree->name }}</td>
                             <td>{{ $tree->description }}</td>
-                            <td>{{ formatCurrency($tree->price) }}</td>
-                            <td>{{ $tree->available }}</td>
                             <td>
                                 <div class="btn-group">
 
                                     <a href="{{ route('trees.edit', [$tree]) }}" class="btn">
                                         <i class="fas fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
                                     </a>
-                                    @if($tree->products()->count() == 0)
-                                        <form action="{{ route('trees.destroy', [$tree]) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn" onclick="return confirm('Are you sure to delete this?')">
-                                                <i class="fas fa-trash" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
-                                            </button>
-                                        </form>
-                                    @endif
+                                    <form action="{{ route('trees.destroy', [$tree]) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn">
+                                            <i class="fas fa-trash" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                                        </button>
+                                    </form>
                                     <a class="btn" href="{{ route('products.index', ['tree' => $tree]) }}">
-                                        <i class="fas fa-list" data-toggle="tooltip" data-placement="bottom" title="Products"></i>
+                                        <i class="fas fa-list" data-toggle="tooltip" data-placement="bottom" title="{{ __('Tabungan') }}"></i>
                                     </a>
                                 </div>
                             </td>

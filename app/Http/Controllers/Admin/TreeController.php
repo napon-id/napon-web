@@ -46,7 +46,6 @@ class TreeController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'description' => 'required',
-                'price' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -58,30 +57,17 @@ class TreeController extends Controller
 
             $tree = Tree::create([
                 'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
-                'available' => $request->available ? 'yes' : 'no',
+                'description' => $request->description
             ]);
 
             DB::commit();
             return redirect()
                 ->route('trees.index')
-                ->with('status', 'Tree created => ' . $tree);
+                ->with('status', __('Pohon ditambahkan'));
 
         } catch (\Exception $e) {
             abort(402, $e);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -109,8 +95,7 @@ class TreeController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'description' => 'required',
-                'price' => 'required|numeric',
+                'description' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -123,14 +108,12 @@ class TreeController extends Controller
             $tree = Tree::find($id);
             $tree->name = $request->name;
             $tree->description = $request->description;
-            $tree->price = $request->price;
-            $tree->available = $request->available ? 'yes' : 'no';
             $tree->update();
 
             DB::commit();
             return redirect()
                 ->route('trees.index')
-                ->with('status', 'Tree updated => ' . $tree);
+                ->with('status', __('Pohon diedit'));
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -149,18 +132,12 @@ class TreeController extends Controller
         DB::beginTransaction();
         try {
             $tree = Tree::findOrFail($id);
-            if ($tree->products()->count() == 0) {
-                $tree->delete();
-                DB::commit();
+            $tree->delete();
+            DB::commit();
 
-                return redirect()
-                    ->route('trees.index')
-                    ->with('status', 'Tree ' .$id. ' deleted');
-            } else {
-                return redirect()
-                    ->route('trees.index')
-                    ->with('status', 'Delete is prohibited because it will cascade other data(s)');
-            }
+            return redirect()
+                ->route('trees.index')
+                ->with('status', __('Pohon dihapus'));
 
         } catch (\Exception $e) {
             DB::rollback();

@@ -19,7 +19,7 @@
     <div class="col-12">
         <div class="card mb-3">
             <div class="card-header">
-                {{ isset($tree) ? 'Edit' : 'Create' }} Tree
+                {{ __('Form Pohon') }}
             </div> <!-- card-header -->
 
             <div class="card-body">
@@ -31,56 +31,28 @@
                         @method('POST')
                     @endif
 
-                    <div class="form-group">
-                        <label for="name">{{ __('Tree name') }}</label>
-                        <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ isset($tree) ? $tree->name : old('name') }}">
-                        @if($errors->has('name'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('name') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">{{ __('Description') }}</label>
-                        <textarea name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}">{{ isset($tree) ? $tree->description : old('description') }}</textarea>
-                        @if($errors->has('description'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('description') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="price">{{ __('Price') }}</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Rp</span>
-                            </div>
-                            <input type="number" name="price" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}" value="{{ isset($tree) ? $tree->price : old('price') }}">
-                            @if($errors->has('price'))
+                    <div class="form-group row">
+                        <label for="name" class="col-md-3">{{ __('Nama Pohon') }}</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ isset($tree) ? $tree->name : old('name') }}">
+                            @if($errors->has('name'))
                             <span class="invalid-feedback">
-                                <strong>{{ $errors->first('price') }}</strong>
+                                <strong>{{ $errors->first('name') }}</strong>
                             </span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="custom-control custom-checkbox">
-                        @php
-                            $a = '';
-                            if (isset($tree)) {
-                                if ($tree->available == 'yes') {
-                                    $a = 'checked';
-                                }
-                            } else {
-                                if (old('available')) {
-                                    $a = 'checked';
-                                }
-                            }
-                        @endphp
-                        <input type="checkbox" class="custom-control-input" name="available" id="available" {{ $a }}>
-                        <label class="custom-control-label" for="available">{{ __('Available') }}</label>
+                    <div class="form-group row">
+                        <label for="description" class="col-md-3">{{ __('Deskripsi') }}</label>
+                        <div class="col-md-6">
+                            <textarea name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}">{{ isset($tree) ? $tree->description : old('description') }}</textarea>
+                            @if($errors->has('description'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('description') }}</strong>
+                            </span>
+                            @endif
+                        </div>
                     </div>
 
                     <hr>
