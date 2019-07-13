@@ -146,6 +146,12 @@ class UserController extends Controller
                         break;
                 }
             })
+            ->editColumn('img_certificate', function ($order) {
+                return isset($order->img_certificate) ? 
+                    '
+                    <img src="'.$order->img_certificate.'" class="img-fluid img-thumbnail">
+                    ' : '-';
+            }) 
             ->addColumn('details', function ($order) {
                 return '
                     <div class="btn-group">
@@ -162,7 +168,7 @@ class UserController extends Controller
                 ';
             })
             ->rawColumns([
-                'status', 'details'
+                'status', 'img_certificate', 'details'
             ])
             ->make(true);
     }

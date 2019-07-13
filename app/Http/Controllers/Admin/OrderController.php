@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\User;
-use App\OrderUpdate;
 use DataTables;
 use App\Report;
 use Illuminate\Support\Carbon;
@@ -112,7 +111,8 @@ class OrderController extends Controller
             'status',
             'selling_price'
         ]), [
-            'selling_price' => 'nullable|numeric'
+            'selling_price' => 'nullable|numeric',
+            'img_certificate' => 'nullable|file|mimetypes:image/jpeg,image/jpg,image/png'
         ]);
 
         if ($validator->fails()) {
@@ -120,6 +120,15 @@ class OrderController extends Controller
                 ->back()
                 ->withErrors($validator)
                 ->withInput();
+        }
+
+        if ($request->has('img_certificate')) {
+            $imagePath = $request->file('img_certificate')->store('public/certificate');
+            $image = basename($imagePath);
+
+            $order->update([
+                'img_certificate' => config('app.url') . '/certificate/' . $image
+            ]);
         }
 
         $order->update([

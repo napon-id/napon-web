@@ -14,7 +14,8 @@ class Order extends Model
       'location_id',
       'status',
       'buy_price',
-      'selling_price'
+      'selling_price',
+      'img_certificate'
     ];
 
     public function product()

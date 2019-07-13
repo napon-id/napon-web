@@ -23,9 +23,21 @@
         <div class="card">
             <div class="card-header">{{ __('Form Tabungan') }}</div>
             <div class="card-body">
-                <form action="{{ route('admin.user.order.update', [$user, $order]) }}" method="post">
+                <form action="{{ route('admin.user.order.update', [$user, $order]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <div class="form-group row">
+                        <label for="img_certificate" class="col-md-3">{{ __('Sertifikat') }}</label>
+                        <div class="col-md-6">
+                            <input type="file" class="form-control {{ $errors->has('img_certificate') ? 'is-invalid' : '' }}" name="img_certificate">
+                            @if ($errors->has('img_certificate'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('img_certificate') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <label for="status" class="col-md-3">{{ __('Status Tabungan') }}</label>
                         <div class="col-md-6">

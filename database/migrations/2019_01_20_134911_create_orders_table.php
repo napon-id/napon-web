@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('buy_price');
             $table->bigInteger('selling_price')->nullable();
             $table->integer('status')->default(1);
+            $table->text('img_certificate')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
