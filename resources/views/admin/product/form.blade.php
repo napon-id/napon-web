@@ -9,7 +9,7 @@
         <a href="{{ route('trees.index') }}">{{ __('Pohon') }}</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{ route('products.index', [$tree]) }}">{{ __('Tabungan') }}</a>
+        <a href="{{ route('admin.tree.product.index', [$tree]) }}">{{ __('Tabungan') }}</a>
     </li>
     <li class="breadcrumb-item active">
         {{ isset($product) ? __('Edit') : __('Tambah') }}
@@ -26,7 +26,7 @@
             </div> <!-- card header -->
 
             <div class="card-body">
-                <form action="{{ isset($product) ? route('products.update', [$product, 'tree' => $tree]) : route('products.store', ['tree' => $tree]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ isset($product) ? route('admin.tree.product.update', ['tree' => $tree, 'product' => $product]) : route('admin.tree.product.store', ['tree' => $tree]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @if(isset($product))
                         @method('PUT')

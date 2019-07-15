@@ -247,7 +247,7 @@ class OrderController extends Controller
                     'token' => md5('Order-' . now()),
                     'user_id' => $user->id,
                     'product_id' => $productQuery->id,
-                    'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price
+                    'buy_price' => $productQuery->price
                 ]);
 
                 $res = $this->orderMidTrans($order);
@@ -260,7 +260,7 @@ class OrderController extends Controller
                     $transaction_data = [
                         'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
                         'transaction_key' => $order->token,
-                        'transaction_total_payment' => (double) $productQuery->tree_quantity * $productQuery->tree->price,
+                        'transaction_total_payment' => (double) $productQuery->price,
                         'transaction_va_number' => $result->va_numbers[0]->va_number
                     ];
                 }
@@ -313,7 +313,7 @@ class OrderController extends Controller
             $productQuery = Product::where('name', '=', $product)->first();
 
             if ($productQuery) {
-                $needPaid = (double) $productQuery->tree_quantity * $productQuery->tree->price;
+                $needPaid = (double) $productQuery->price;
                 $balance = (double) $user->balance->balance;
                 
                 // check current user balance
@@ -322,7 +322,7 @@ class OrderController extends Controller
                         'token' => md5('Order-' . now()),
                         'user_id' => $user->id,
                         'product_id' => $productQuery->id,
-                        'buy_price' => (int) $productQuery->tree_quantity * $productQuery->tree->price,
+                        'buy_price' => (int) $productQuery->price,
                         'status' => 3
                     ]);
 
@@ -345,7 +345,7 @@ class OrderController extends Controller
                     $transaction_data = [
                         'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
                         'transaction_key' => $order->token,
-                        'transaction_total_payment' => (double) $productQuery->tree_quantity * $productQuery->tree->price
+                        'transaction_total_payment' => (double) $productQuery->price
                     ];
                 }
             } else {

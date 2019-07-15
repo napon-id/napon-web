@@ -28,14 +28,8 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Tree $tree)
     {
-        if (!request()->has('tree')) {
-            return redirect()->back();
-        }
-
-        $tree = Tree::find(request()->get('tree'));
-
         return view('admin.product.form')
             ->with('tree', $tree);
     }
@@ -46,13 +40,8 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Tree $tree, Request $request)
     {
-        if (!request()->has('tree')) {
-            return redirect()->back();
-        }
-
-        $tree = Tree::find(request()->get('tree'));
 
         $validator = $this->validator($request);
 
@@ -78,8 +67,6 @@ class ProductController extends Controller
             $img_background = basename($imgBackgroundPath);
         }
 
-
-
         Product::create([
             'tree_id' => $tree->id,
             'name' => $request->name,
@@ -93,7 +80,7 @@ class ProductController extends Controller
         ]);
 
         return redirect()
-            ->route('products.index', [$tree])
+            ->route('admin.tree.product.index', [$tree])
             ->with('status', __('Produk ditambahkan'));
     }
 
@@ -103,16 +90,12 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tree $tree, Product $product)
     {
-        if (!request()->has('tree')) {
-            return redirect()->back();
-        }
-
         return view('admin.product.form')
             ->with([
-                'tree' => Tree::find(request()->get('tree')),
-                'product' => Product::findOrFail($id),
+                'tree' => $tree,
+                'product' => $product
             ]);
     }
 
@@ -123,15 +106,8 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Tree $tree, Product $product, Request $request)
     {
-        if (!request()->has('tree')) {
-            return redirect()->back();
-        }
-
-        $tree = Tree::find(request()->get('tree'));
-        $product = Product::find($id);
-
         DB::beginTransaction();
         try {
             $validator = $this->validator($request, $product);
@@ -174,8 +150,9 @@ class ProductController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('products.index', [$tree])
+                ->route('admin.tree.product.index', [$tree])
                 ->with('status', __('Tabungan diedit'));
+
         } catch (\Exception $e) {
             DB::rollback();
             abort(402, $e);
@@ -188,18 +165,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tree $tree, Product $product)
     {
         DB::beginTransaction();
         try {
-            $product = Product::findOrFail($id);
-            $tree = $product->tree;
             $product->delete();
             
             DB::commit();
 
             return redirect()
-                ->route('products.index', [$tree])
+                ->route('admin.tree.product.index', [$tree])
                 ->with('status', __('Tabungan dihapus'));
 
         } catch (\Exception $e) {
@@ -214,9 +189,9 @@ class ProductController extends Controller
      * 
      * @return DataTables
      */
-    public function table()
+    public function table(Tree $tree)
     {
-        return DataTables::eloquent(Product::query()->orderBy('created_at', 'asc'))
+        return DataTables::eloquent(Product::query()->where('tree_id', $tree->id)->orderBy('created_at', 'asc'))
             ->editColumn('img_black', function ($product) {
                 return '
                     <img src="'.$product->img_black.'" class="img-fluid img-thumbnail">
@@ -238,10 +213,10 @@ class ProductController extends Controller
                         <a class="btn" href="" data-toggle="tooltip" data-placement="bottom" title="'.__('Simulasi').'">
                             <i class="fas fa-list"></i>
                         </a>
-                        <a class="btn" href="'.route('products.edit', [$product, 'tree' => $product->tree]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">
+                        <a class="btn" href="'.route('admin.tree.product.edit', ['tree' => $product->tree, 'product' => $product]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <form action="'.route('products.destroy', [$product]).'" method="post">
+                        <form action="'.route('admin.tree.product.destroy', ['tree' => $product->tree, 'product' => $product]).'" method="post">
                             '.csrf_field().'
                             '.method_field('DELETE').'
                             <button class="btn" data-toggle="tooltip" data-placement="bottom" title="'.__('Hapus').'">
