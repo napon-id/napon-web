@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Traits;
 
 use App\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 trait UserApi
 {
@@ -18,19 +16,27 @@ trait UserApi
      */
     public function getUserEmail(string $user_key)
     {
+        // check for local firebase_uid key
         $user = User::where('firebase_uid', '=', $user_key)->first();
         if (!$user) {
-            $user = $this->userDetail($user_key);
+            // check user stored on firebase
+            $firebaseObject = $this->userDetail($user_key);
+            $user = User::where('email', $firebaseObject->email)->first();
         }
 
         if (!$user) {
             $user = User::where('user_key', '=', $user_key)->first();
+        } else {
+            // store fireabse uid to local firebase_uid
+            $user->update([
+                'firebase_uid' => $firebaseObject->uid
+            ]);
         }
 
         if (!$user) {
             return '';
         } else {
-            return (string)$user->email;
+            return (string) $user->email;
         }
     }
 

@@ -15,10 +15,11 @@ use App\Account;
 use DB;
 use App\Notification;
 use App\Http\Controllers\Traits\UserData;
+use App\Http\Controllers\Traits\APIHelper;
 
 class UserController extends Controller
 {
-    use Firebase, RegistersUsers, UserApi, UserData;
+    use Firebase, RegistersUsers, UserApi, UserData, APIHelper;
 
     /**
      * login user through Api Post
@@ -822,8 +823,8 @@ class UserController extends Controller
                 } else {
                     return response()->json([
                         'request_code' => 200,
-                        'result_code' => 9,
-                        'message' => 'There is no data'
+                        'result_code' => 7,
+                        'message' => 'Bad request'
                     ]);
                 }
             }
@@ -927,6 +928,8 @@ class UserController extends Controller
      */
     public function getNotifications(Request $request)
     {
+        $pagination = $this->paginateResult($request);
+
         if ($request->has('user_key') && $request->user_key != '') {
             $email = $this->getUserEmail((string) $request->user_key);
 
@@ -943,19 +946,30 @@ class UserController extends Controller
                 $notifications = $user
                     ->notifications()
                     ->orderBy('created_at', 'DESC')
+                    ->limit($pagination['dataPerPage'])
+                    ->offset($pagination['offset'])
                     ->get([
-                    'token AS notification_id',
-                    'status AS notification_status',
-                    'title AS notification_title',
-                    'subtitle AS notification_subtitle',
-                    'content AS notification_content',
-                    'created_at AS notification_time'
+                        'token AS notification_id',
+                        'status AS notification_status',
+                        'title AS notification_title',
+                        'subtitle AS notification_subtitle',
+                        'content AS notification_content',
+                        'created_at AS notification_time'
                 ]);
-                return response()->json([
-                    'request_code' => 200,
-                    'result_code' => 4,
-                    'notification_list' => $notifications
-                ]);
+
+                if ($notifications->count() > 0) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'notification_list' => $notifications
+                    ]);
+                } else {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 9,
+                        'message' => 'There is no data'
+                    ]);
+                }
             }
         } else {
             return response()->json([
@@ -977,7 +991,7 @@ class UserController extends Controller
      */
     public function markNotificationAsRead(Request $request)
     {
-        if ($request->has('notification_id')) {
+        if ($request->has('notification_id') && $request->notification_id != '') {
             $notification = Notification::where('token', $request->notification_id)->first();
 
             if (isset($notification)) {
@@ -994,8 +1008,8 @@ class UserController extends Controller
                 } else {
                     return response()->json([
                         'request_code' => 200,
-                        'result_code' => 4,
-                        'message' => 'Notification already read'
+                        'result_code' => 8,
+                        'message' => 'Edit failed'
                     ]);
                 }
             } else {
@@ -1010,9 +1024,9 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'request_code' => 200,
-                'result_code' => 9,
+                'result_code' => 7,
                 'data' => [
-                    'message' => 'There is no data'
+                    'message' => 'Bad request'
                 ]
             ]);
         }

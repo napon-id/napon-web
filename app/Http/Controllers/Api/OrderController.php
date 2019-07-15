@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function getUserOrder(Request $request)
     {
-        if ($request->has('user_key')) {
+        if ($request->has('user_key') && $request->user_key != '') {
             $email = $this->getUserEmail($request->user_key);
 
             if ($email == '') {
@@ -157,7 +157,7 @@ class OrderController extends Controller
      */
     public function getUserTransactions(Request $request)
     {
-        if ($request->has('user_key')) {
+        if ($request->has('user_key') && $request->user_key != '') {
             $email = $this->getUserEmail((string) $request->user_key);
 
             if ($email == '') {
