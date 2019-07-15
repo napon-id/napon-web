@@ -39,28 +39,39 @@ class BalanceController extends Controller
 
                 if ($request->has('topup_amount') && $request->topup_amount != '') {
                     if (is_numeric($request->topup_amount) && $request->topup_amount >= 10000) {
-                        $topup = Topup::create([
-                            'user_id' => $user->id,
-                            'token' => md5('Topup-' . now()),
-                            'amount' => $request->topup_amount
-                        ]);
+                        
+                        $unfinishedTopup = Topup::where('status', 1)->get()->count();
 
-                        if ($topup) {
-                            //midtrans implementation
-                            $res = $this->topUpMidtrans($topup);
-
-                            $result = json_decode($res->getBody());
-
+                        if ($unfinishedTopup > 0) {
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 4,
-                                'transaction_data' => [
-                                    'transaction_number' => 'NAPON-' . sprintf("%'03d", $topup->id),
-                                    'transaction_key' => $topup->token,
-                                    'transaction_total_payment' => (double) $topup->amount,
-                                    'transaction_va_number' => $result->va_numbers[0]->va_number
-                                ]
+                                'result_code' => 7,
+                                'message' => 'Please finish existing topup'
                             ]);
+                        } else {
+                            $topup = Topup::create([
+                                'user_id' => $user->id,
+                                'token' => md5('Topup-' . now()),
+                                'amount' => $request->topup_amount
+                            ]);
+                            if (isset($topup)) {
+                                //midtrans implementation
+                                $res = $this->topUpMidtrans($topup);
+    
+                                $result = json_decode($res->getBody());
+    
+                                return response()->json([
+                                    'request_code' => 200,
+                                    'result_code' => 4,
+                                    'transaction_data' => [
+                                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $topup->id),
+                                        'transaction_key' => $topup->token,
+                                        'transaction_total_payment' => (double) $topup->amount,
+                                        'transaction_va_number' => $result->va_numbers[0]->va_number
+                                    ]
+                                ]);
+    
+                            }
                         }
 
 
@@ -74,8 +85,8 @@ class BalanceController extends Controller
                 } else {
                     return response()->json([
                         'request_code' => 200,
-                        'result_code' => 9,
-                        'message' => 'There is no data'
+                        'result_code' => 7,
+                        'message' => 'Bad request'
                     ]);
                 }
             }
@@ -140,8 +151,8 @@ class BalanceController extends Controller
                         } else {
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 9,
-                                'message' => 'There is no data'
+                                'result_code' => 7,
+                                'message' => 'Bad request'
                             ]);
                         }
                     } else {
@@ -154,8 +165,8 @@ class BalanceController extends Controller
                 } else {
                     return response()->json([
                         'request_code' => 200,
-                        'result_code' => 9,
-                        'message' => 'There is no data'
+                        'result_code' => 7,
+                        'message' => 'Bad request'
                     ]);
                 }
             }

@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
+use App\Http\Controllers\Traits\APIHelper;
 
 class ArticleController extends Controller
 {
+    use APIHelper;
+
     /**
      * get top article
      *
@@ -19,7 +22,7 @@ class ArticleController extends Controller
             ->limit(4)
             ->get($this->getArticleArray());
 
-        if ($articles) {
+        if ($articles->count() > 0) {
             return response()->json([
                 'result_code' => 4,
                 'request_code' => 200,
@@ -41,26 +44,11 @@ class ArticleController extends Controller
      */
     public function getArticle(Request $request)
     {
-        // initialize variables
-        $dataPerPage = $offset = 0;
-        $page = 1;
+        $pagination = $this->paginateResult($request);
 
-        if ($request->has('count_per_page') && $request->count_per_page != '' && is_numeric($request->count_per_page)) {
-            $dataPerPage = $request->count_per_page;
-        } else {
-            $dataPerPage = 5;
-        }
+        $articles = Article::orderBy('created_at', 'asc')->limit($pagination['dataPerPage'])->offset($pagination['offset'])->get($this->getArticleArray());
 
-        if ($request->has('page') && $request->page != '' && is_numeric($request->page)) {
-            $page = $request->page;
-            $offset = ($page - 1) * $dataPerPage;
-        } else {
-            $offset = ($page - 1) * $dataPerPage;
-        }
-
-        $articles = Article::orderBy('created_at', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
-
-        if ($articles) {
+        if ($articles->count() > 0) {
             return response()->json([
                 'result_code' => 4,
                 'request_code' => 200,
