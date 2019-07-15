@@ -10,7 +10,6 @@ use App\Product;
 use App\Order;
 use App\User;
 use DB;
-use GuzzleHttp\Client;
 use App\Http\Controllers\Traits\MidTrans;
 
 class OrderController extends Controller
@@ -243,26 +242,36 @@ class OrderController extends Controller
             $productQuery = Product::where('name', '=', $product)->first();
 
             if ($productQuery) {
-                $order = Order::create([
-                    'token' => md5('Order-' . now()),
-                    'user_id' => $user->id,
-                    'product_id' => $productQuery->id,
-                    'buy_price' => $productQuery->price
-                ]);
+                $unfinishedOrder = Order::where('status', 1)->first();
 
-                $res = $this->orderMidTrans($order);
-
-                $result = json_decode($res->getBody());
-
-                if ($order) {
-                    $resultCode = 4;
-                    $message = 'Order success';
-                    $transaction_data = [
-                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
-                        'transaction_key' => $order->token,
-                        'transaction_total_payment' => (double) $productQuery->price,
-                        'transaction_va_number' => $result->va_numbers[0]->va_number
-                    ];
+                if (isset($unfinishedOrder)) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 7,
+                        'message' => 'Please finish existing transaction'
+                    ]);
+                } else {
+                    $order = Order::create([
+                        'token' => md5('Order-' . now()),
+                        'user_id' => $user->id,
+                        'product_id' => $productQuery->id,
+                        'buy_price' => $productQuery->price
+                    ]);
+    
+                    $res = $this->orderMidTrans($order);
+    
+                    $result = json_decode($res->getBody());
+    
+                    if ($order) {
+                        $resultCode = 4;
+                        $message = 'Order success';
+                        $transaction_data = [
+                            'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                            'transaction_key' => $order->token,
+                            'transaction_total_payment' => (double) $productQuery->price,
+                            'transaction_va_number' => $result->va_numbers[0]->va_number
+                        ];
+                    }
                 }
             } else {
                 $resultCode = 9;
@@ -318,16 +327,26 @@ class OrderController extends Controller
                 
                 // check current user balance
                 if ($balance >= $needPaid) {
-                    $order = Order::create([
-                        'token' => md5('Order-' . now()),
-                        'user_id' => $user->id,
-                        'product_id' => $productQuery->id,
-                        'buy_price' => (int) $productQuery->price,
-                        'status' => 3
-                    ]);
+                    $unfinishedOrder = Order::where('status', 1)->first();
 
-                    // decrement user balance
-                    $user->balance->decrement('balance', $needPaid);
+                    if (isset($unfinishedOrder)) {
+                        return response()->json([
+                            'request_code' => 200,
+                            'result_code' => 7,
+                            'message' => 'Please finish existing transaction'
+                        ]);
+                    } else {
+                        $order = Order::create([
+                            'token' => md5('Order-' . now()),
+                            'user_id' => $user->id,
+                            'product_id' => $productQuery->id,
+                            'buy_price' => (int) $productQuery->price,
+                            'status' => 3
+                        ]);
+    
+                        // decrement user balance
+                        $user->balance->decrement('balance', $needPaid);
+                    }
                 } else {
                     return response()->json([
                         'request_code' => 200,

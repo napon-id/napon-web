@@ -45,7 +45,7 @@ class BalanceController extends Controller
                         if ($unfinishedTopup > 0) {
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 8,
+                                'result_code' => 7,
                                 'message' => 'Please finish existing topup'
                             ]);
                         } else {
