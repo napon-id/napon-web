@@ -267,4 +267,31 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('descriptions/{description}/edit', 'Admin\DescriptionController@edit')->name('admin.description.edit');
     Route::put('descriptions/{description}/update', 'Admin\DescriptionController@update')->name('admin.description.update');
     Route::delete('descriptions/{description}/delete', 'Admin\DescriptionController@destroy')->name('admin.description.destroy');
+
+    // FAQ
+    Route::get('faq/table', 'Admin\FaqController@table')->name('admin.faq.table');
+    Route::get('faq', 'Admin\FaqController@index')->name('admin.faq.index');
+    Route::get('faq/create', 'Admin\FaqController@create')->name('admin.faq.create');
+    Route::post('faq/create', 'Admin\FaqController@store')->name('admin.faq.store');
+    Route::get('faq/{faq}/edit', 'Admin\FaqController@edit')->name('admin.faq.edit');
+    Route::put('faq/{faq}/edit', 'Admin\FaqController@update')->name('admin.faq.update');
+    Route::delete('faq/{faq}/destroy', 'Admin\FaqController@destroy')->name('admin.faq.destroy');
+
+    // provinces
+    Route::get('provinces/table', 'Admin\ProvinceController@table')->name('admin.province.table');
+    Route::get('provinces', 'Admin\ProvinceController@index')->name('admin.province.index');
+    Route::get('provinces/create', 'Admin\ProvinceController@create')->name('admin.province.create');
+    Route::post('provinces/create', 'Admin\ProvinceController@store')->name('admin.province.store');
+    Route::get('provinces/{province}/edit', 'Admin\ProvinceController@edit')->name('admin.province.edit');
+    Route::put('provinces/{province}/edit', 'Admin\ProvinceController@update')->name('admin.province.update');
+    Route::delete('provinces/{province}/destroy', 'Admin\ProvinceController@destroy')->name('admin.province.destroy');
+
+    // cities
+    Route::get('provinces/{province}/cities/table', 'Admin\CityController@table')->name('admin.province.city.table');
+    Route::get('provinces/{province}/cities', 'Admin\CityController@index')->name('admin.province.city.index');
+    Route::get('provinces/{province}/cities/create', 'Admin\CityController@create')->name('admin.province.city.create');
+    Route::post('provinces/{province}/cities/store', 'Admin\CityController@store')->name('admin.province.city.store');
+    Route::get('provinces/{province}/cities/{city}/edit', 'Admin\CityController@edit')->name('admin.province.city.edit');
+    Route::put('provinces/{province}/cities/{city}/update', 'Admin\CityController@update')->name('admin.province.city.update');
+    Route::delete('provinces/{province}/cities/{city}/destroy', 'Admin\CityController@destroy')->name('admin.province.city.destroy');
 });
