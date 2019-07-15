@@ -34,21 +34,11 @@ class HomeController extends Controller
 
     public function faq()
     {
-        $faqs_about = Faq::where('category', 'about')
-          ->get();
-        $faqs_user = Faq::where('category', 'user')
-          ->get();
-        $faqs_investor = Faq::where('category', 'investor')
-          ->get();
-        $faqs_misc = Faq::where('category', 'misc')
-          ->get();
+        $faqs = Faq::get();
 
         return view('home.faq')
           ->with([
-            'faqs_about' => $faqs_about,
-            'faqs_user' => $faqs_user,
-            'faqs_investor' => $faqs_investor,
-            'faqs_misc' => $faqs_misc
+            'faqs' => $faqs
           ]);
     }
 

@@ -267,4 +267,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('descriptions/{description}/edit', 'Admin\DescriptionController@edit')->name('admin.description.edit');
     Route::put('descriptions/{description}/update', 'Admin\DescriptionController@update')->name('admin.description.update');
     Route::delete('descriptions/{description}/delete', 'Admin\DescriptionController@destroy')->name('admin.description.destroy');
+
+    // FAQ
+    Route::get('faq/table', 'Admin\FaqController@table')->name('admin.faq.table');
+    Route::get('faq', 'Admin\FaqController@index')->name('admin.faq.index');
+    Route::get('faq/create', 'Admin\FaqController@create')->name('admin.faq.create');
+    Route::post('faq/create', 'Admin\FaqController@store')->name('admin.faq.store');
+    Route::get('faq/{faq}/edit', 'Admin\FaqController@edit')->name('admin.faq.edit');
+    Route::put('faq/{faq}/edit', 'Admin\FaqController@update')->name('admin.faq.update');
+    Route::delete('faq/{faq}/destroy', 'Admin\FaqController@destroy')->name('admin.faq.destroy');
 });

@@ -19,9 +19,9 @@
   <!-- faq about Napon -->
   <div class="container-fluid smaller-content" id="faqAbout">
     <div class="container">
-      <h2 class="light-green-text">Tentang {{ config('app.name') }}</h2>
+      <h2 class="light-green-text">FAQ</h2>
       <hr>
-      @foreach($faqs_about as $faq)
+      @foreach($faqs as $faq)
         @if ($faq->answer)
             <button class="accordion">{{ $faq->question }}</button>
             <div class="panel">
@@ -31,36 +31,6 @@
       @endforeach
     </div> <!-- container -->
   </div> <!-- container fluid -->
-
-  <!-- faq about User -->
-  <div class="container-fluid smaller-content" id="faqAbout">
-    <div class="container">
-      <h2 class="light-green-text">Member {{ config('app.name') }}</h2>
-      <hr>
-      @foreach($faqs_user as $faq)
-          @if ($faq->answer)
-              <button class="accordion">{{ $faq->question }}</button>
-              <div class="panel">
-                  <p>{{ $faq->answer }}</p>
-              </div>
-          @endif
-      @endforeach
-    </div> <!-- container -->
-  </div> <!-- container fluid -->
-
-  <!-- faq about misc -->
-  <div class="container-fluid smaller-content" id="faqMisc">
-    <div class="container">
-      <h2 class="light-green-text">Lain-lain</h2>
-      <hr>
-      @foreach($faqs_misc as $faq)
-          @if ($faq->answer)
-              <button class="accordion">{{ $faq->question }}</button>
-              <div class="panel">
-                  <p>{{ $faq->answer }}</p>
-              </div>
-          @endif
-      @endforeach
     </div> <!-- container -->
   </div> <!-- container fluid -->
 </main>

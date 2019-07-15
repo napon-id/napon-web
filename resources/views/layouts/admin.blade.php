@@ -109,6 +109,7 @@
             <a class="dropdown-item" href="{{ route('admin.contact') }}">{{ __('Kontak') }}</a>
             <a class="dropdown-item" href="{{ route('admin.banner.index') }}">{{ __('Banner') }}</a>
             <a class="dropdown-item" href="{{ route('admin.description.index') }}">{{ __('Deskripsi') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.faq.index') }}">{{ __('FAQ') }}</a>
           </div>
         </li>
       </ul>
