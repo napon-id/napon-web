@@ -88,9 +88,12 @@ class GeneralController extends Controller
      */
     public function getDescription()
     {
-        $description = Description::query()->get(['img AS description_image', 'title AS description_title', 'text AS description_text']);
+        $description = Description::query()->get([
+            'img AS description_image', 
+            'title AS description_title', 'text AS description_text'
+        ]);
 
-        if ($description) {
+        if ($description->count() > 0) {
             return response()->json([
                 'result_code' => 4,
                 'request_code' => 200,
@@ -229,7 +232,7 @@ class GeneralController extends Controller
             )
             ->get();
 
-        if ($banners) {
+        if ($banners->count() > 0) {
             return response()->json([
                 'request_code' => 200,
                 'result_code' => 4,
