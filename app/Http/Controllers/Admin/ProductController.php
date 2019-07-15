@@ -210,7 +210,7 @@ class ProductController extends Controller
             ->addColumn('action', function ($product) {
                 return '
                     <div class="btn-group">
-                        <a class="btn" href="" data-toggle="tooltip" data-placement="bottom" title="'.__('Simulasi').'">
+                        <a class="btn" href="'.route('admin.tree.product.simulation.index', ['tree' => $product->tree, 'product' => $product]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Simulasi').'">
                             <i class="fas fa-list"></i>
                         </a>
                         <a class="btn" href="'.route('admin.tree.product.edit', ['tree' => $product->tree, 'product' => $product]).'" data-toggle="tooltip" data-placement="bottom" title="'.__('Edit').'">

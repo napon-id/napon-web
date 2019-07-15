@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Simulation extends Model
 {
     protected $fillable = [
+        'product_id',
         'year',
         'min',
         'max'

@@ -190,8 +190,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::delete('/notification/{user}/delete/{notification}', 'Admin\NotificationController@destroy')->name('admin.user.notification.destroy');
     });
     
-    
+    // Tree
     Route::resource('trees', 'Admin\TreeController')->except(['show']);
+
+    // Product
     Route::get('trees/{tree}/products/table', 'Admin\ProductController@table')->name('admin.tree.product.table');
     Route::get('trees/{tree}/products', 'Admin\ProductController@index')->name('admin.tree.product.index');
     Route::get('trees/{tree}/products/create', 'Admin\ProductController@create')->name('admin.tree.product.create');
@@ -200,7 +202,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::put('trees/{tree}/products/edit/{product}', 'Admin\ProductController@update')->name('admin.tree.product.update');
     Route::delete('trees/{tree}/products/destroy/{product}', 'Admin\ProductController@destroy')->name('admin.tree.product.destroy');
 
-    // Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
+    // Simulation
+    Route::get('trees/{tree}/products/{product}/simulation/table', 'Admin\SimulationController@table')->name('admin.tree.product.simulation.table');
+    Route::get('trees/{tree}/products/{product}/simulation', 'Admin\SimulationController@index')->name('admin.tree.product.simulation.index');
+    Route::get('trees/{tree}/products/{product}/simulation/create', 'Admin\SimulationController@create')->name('admin.tree.product.simulation.create');
+    Route::post('trees/{tree}/products/{product}/simulation/create', 'Admin\SimulationController@store')->name('admin.tree.product.simulation.store');
+    Route::get('trees/{tree}/products/{product}/simulation/{simulation}/edit', 'Admin\SimulationController@edit')->name('admin.tree.product.simulation.edit');
+    Route::put('trees/{tree}/products/{product}/simulation/{simulation}/edit', 'Admin\SimulationController@update')->name('admin.tree.product.simulation.update');
+    Route::delete('trees/{tree}/products/{product}/simulation/{simulation}/destroy', 'Admin\SimulationController@destroy')->name('admin.tree.product.simulation.destroy');
 
     // Withdraw
     Route::group(['prefix' => 'withdraw'], function () {
