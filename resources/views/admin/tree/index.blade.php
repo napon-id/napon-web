@@ -23,39 +23,41 @@
             </div> <!-- card-header -->
 
             <div class="card-body">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody>
-                        @foreach($trees as $tree)
-                        <tr>
-                            <td>{{ $tree->name }}</td>
-                            <td>{{ $tree->description }}</td>
-                            <td>
-                                <div class="btn-group">
-
-                                    <a href="{{ route('trees.edit', [$tree]) }}" class="btn">
-                                        <i class="fas fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
-                                    </a>
-                                    <form action="{{ route('trees.destroy', [$tree]) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn">
-                                            <i class="fas fa-trash" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
-                                        </button>
-                                    </form>
-                                    <a class="btn" href="{{ route('products.index', ['tree' => $tree]) }}">
-                                        <i class="fas fa-list" data-toggle="tooltip" data-placement="bottom" title="{{ __('Tabungan') }}"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            @foreach($trees as $tree)
+                            <tr>
+                                <td>{{ $tree->name }}</td>
+                                <td>{{ $tree->description }}</td>
+                                <td>
+                                    <div class="btn-group">
+    
+                                        <a href="{{ route('trees.edit', [$tree]) }}" class="btn">
+                                            <i class="fas fa-edit" data-toggle="tooltip" data-placement="bottom" title="Edit"></i>
+                                        </a>
+                                        <form action="{{ route('trees.destroy', [$tree]) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn">
+                                                <i class="fas fa-trash" data-toggle="tooltip" data-placement="bottom" title="Delete"></i>
+                                            </button>
+                                        </form>
+                                        <a class="btn" href="{{ route('admin.tree.product.index', ['tree' => $tree]) }}">
+                                            <i class="fas fa-list" data-toggle="tooltip" data-placement="bottom" title="{{ __('Tabungan') }}"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div> 
             </div> <!-- card-body -->
         </div> <!-- card -->
     </div> <!-- col-12 -->

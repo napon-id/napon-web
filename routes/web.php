@@ -114,6 +114,22 @@ Route::get('certificate/{filename}', function ($filename) {
     return $response;
 });
 
+Route::get('product/{filename}', function ($filename) {
+    $path = storage_path('app/public/product/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
 
 // Front pages
 Route::get('/', 'HomeController@index')->name('home');
@@ -176,13 +192,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     
     
     Route::resource('trees', 'Admin\TreeController')->except(['show']);
+    Route::get('trees/{tree}/products/table', 'Admin\ProductController@table')->name('admin.tree.product.table');
+    Route::get('trees/{tree}/products', 'Admin\ProductController@index')->name('admin.tree.product.index');
+    Route::get('trees/{tree}/products/create', 'Admin\ProductController@create')->name('admin.tree.product.create');
+    Route::post('trees/{tree}/products/create', 'Admin\ProductController@store')->name('admin.tree.product.store');
+    Route::get('trees/{tree}/products/edit/{product}', 'Admin\ProductController@edit')->name('admin.tree.product.edit');
+    Route::put('trees/{tree}/products/edit/{product}', 'Admin\ProductController@update')->name('admin.tree.product.update');
+    Route::delete('trees/{tree}/products/destroy/{product}', 'Admin\ProductController@destroy')->name('admin.tree.product.destroy');
 
-    // Invest
-    Route::group(['prefix' => 'invest'], function () {
-        Route::get('products/table', 'Admin\ProductController@table')->name('products.table');
-        Route::get('products/tree/{tree}', 'Admin\ProductController@index')->name('products.index');
-        Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
-    });
+    // Route::resource('products', 'Admin\ProductController')->except(['show', 'index']);
 
     // Withdraw
     Route::group(['prefix' => 'withdraw'], function () {

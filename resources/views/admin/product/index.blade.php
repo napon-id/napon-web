@@ -20,14 +20,14 @@
         <div class="card mb-3">
             <div class="card-header">
                 {{ __('Tabungan') }}
-                <a href="{{ route('products.create', ['tree' => $tree]) }}" class="btn btn-info float-right">
+                <a href="{{ route('admin.tree.product.create', [$tree]) }}" class="btn btn-info float-right">
                     <i class="fas fa-plus-square"></i>
                 </a>
             </div> <!-- card-header -->
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="datatable table table-striped table-hover" data-url="{{ route('products.table') }}">
+                    <table class="datatable table table-striped table-hover" data-url="{{ route('admin.tree.product.table', [$tree]) }}">
                         <thead>
                             <tr>
                                 <th data-field="id">{{ __('ID') }}</th>
