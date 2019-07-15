@@ -141,7 +141,7 @@ class UserController extends Controller
      */
     public function editPassword(Request $request)
     {
-        if (!$request->has('user_key')) {
+        if (!$request->has('user_key') && $request->user_key != '') {
             return response()->json([
                 'result_code' => 2,
                 'request_code' => 200,
@@ -184,7 +184,7 @@ class UserController extends Controller
                     isset($validatorMessage['user_new_password']) ? ($errors->user_new_password = $validatorMessage['user_new_password'][0]) : $errors;
 
                     return response()->json([
-                        'result_code' => 8,
+                        'result_code' => 7,
                         'request_code' => 200,
                         'errors' => $errors
                     ]);
@@ -668,7 +668,7 @@ class UserController extends Controller
                     isset($validatorMessage['user_bank_account_number']) ? ($errors->user_bank_account_number = $validatorMessage['user_bank_account_number'][0]) : $errors;
 
                     return response()->json([
-                        'result_code' => 7,
+                        'result_code' => 8,
                         'request_code' => 200,
                         'errors' => $errors
                     ]);

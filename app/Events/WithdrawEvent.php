@@ -55,7 +55,7 @@ class WithdrawEvent
         Mail::to($withdraw->user()->first()->email)
             ->queue($mail);
 
-        if ($withdraw->status == 'rejected') {
+        if ($withdraw->status == 3) {
             $withdraw->user()->first()->balance()->first()->update([
                 'balance' => $withdraw->user()->first()->balance()->first()->balance + $withdraw->amount,
             ]);
