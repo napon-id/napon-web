@@ -110,6 +110,7 @@
             <a class="dropdown-item" href="{{ route('admin.banner.index') }}">{{ __('Banner') }}</a>
             <a class="dropdown-item" href="{{ route('admin.description.index') }}">{{ __('Deskripsi') }}</a>
             <a class="dropdown-item" href="{{ route('admin.faq.index') }}">{{ __('FAQ') }}</a>
+            <a class="dropdown-item" href="{{ route('admin.province.index') }}">{{ __('Provinsi & Kota') }}</a>
           </div>
         </li>
       </ul>
