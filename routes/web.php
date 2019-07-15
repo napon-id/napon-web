@@ -218,21 +218,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('change-status', 'Admin\WithdrawController@changeStatus')->name('admin.withdraw.change_status');
     });
 
-    // Order
-    Route::group(['prefix' => 'order'], function () {
-        Route::get('/table', 'Admin\OrderController@table')->name('admin.order.table');
-        Route::get('/', 'Admin\OrderController@index')->name('admin.order.index');
-        Route::get("edit/{id}", 'Admin\OrderController@edit')->name('admin.order.edit');
-        Route::post("update/{id}", 'Admin\OrderController@update')->name('admin.order.update');
-        // order updates
-        Route::get('{order}', 'Admin\OrderUpdateController@index')->name('admin.order.update.index');
-        Route::get('{order}/create', 'Admin\OrderUpdateController@create')->name('admin.order.update.create');
-        Route::post('{order}/create', 'Admin\OrderUpdateController@store')->name('admin.order.update.store');
-        Route::get('{order}/{id}/edit', 'Admin\OrderUpdateController@edit')->name('admin.order.update.edit');
-        Route::put('{order}/{id}/edit', 'Admin\OrderUpdateController@update')->name('admin.order.update.update');
-        Route::delete('{order}/{id}', 'Admin\OrderUpdateController@destroy')->name('admin.order.update.destroy');
-    });
-
     // Blog
     Route::group(['prefix' => 'blog'], function () {
         Route::get('/table', 'Admin\BlogController@table')->name('admin.blog.table');

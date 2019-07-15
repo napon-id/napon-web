@@ -19,7 +19,7 @@ class ArticleController extends Controller
             ->limit(4)
             ->get($this->getArticleArray());
 
-        if ($articles) {
+        if ($articles->count() > 0) {
             return response()->json([
                 'result_code' => 4,
                 'request_code' => 200,
@@ -60,7 +60,7 @@ class ArticleController extends Controller
 
         $articles = Article::orderBy('created_at', 'asc')->limit($dataPerPage)->offset($offset)->get($this->getArticleArray());
 
-        if ($articles) {
+        if ($articles->count() > 0) {
             return response()->json([
                 'result_code' => 4,
                 'request_code' => 200,

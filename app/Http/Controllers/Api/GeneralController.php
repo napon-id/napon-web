@@ -173,16 +173,26 @@ class GeneralController extends Controller
     public function databaseStatus()
     {
         $lastProduct = Product::orderBy('updated_at', 'latest')->first();
-
         $lastDescription = Description::orderBy('updated_at', 'latest')->first();
 
-        return response()->json([
-            'request_code' => 200,
-            'db_status' => [
-                'product_last_update' => $lastProduct->updated_at->format('Y-m-d h:i:s'),
-                'description_last_update' => $lastDescription->created_at->format('Y-m-d h:i:s')
-            ]
-        ]);
+        if (isset($lastProduct) && isset($lastDescription)) {
+            return response()->json([
+                'request_code' => 200,
+                'db_status' => [
+                    'product_last_update' => $lastProduct->updated_at->format('Y-m-d h:i:s'),
+                    'description_last_update' => $lastDescription->created_at->format('Y-m-d h:i:s')
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'db_status' => [
+                    'product_last_update' => NULL,
+                    'description_last_update' => NULL
+                ]
+            ]);
+        }
+
     }
 
     /**

@@ -18,10 +18,12 @@ Route::post('user/details', 'Api\UserController@getUserDetail')->name('api.user.
 Route::post('user/update', 'Api\UserController@updateUserDetail')->name('api.user.update');
 Route::post('user/update/id_image', 'Api\UserController@updateUserIdImage')->name('api.user.update.id_image');
 Route::post('user/update/image', 'Api\UserController@updateUserImage')->name('api.user.update.image');
+Route::post('user/verify', 'Api\UserController@resendVerificationEmail')->name('api.user.resend.verification');
+
+// Bank
 Route::post('user/bank/add', 'Api\UserController@userAddBank')->name('api.user.bank.add');
 Route::post('user/bank/edit', 'Api\UserController@userEditBank')->name('api.user.bank.edit');
 Route::post('user/bank/delete', 'Api\UserController@userDeleteBank')->name('api.user.bank.delete');
-Route::post('user/verify', 'Api\UserController@resendVerificationEmail')->name('api.user.resend.verification');
 
 // Noifications API
 Route::get('user/notifications', 'Api\UserController@getNotifications')->name('api.user.notifications');
