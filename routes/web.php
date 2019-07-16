@@ -280,4 +280,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('provinces/{province}/cities/{city}/edit', 'Admin\CityController@edit')->name('admin.province.city.edit');
     Route::put('provinces/{province}/cities/{city}/update', 'Admin\CityController@update')->name('admin.province.city.update');
     Route::delete('provinces/{province}/cities/{city}/destroy', 'Admin\CityController@destroy')->name('admin.province.city.destroy');
+
+    // activities
+    Route::get('activities/table', 'Admin\ActivityController@table')->name('admin.activity.table');
+    Route::get('activities', 'Admin\ActivityController@index')->name('admin.activity.index');
+    Route::get('activities/create', 'Admin\ActivityController@create')->name('admin.activity.create');
+    Route::post('activities/create', 'Admin\ActivityController@store')->name('admin.activity.store');
+    Route::get('activities/{activity}', 'Admin\ActivityController@show')->name('admin.activity.show');
+    Route::get('activities/{activity}/edit', 'Admin\ActivityController@edit')->name('admin.activity.edit');
+    Route::put('activities/{activity}/edit', 'Admin\ActivityController@update')->name('admin.activity.update');
+    Route::delete('activities/{activity}/destroy', 'Admin\ActivityController@destroy')->name('admin.activity.destroy');
 });

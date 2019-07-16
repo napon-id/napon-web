@@ -11,6 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Order;
 use Mail;
+use App\Activity;
 
 class OrderEvent
 {
@@ -48,6 +49,14 @@ class OrderEvent
         $mail = new \App\Mail\OrderCreatedMail($order, $user);
         Mail::to($user->email)
             ->queue($mail);
+
+        // add activity log
+        $activity = Activity::create([
+            'activity_id' => $order->getKey(),
+            'activity_type' => get_class($order),
+            'content' => 'User ' . $order->user->email . ' memesan tabungan : ' . $order->product->name . 
+                '. <a href="'.route('admin.user.order', ['user' => $order->user]).'">Klik untuk menampilkan tabungan</a>'
+        ]);
     }
 
     public function orderUpdated(Order $order)
