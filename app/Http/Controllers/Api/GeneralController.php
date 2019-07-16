@@ -182,8 +182,8 @@ class GeneralController extends Controller
             return response()->json([
                 'request_code' => 200,
                 'db_status' => [
-                    'product_last_update' => $lastProduct->updated_at->format('Y-m-d h:i:s'),
-                    'description_last_update' => $lastDescription->created_at->format('Y-m-d h:i:s')
+                    'product_last_update' => $lastProduct->updated_at->format('Y-m-d H:i:s'),
+                    'description_last_update' => $lastDescription->created_at->format('Y-m-d H:i:s')
                 ]
             ]);
         } else {
