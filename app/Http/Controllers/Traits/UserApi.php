@@ -27,7 +27,6 @@ trait UserApi
             // check user stored on firebase
             $firebaseObject = $this->userDetail($user_key);
             $user = User::where('email', $firebaseObject->email)->first();
-
             if (isset($user)) {
                 // store fireabse uid to local firebase_uid
                 $user->update([
@@ -37,9 +36,17 @@ trait UserApi
         }
 
         if (!$user) {
-            return '';
+            if (isset($firebaseObject)) {
+                return (string) $firebaseObject->email;
+            } else {
+                return '';
+            }
         } else {
-            return (string) $user->email;
+            if (isset($firebaseObject)) {
+                return (string) $firebaseObject->email;
+            } else {
+                return (string) $user->email;
+            }
         }
     }
 
