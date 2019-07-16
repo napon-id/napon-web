@@ -19,7 +19,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header">{{ __('Form Tabungan') }}</div>
             <div class="card-body">
@@ -49,6 +49,25 @@
                     </div>
 
                     <div class="form-group row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-info" value="{{ __('Simpan') }}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">{{ __('Update Harga Akhir') }}</div>
+            <div class="card-body">
+                <form action="{{ route('admin.user.order.update.price', [$user, $order]) }}" method="post">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group row">
                         <label for="selling_price" class="col-md-3">{{ __('Harga Akhir') }}</label>
                         <div class="col-md-6">
                             <input type="text" name="selling_price" class="currency form-control {{ $errors->has('selling_price') ? 'is-invalid' : '' }}" value="{{ $order->selling_price ?? 0 }}">
@@ -70,5 +89,6 @@
             </div>
         </div>
     </div>
+
 </div>
 @endsection

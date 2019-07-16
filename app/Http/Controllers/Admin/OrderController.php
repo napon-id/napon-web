@@ -109,7 +109,7 @@ class OrderController extends Controller
     {
         $validator = Validator::make($request->only([
             'status',
-            'selling_price'
+            'img_certificate'
         ]), [
             'selling_price' => 'nullable|numeric',
             'img_certificate' => 'nullable|file|mimetypes:image/jpeg,image/jpg,image/png'
@@ -132,13 +132,45 @@ class OrderController extends Controller
         }
 
         $order->update([
-            'status' => $request->has('status') ? 4 : 3,
-            'selling_price' => $request->selling_price
+            'status' => $request->has('status') ? 4 : 3
         ]);
 
         return redirect()
             ->route('admin.user.order', [$user])
             ->with('status', __('Tabungan diedit'));
+    }
+
+    /**
+     * update order price
+     * 
+     * @param Illuminate\Http\Request $request
+     * @param App\User $user
+     * @param App\Order $order
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function orderPriceUpdate(Request $request, User $user, Order $order)
+    {
+        $validator = Validator::make($request->only([
+            'selling_price'
+        ]), [
+            'selling_price' => 'nullable|numeric|min:0'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $order->update([
+            'selling_price' => $request->selling_price
+        ]);
+
+        return redirect()
+            ->route('admin.user.order', [$user])
+            ->with('status', __('Nilai tabungan diedit'));
     }
 
     /**

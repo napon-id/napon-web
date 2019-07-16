@@ -18,6 +18,11 @@ trait UserApi
     {
         // check for local firebase_uid key
         $user = User::where('firebase_uid', '=', $user_key)->first();
+
+        if (!$user) {
+            $user = User::where('user_key', '=', $user_key)->first();
+        }
+
         if (!$user) {
             // check user stored on firebase
             $firebaseObject = $this->userDetail($user_key);
@@ -29,10 +34,6 @@ trait UserApi
                     'firebase_uid' => $firebaseObject->uid
                 ]);
             }
-        }
-
-        if (!$user) {
-            $user = User::where('user_key', '=', $user_key)->first();
         }
 
         if (!$user) {
