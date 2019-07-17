@@ -42,7 +42,6 @@ class ProductController extends Controller
      */
     public function store(Tree $tree, Request $request)
     {
-
         $validator = $this->validator($request);
 
         if ($validator->fails()) {
@@ -67,7 +66,7 @@ class ProductController extends Controller
             $img_background = basename($imgBackgroundPath);
         }
 
-        Product::create([
+        $product = Product::create([
             'tree_id' => $tree->id,
             'name' => $request->name,
             'tree_quantity' => $request->tree_quantity,
@@ -80,8 +79,8 @@ class ProductController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.tree.product.index', [$tree])
-            ->with('status', __('Produk ditambahkan'));
+            ->route('admin.tree.product.simulation.create', [$tree, $product])
+            ->with('status', __('Produk ditambahkan. Silakan tambahkan simulasi'));
     }
 
     /**

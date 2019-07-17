@@ -350,7 +350,7 @@ class OrderController extends Controller
                 } else {
                     return response()->json([
                         'request_code' => 200,
-                        'result_code' => 4,
+                        'result_code' => 11,
                         'message' => 'Insufficient balance'
                     ]);
                 }
