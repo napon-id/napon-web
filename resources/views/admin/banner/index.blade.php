@@ -18,9 +18,11 @@
             <div class="card-header">
                 {{ __('Daftar Banner') }}
                 <div class="float-right">
+                    @if (\App\Banner::get()->count() < 5)
                     <a href="{{ route('admin.banner.create') }}" class="btn btn-info">
                         <i class="fas fa-plus-square"></i>
                     </a>
+                    @endif
                 </div>
             </div>
             <div class="card-body">

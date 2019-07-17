@@ -28,7 +28,13 @@ class BannerController extends Controller
      */
     public function create()
     {
-        return view('admin.banner.create');
+        if (Banner::get()->count() >= 5) {
+            return redirect()
+                ->route('admin.banner.index')
+                ->with('status', __('Jumlah banner maksimal 5'));
+        } else {
+            return view('admin.banner.create');
+        }
     }
 
     /**

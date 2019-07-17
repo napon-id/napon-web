@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="tree_height" class="col-md-3">{{ __('Tinggi Pohon') }}</label>
+                        <label for="tree_height" class="col-md-3">{{ __('Tinggi Pohon (meter)') }}</label>
                         <div class="col-md-1">
                             <input type="text" class="form-control currency {{ $errors->has('tree_height') ? 'is-invalid' : '' }}" name="tree_height" value="{{ $report->tree_height ?? old('tree_height') }}">
                             @if ($errors->has('tree_height'))
@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="tree_diameter" class="col-md-3">{{ __('Diameter Pohon') }}</label>
+                        <label for="tree_diameter" class="col-md-3">{{ __('Diameter Pohon (meter)') }}</label>
                         <div class="col-md-1">
                             <input type="text" class="form-control currency {{ $errors->has('tree_diameter') ? 'is-invalid' : '' }}" name="tree_diameter" value="{{ $report->tree_diameter ?? old('tree_diameter') }}">
                             @if ($errors->has('tree_diameter'))
