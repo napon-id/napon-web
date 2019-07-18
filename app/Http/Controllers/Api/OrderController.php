@@ -181,6 +181,14 @@ class OrderController extends Controller
                     ->where('orders.user_id', '=', $user->id)
                     ->get();
                 
+                if ($orders->count() < 1) {
+                    return response()->json([
+                        'result_code' => 9,
+                        'request_code' => 200,
+                        'message' => 'There is no data'
+                    ]);
+                }
+                
                 foreach ($orders as $order) {
                     $product = Order::where('token', $order->transaction_id)
                         ->first()
