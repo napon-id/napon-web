@@ -194,7 +194,7 @@ class OrderController extends Controller
                 foreach ($orders as $order) {
                     $product = Order::where('token', $order->transaction_id)
                         ->first()
-                        ->productReplicate()
+                        ->product()
                         ->first();
 
                     $order_data = Order::where('token', $order->transaction_id)
