@@ -137,11 +137,17 @@ class SimulationController extends Controller
      */
     public function destroy(Tree $tree, Product $product, Simulation $simulation)
     {
-        $simulation->delete();
+        if ($product->simulations()->get()->count() <= 1) {
+            return redirect()
+                ->route('admin.tree.product.simulation.index', ['tree' => $tree, 'product' => $product])
+                ->with('status', __('Jumlah simulasi tidak boleh kosong'));
+        } else {
+            $simulation->delete();
 
-        return redirect()
-            ->route('admin.tree.product.simulation.index', [$tree, $product])
-            ->with('status', __('Simulasi dihapus'));
+            return redirect()
+                ->route('admin.tree.product.simulation.index', [$tree, $product])
+                ->with('status', __('Simulasi dihapus'));
+        }
     }
 
     /**
