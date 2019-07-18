@@ -79,6 +79,14 @@ class OrderController extends Controller
             ->limit($dataPerPage)
             ->offset($offset)
             ->get();
+
+        if ($orders->count() < 1) {
+            return response()->json([
+                'result_code' => 9,
+                'request_code' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
         
         foreach ($orders as $order) {
             $order_data = DB::table('orders')
