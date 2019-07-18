@@ -715,19 +715,30 @@ class UserController extends Controller
             if ($request->has('user_bank_id') && $request->user_bank_id != '') {
                 $bank = $user->banks()->where('token', $request->user_bank_id)->first();
 
+                if (!$request->has('user_bank_name') && !$request->has('user_bank_account_name') && !$request->has('user_bank_account_number')) {
+                    return response()->json([
+                        'result_code' => 7,
+                        'request_code' => 200,
+                        'message' => 'Bad request'
+                    ]);
+                }
+
                 if (isset($bank)) {
                     $validator = Validator::make($request->only([
                         'user_bank_name',
                         'user_bank_account_name',
                         'user_bank_account_number'
                     ]), [
-                        'user_bank_name' => 'nullable|string|max:191',
-                        'user_bank_account_name' => 'nullable|string|max:191',
-                        'user_bank_account_number' => 'nullable|numeric|digits_between:10,15'
+                        'user_bank_name' => 'string|max:191',
+                        'user_bank_account_name' => 'string|max:191',
+                        'user_bank_account_number' => 'sometimes|numeric|digits_between:10,15'
                     ], [
+                        'user_bank_name.string' => 'Nama Bank tidak boleh kosong',
                         'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
                         'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',
+                        'user_bank_account_name.string' => 'Nama pemilik rekening tidak boleh kosong',
                         'user_bank_account_number.numeric' => 'Nomor rekening harus berupa angka',
+                        'user_bank_account_number.sometimes' => 'Nomor rekening tidak boleh kosong',
                         'user_bank_account_number.digits_between' => 'Nomor rekening harus berada di antara :min hingga :max digit'
                     ]);
 
