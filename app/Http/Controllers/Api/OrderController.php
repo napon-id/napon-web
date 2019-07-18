@@ -210,7 +210,7 @@ class OrderController extends Controller
 
                     $product_array = [
                         'product_name' => $product->name,
-                        'product_image_black' => $product->img,
+                        'product_image_black' => $product->img_black,
                     ];
                     $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $order_data->id);
                     $order->product = $product_array;
