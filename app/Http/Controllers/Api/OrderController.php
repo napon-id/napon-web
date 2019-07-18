@@ -87,7 +87,7 @@ class OrderController extends Controller
                 ->first();
             
             // product
-            $product = DB::table('products')
+            $product = DB::table('product_replicates')
                 ->select([
                     'products.name AS product_name',
                     'products.img_black AS product_image_black'
@@ -194,7 +194,7 @@ class OrderController extends Controller
                 foreach ($orders as $order) {
                     $product = Order::where('token', $order->transaction_id)
                         ->first()
-                        ->product()
+                        ->productReplicate()
                         ->first();
 
                     $order_data = Order::where('token', $order->transaction_id)
@@ -333,6 +333,7 @@ class OrderController extends Controller
             $productQuery = Product::where('name', '=', $product)->first();
 
             if ($productQuery) {
+                $replicatedProduct = $this->replicateProductAndSimulation($productQuery);
                 $needPaid = (double) $productQuery->price;
                 $balance = (double) $user->balance->balance;
                 
@@ -350,8 +351,8 @@ class OrderController extends Controller
                         $order = Order::create([
                             'token' => md5('Order-' . now()),
                             'user_id' => $user->id,
-                            'product_id' => $productQuery->id,
-                            'buy_price' => (int) $productQuery->price,
+                            'product_id' => $replicatedProduct->id,
+                            'buy_price' => (int) $replicatedProduct->price,
                             'status' => 3
                         ]);
     
@@ -375,7 +376,7 @@ class OrderController extends Controller
                     $transaction_data = [
                         'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
                         'transaction_key' => $order->token,
-                        'transaction_total_payment' => (double) $productQuery->price
+                        'transaction_total_payment' => (double) $replicatedProduct->price
                     ];
                 }
             } else {

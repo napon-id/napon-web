@@ -23,6 +23,11 @@ class Order extends Model
         return $this->belongsTo('App\Product');
     }
 
+    public function productReplicate()
+    {
+        return $this->belongsTo('App\ProductReplicate', 'product_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');
