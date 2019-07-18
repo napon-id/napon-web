@@ -89,10 +89,10 @@ class OrderController extends Controller
             // product
             $product = DB::table('product_replicates')
                 ->select([
-                    'products.name AS product_name',
-                    'products.img_black AS product_image_black'
+                    'product_replicates.name AS product_name',
+                    'product_replicates.img_black AS product_image_black'
                 ])
-                ->where('products.id', '=', $order_data->product_id)
+                ->where('product_replicates.id', '=', $order_data->product_id)
                 ->first();
             
             $order->product = $product;

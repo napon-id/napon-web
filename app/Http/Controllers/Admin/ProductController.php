@@ -119,19 +119,19 @@ class ProductController extends Controller
             }
 
             if ($request->has('img_black')) {
-                $this->deleteFile($product->img_black);
+                // $this->deleteFile($product->img_black);
                 $imgBlackPath = $request->file('img_black')->store('public/product');
                 $img_black = basename($imgBlackPath);
             }
 
             if ($request->has('img_white')) {
-                $this->deleteFile($product->img_white);
+                // $this->deleteFile($product->img_white);
                 $imgWhitePath = $request->file('img_white')->store('public/product');
                 $img_white = basename($imgWhitePath);
             }
 
             if ($request->has('img_background')) {
-                $this->deleteFile($product->img_background);
+                // $this->deleteFile($product->img_background);
                 $imgBackgroundPath = $request->file('img_background')->store('public/product');
                 $img_background = basename($imgBackgroundPath);
             }
@@ -280,7 +280,7 @@ class ProductController extends Controller
      */
     protected function deleteFile($file)
     {
-        $oldFile = trim($file, config('app.url'));
-        Storage::delete('public/' . $oldFile);
+        // $oldFile = trim($file, config('app.url'));
+        // Storage::delete('public/' . $oldFile);
     }
 }
