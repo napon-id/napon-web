@@ -33,7 +33,7 @@ trait MidTrans
             'json' => [
                 'payment_type' => 'bank_transfer',
                 'transaction_details' => [
-                    'gross_amount' => $order->product->tree_quantity * $order->product->tree->price,
+                    'gross_amount' => $order->product->price,
                     'order_id' => $order->token
                 ],
                 'customer_details' => [
@@ -43,8 +43,8 @@ trait MidTrans
                 'item_details' => [
                     [
                         'id' => $order->product->name,
-                        'price' => $order->product->tree->price,
-                        'quantity' => $order->product->tree_quantity,
+                        'price' => $order->product->price,
+                        'quantity' => 1,
                         'name' => $order->product->tree->name
                     ]
                 ],

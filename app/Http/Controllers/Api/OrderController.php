@@ -11,6 +11,8 @@ use App\Order;
 use App\User;
 use DB;
 use App\Http\Controllers\Traits\MidTrans;
+use App\ProductReplicate;
+use App\SimulationReplicate;
 
 class OrderController extends Controller
 {
@@ -250,6 +252,7 @@ class OrderController extends Controller
             $productQuery = Product::where('name', '=', $product)->first();
 
             if ($productQuery) {
+                $replicatedProduct = $this->replicateProductAndSimulation($productQuery);
                 $unfinishedOrder = Order::where('status', 1)->first();
 
                 if (isset($unfinishedOrder)) {
@@ -262,8 +265,8 @@ class OrderController extends Controller
                     $order = Order::create([
                         'token' => md5('Order-' . now()),
                         'user_id' => $user->id,
-                        'product_id' => $productQuery->id,
-                        'buy_price' => $productQuery->price
+                        'product_id' => $replicatedProduct->id,
+                        'buy_price' => $replicatedProduct->price
                     ]);
     
                     $res = $this->orderMidTrans($order);
@@ -276,7 +279,7 @@ class OrderController extends Controller
                         $transaction_data = [
                             'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
                             'transaction_key' => $order->token,
-                            'transaction_total_payment' => (double) $productQuery->price,
+                            'transaction_total_payment' => (double) $replicatedProduct->price,
                             'transaction_va_number' => $result->va_numbers[0]->va_number
                         ];
                     }
@@ -395,5 +398,40 @@ class OrderController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    /**
+     * replicate product
+     * 
+     * @param App\Product $product
+     * 
+     * @return App\ProductReplicate $replicatedProduct
+     */
+    protected function replicateProductAndSimulation(Product $product)
+    {
+        $replicatedProduct = ProductReplicate::create([
+            'tree_id' => $product->tree_id,
+            'name' => $product->name,
+            'tree_quantity' => $product->tree_quantity,
+            'description' => $product->description,
+            'available' => $product->available,
+            'price' => $product->price,
+            'img_black' => $product->img_black,
+            'img_white' => $product->img_white,
+            'img_background' => $product->img_background
+        ]);
+
+        if ($replicatedProduct) {
+            foreach ($product->simulations()->get() as $simulation) {
+                SimulationReplicate::create([
+                    'product_id' => $replicatedProduct->id,
+                    'year' => $simulation->year,
+                    'min' => $simulation->min,
+                    'max' => $simulation->max
+                ]);
+            }
+        }
+
+        return $replicatedProduct;
     }
 }
