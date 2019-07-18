@@ -13,6 +13,7 @@ use App\Setting;
 use DB;
 use App\Order;
 use App\Topup;
+use App\Simulation;
 
 class GeneralController extends Controller
 {
@@ -176,13 +177,16 @@ class GeneralController extends Controller
     public function databaseStatus()
     {
         $lastProduct = Product::orderBy('updated_at', 'latest')->first();
+        $lastSimulation = Simulation::orderBy('updated_at', 'latest')->first();
         $lastDescription = Description::orderBy('updated_at', 'latest')->first();
 
         if (isset($lastProduct) && isset($lastDescription)) {
             return response()->json([
                 'request_code' => 200,
                 'db_status' => [
-                    'product_last_update' => $lastProduct->updated_at->format('Y-m-d H:i:s'),
+                    'product_last_update' => $lastProduct->updated_at->greaterThanOrEqualTo($lastSimulation->updated_at) 
+                        ? $lastProduct->updated_at->format('Y-m-d H:i:s') 
+                        : $lastSimulation->updated_at->format('Y-m-d H:i:s'),
                     'description_last_update' => $lastDescription->created_at->format('Y-m-d H:i:s')
                 ]
             ]);
