@@ -73,9 +73,15 @@ class SimulationController extends Controller
             'max' => $request->max
         ]);
 
-        return redirect()
-            ->route('admin.tree.product.simulation.index', ['tree' => $tree, 'product' => $product])
-            ->with('status', __('Simulasi ditambahkan'));
+        if ($product->simulations()->count() < 6) {
+            return redirect()
+                ->route('admin.tree.product.simulation.create', ['tree' => $tree, 'product' => $product])
+                ->with('status', __('Tambahkan data simulasi hingga terdiri dari minimal 6 data. Saat ini terdapat ' . $product->simulations()->count() . ' data'));
+        } else {
+            return redirect()
+                ->route('admin.tree.product.simulation.index', ['tree' => $tree, 'product' => $product])
+                ->with('status', __('Simulasi ditambahkan'));
+        }
     }
 
     /**
