@@ -137,7 +137,7 @@ class SimulationController extends Controller
      */
     public function destroy(Tree $tree, Product $product, Simulation $simulation)
     {
-        if ($product->simulations()->get()->count() <= 1) {
+        if ($product->simulations()->get()->count() <= 6) {
             return redirect()
                 ->route('admin.tree.product.simulation.index', ['tree' => $tree, 'product' => $product])
                 ->with('status', __('Jumlah simulasi tidak boleh kosong'));
