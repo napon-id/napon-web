@@ -21,7 +21,7 @@ class CreateSimulationReplicatesTable extends Migration
             $table->integer('max');
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('product_replicates')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
