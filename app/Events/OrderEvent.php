@@ -39,10 +39,6 @@ class OrderEvent
 
     public function orderCreated(Order $order)
     {
-        //get product
-        $product = \App\Product::find($order->product_id);
-        // get tree
-        $tree = \App\Tree::find($product->tree_id);
         //get user
         $user = \App\User::find($order->user_id);
 

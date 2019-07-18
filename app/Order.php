@@ -20,11 +20,6 @@ class Order extends Model
 
     public function product()
     {
-        return $this->belongsTo('App\Product');
-    }
-
-    public function productReplicate()
-    {
         return $this->belongsTo('App\ProductReplicate', 'product_id');
     }
 
