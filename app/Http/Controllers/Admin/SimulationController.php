@@ -196,8 +196,14 @@ class SimulationController extends Controller
     {
         if (isset($simulation)) {
             $requiredRule = 'nullable';
+            $maxVal = $simulation->max;
+            $minVal = $simulation->min;
+            $max = $maxVal;
         } else {
             $requiredRule = 'required';
+            $maxVal = $request->max;
+            $minVal = $request->min;
+            $max = isset($maxVal) ? $maxVal : 100;
         }
 
         return Validator::make($request->only([
@@ -206,8 +212,8 @@ class SimulationController extends Controller
             'max'
         ]), [
             'year' => array($requiredRule, 'numeric', 'min:0'),
-            'min' => array($requiredRule, 'numeric', 'min:0'),
-            'max' => array($requiredRule, 'numeric', 'min:0')
+            'min' => array($requiredRule, 'numeric', 'min:0', 'max:' . $max),
+            'max' => array($requiredRule, 'numeric', 'min:' . $minVal, 'max:100')
         ]);
     }
 }

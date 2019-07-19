@@ -46,7 +46,10 @@ class ArticleController extends Controller
     {
         $pagination = $this->paginateResult($request);
 
-        $articles = Article::orderBy('created_at', 'asc')->limit($pagination['dataPerPage'])->offset($pagination['offset'])->get($this->getArticleArray());
+        $articles = Article::orderBy('created_at', 'asc')
+            ->limit($pagination['dataPerPage'])
+            ->offset($pagination['offset'])
+            ->get($this->getArticleArray());
 
         if ($articles->count() > 0) {
             return response()->json([
@@ -64,36 +67,36 @@ class ArticleController extends Controller
     }
 
     /**
-     * get specific article and deails
+     * increment article views by 1
      *
      * @return Illuminate\Http\Response
      */
     public function incrementArticleStatistic(Request $request)
     {
-        $message = '';
-        $result = 0;
-
-        if ($request->has('article_id')) {
+        if ($request->has('article_id') && $request->article_id != '') {
             $article = Article::find($request->get('article_id'));
         } else {
-            $message = 'Article not found';
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 9,
+                'message' => 'There is no data'
+            ]);
         }
 
         if (isset($article)) {
             $article->increment('statistic', 1);
-
-            $message = 'Add article view by 1';
-            $result = 4;
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 4,
+                'message' => 'Add article view by 1'
+            ]);
         } else {
-            $message = 'There is no data';
-            $result = 9;
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 9,
+                'message' => 'There is no data'
+            ]);
         }
-
-        return response()->json([
-            'result_code' => $result,
-            'request_code' => 200,
-            'message' => $message
-        ]);
     }
 
     /**

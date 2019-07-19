@@ -91,7 +91,8 @@ class GeneralController extends Controller
     {
         $description = Description::query()->get([
             'img AS description_image', 
-            'title AS description_title', 'text AS description_text'
+            'title AS description_title', 
+            'text AS description_text'
         ]);
 
         if ($description->count() > 0) {
@@ -141,7 +142,7 @@ class GeneralController extends Controller
      */
     public function getCities(Request $request)
     {
-        if ($request->has('province_id')) {
+        if ($request->has('province_id') && $request->province_id != '') {
 
             $province = Province::find($request->province_id);
 
@@ -171,7 +172,7 @@ class GeneralController extends Controller
     }
 
     /**
-     * get latest user activity
+     * get latest product & simulation update date
      * @return Illuminate\Http\Response
      */
     public function databaseStatus()
