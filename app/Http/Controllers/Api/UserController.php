@@ -479,7 +479,7 @@ class UserController extends Controller
             'gender' => $request->user_sex ?? $userInformation->gender,
             'phone' => $request->user_phone ?? $userInformation->phone,
             'address' => $request->user_address ?? $userInformation->address,
-            'city_id' => $request->user_city ?? $userInformation->city,
+            'city_id' => $request->user_city ?? $userInformation->city_id,
             'province' => ($request->has('user_city') ? Cities::find($request->user_city)->province_id : $request->user_state) ?? $userInformation->province,
             'postal_code' => $request->user_zip_code ?? $userInformation->postal_code,
             'ktp' => $request->user_id_number ?? $userInformation->ktp

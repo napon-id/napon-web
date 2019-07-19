@@ -17,6 +17,12 @@ trait UserData
             }
         }
 
+        if (isset($user->userInformation->gender) && isset($user->userInformation->phone) && isset($user->userInformation->address) && isset($user->userInformation->city_id) && isset($user->userInformation->postal_code) && isset($user->userInformation->ktp)) {
+            $userDataFilled = true;
+        } else {
+            $userDataFilled = false;
+        }
+
         $data = [
             'user_name' => $user->name,
             'user_email' => $user->email,
@@ -46,17 +52,7 @@ trait UserData
                 ])
                 ->where('accounts.user_id', '=', $user->id)
                 ->get(),
-            'user_data_filled' => (
-                (
-                    isset($user->born_date) 
-                    && isset($user->userInformation->gender) 
-                    && isset($user->userInformation->phone) 
-                    && isset($user->userInformation->address) 
-                    && isset($user->userInformation->city_id) 
-                    && isset($user->userInformation->postal_code) 
-                    && isset($user->userInformation->ktp)
-                ) ? true : false
-            )
+            'user_data_filled' => $userDataFilled
         ];
 
         return $data;
