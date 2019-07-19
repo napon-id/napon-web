@@ -751,7 +751,7 @@ class UserController extends Controller
                         isset($validatorMessage['user_bank_account_number']) ? ($errors->user_bank_account_number = $validatorMessage['user_bank_account_number'][0]) : $errors;
 
                         return response()->json([
-                            'result_code' => 7,
+                            'result_code' => 8,
                             'request_code' => 200,
                             'errors' => $errors
                         ]);

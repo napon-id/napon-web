@@ -46,7 +46,17 @@ trait UserData
                 ])
                 ->where('accounts.user_id', '=', $user->id)
                 ->get(),
-            'user_data_filled' => ((isset($user->born_date) && isset($user->userInformation->gender) && isset($user->userInformation->phone) && isset($user->userInformation->address) && isset($user->userInformation->city_id) && isset($user->userInformation->postal_code) && isset($user->userInformation->ktp)) ? true : false)
+            'user_data_filled' => (
+                (
+                    isset($user->born_date) 
+                    && isset($user->userInformation->gender) 
+                    && isset($user->userInformation->phone) 
+                    && isset($user->userInformation->address) 
+                    && isset($user->userInformation->city_id) 
+                    && isset($user->userInformation->postal_code) 
+                    && isset($user->userInformation->ktp)
+                ) ? true : false
+            )
         ];
 
         return $data;
