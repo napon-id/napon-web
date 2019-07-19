@@ -46,7 +46,7 @@ trait UserData
                 ])
                 ->where('accounts.user_id', '=', $user->id)
                 ->get(),
-            'user_data_filled' => (
+            'user_data_filled' => 
                 (
                     isset($user->born_date) 
                     && isset($user->userInformation->gender) 
@@ -56,7 +56,6 @@ trait UserData
                     && isset($user->userInformation->postal_code) 
                     && isset($user->userInformation->ktp)
                 ) ? true : false
-            )
         ];
 
         return $data;
