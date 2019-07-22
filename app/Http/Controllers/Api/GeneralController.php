@@ -217,7 +217,7 @@ class GeneralController extends Controller
         $response = [];
         $response['result_code'] = 4;
         $response['request_code'] = 200;
-        $response['term_message'] = $data;
+        $response['term_data'] = $data;
 
         return response()->json($response, 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS);
     }
