@@ -40,7 +40,10 @@ class BalanceController extends Controller
                 if ($request->has('topup_amount') && $request->topup_amount != '') {
                     if (is_numeric($request->topup_amount) && $request->topup_amount >= 10000) {
                         
-                        $unfinishedTopup = Topup::where('status', 1)->get()->count();
+                        $unfinishedTopup = Topup::where('status', 1)
+                            ->where('user_id', $user->id)
+                            ->get()
+                            ->count();
 
                         if ($unfinishedTopup > 0) {
                             return response()->json([
