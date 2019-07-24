@@ -154,7 +154,7 @@ class OrderController extends Controller
         return response()->json([
             'request_code' => 200,
             'result_code' => 4,
-            'product_list' => $orders,
+            'user_product_list' => $orders,
         ]);
     }
 
