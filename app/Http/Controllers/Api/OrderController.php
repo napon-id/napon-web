@@ -275,7 +275,7 @@ class OrderController extends Controller
                         } else {
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 7,
+                                'result_code' => 9,
                                 'message' => 'Please finish existing transaction'
                             ]);
                         }
@@ -344,7 +344,7 @@ class OrderController extends Controller
                 if (isset($unfinishedOrder)) {
                     return response()->json([
                         'request_code' => 200,
-                        'result_code' => 7,
+                        'result_code' => 9,
                         'message' => 'Please finish existing transaction'
                     ]);
                 } else {
@@ -447,7 +447,7 @@ class OrderController extends Controller
                     if (isset($unfinishedOrder)) {
                         return response()->json([
                             'request_code' => 200,
-                            'result_code' => 7,
+                            'result_code' => 9,
                             'message' => 'Please finish existing transaction'
                         ]);
                     } else {
