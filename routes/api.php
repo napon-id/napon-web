@@ -43,6 +43,7 @@ Route::get('banners', 'Api\GeneralController@getBanner')->name('api.banners');
 Route::get('term_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
 Route::get('products', 'Api\GeneralController@getProduct')->name('api.product');
 Route::get('contacts', 'Api\GeneralController@getContact')->name('api.contact');
+Route::get('bank_lists', 'Api\GeneralController@getBankLists')->name('api.bank.list');
 
 // Article Api
 Route::get('articles/top', 'Api\ArticleController@getTopArticle')->name('api.articles.top');
