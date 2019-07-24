@@ -115,6 +115,9 @@ class UserController extends Controller
             ->addColumn('location', function ($order) {
                 return $order->location->location ?? '-';
             })
+            ->addColumn('transaction', function ($order) {
+                return $order->transaction['queue'];
+            })
             ->editColumn('buy_price', function ($order) {
                 return formatCurrency($order->buy_price, 'IDR');
             })

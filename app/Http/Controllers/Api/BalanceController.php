@@ -48,7 +48,7 @@ class BalanceController extends Controller
                         if ($unfinishedTopup > 0) {
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 7,
+                                'result_code' => 20,
                                 'message' => 'Please finish existing topup'
                             ]);
                         } else {
@@ -124,24 +124,43 @@ class BalanceController extends Controller
                 $user = User::where('email', $email)->first();
 
                 if ($request->has('withdraw_amount') && $request->withdraw_amount != '') {
-                    if (is_numeric($request->withdraw_amount) && $request->withdraw_amount >= 10000 && $request->withdraw_amount <= $user->balance->balance) {
-                        
+                    if (is_numeric($request->withdraw_amount) && $request->withdraw_amount >= 10000) {
+                        if ($request->withdraw_amount > $user->balance->balance) {
+                            return response()->json([
+                                'request_code' => 200,
+                                'result_code' => 18,
+                                'message' => 'Insufficient balance'
+                            ]);
+                        }
+
                         if ($request->has('user_bank_id') && $request->user_bank_id != '') {
                             $bank = Account::where('token', $request->user_bank_id)->first();
 
                             if (isset($bank)) {
-                                $withdraw = Withdraw::create([
-                                    'user_id' => $user->id,
-                                    'token' => 'Withdraw-' . now(),
-                                    'account_id' => $bank->id,
-                                    'amount' => $request->withdraw_amount
-                                ]);
+                                $unfinishedWithdraw = Withdraw::where('user_id', $user->id)
+                                    ->where('status', 1)
+                                    ->get();
 
-                                if ($withdraw) {
+                                if ($unfinishedWithdraw->count() < 1) {
+                                    $withdraw = Withdraw::create([
+                                        'user_id' => $user->id,
+                                        'token' => 'Withdraw-' . now(),
+                                        'account_id' => $bank->id,
+                                        'amount' => $request->withdraw_amount
+                                    ]);
+    
+                                    if ($withdraw) {
+                                        return response()->json([
+                                            'request_code' => 200,
+                                            'result_code' => 4,
+                                            'message' => 'Withdraw processed'
+                                        ]);
+                                    }
+                                } else {
                                     return response()->json([
                                         'request_code' => 200,
-                                        'result_code' => 4,
-                                        'message' => 'Withdraw processed'
+                                        'result_code' => 20,
+                                        'message' => 'There is still pending withdraw'
                                     ]);
                                 }
                             } else {
@@ -161,8 +180,8 @@ class BalanceController extends Controller
                     } else {
                         return response()->json([
                             'request_code' => 200,
-                            'result_code' => 18,
-                            'message' => 'Bad request'
+                            'result_code' => 19,
+                            'message' => 'Withdraw less than 10000'
                         ]);
                     }   
                 } else {

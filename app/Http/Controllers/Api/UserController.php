@@ -319,9 +319,9 @@ class UserController extends Controller
             }
 
             return response()->json([
-                'result_code' => 5,
+                'result_code' => 13,
                 'request_code' => 200,
-                'message' => 'Register success'
+                'message' => 'Register success. Create new password'
             ]);
         } else {
             if (isset( $userData->firebase_uid)) {
@@ -368,11 +368,28 @@ class UserController extends Controller
 
         $data = $this->getUserData($user);
 
-        return response()->json([
-            'request_code' => 200,
-            'data' => $data,
-            'result_code' => 4,
-        ]);
+        if ($data['user_email_verified']) {
+            if ($data['user_data_filled']) {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 4,
+                    'data' => $data
+                ]);
+            } else {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 17,
+                    'data' => $data
+                ]);
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 16,
+                'data' => $data
+            ]);
+        }
+
     }
 
     /**
@@ -646,11 +663,12 @@ class UserController extends Controller
                 $user = User::where('email', $email)->first();
 
                 $validator = Validator::make($request->only(['user_bank_name', 'user_bank_account_name', 'user_bank_account_number']), [
-                    'user_bank_name' => 'required|string|max:191',
+                    'user_bank_name' => 'required|string|max:191|exists:bank_lists,bank_name',
                     'user_bank_account_name' => 'required|string|max:191',
                     'user_bank_account_number' => 'required|numeric|digits_between:10,15'
                 ], [
                     'user_bank_name.required' => 'Nama Bank tidak boleh kosong',
+                    'user_bank_name.exists' => 'Nama Bank tidak sesuai',
                     'user_bank_name.max' => 'Nama Bank tidak boleh lebih dari :max karakter',
                     'user_bank_account_name.required' => 'Nama pemilik rekening tidak boleh kosong',
                     'user_bank_account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari :max karakter',

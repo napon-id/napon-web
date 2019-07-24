@@ -43,6 +43,7 @@ Route::get('banners', 'Api\GeneralController@getBanner')->name('api.banners');
 Route::get('term_condition', 'Api\GeneralController@getTermAndCondition')->name('api.term_and_condition');
 Route::get('products', 'Api\GeneralController@getProduct')->name('api.product');
 Route::get('contacts', 'Api\GeneralController@getContact')->name('api.contact');
+Route::get('bank_lists', 'Api\GeneralController@getBankLists')->name('api.bank.list');
 
 // Article Api
 Route::get('articles/top', 'Api\ArticleController@getTopArticle')->name('api.articles.top');
@@ -52,6 +53,7 @@ Route::post('articles/addview', 'Api\ArticleController@incrementArticleStatistic
 // Order detail
 Route::get('user/transactions', 'Api\OrderController@getUserTransactions')->name('api.user.transaction');
 Route::get('user/orders', 'Api\OrderController@getUserOrder')->name('api.user.order');
+Route::post('user/order/create_transaction', 'Api\OrderController@orderTransaction')->name('api.user.create.transaction');
 Route::post('user/order/product', 'Api\OrderController@orderProduct')->name('api.user.order.product');
 Route::post('user/order/product_balance', 'Api\OrderController@orderProductByBalance')->name('api.user.order.product');
 

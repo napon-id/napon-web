@@ -106,7 +106,7 @@ class BlogController extends Controller
     {
         $blog = Article::findOrFail($id);
 
-        $validator = $this->validator($request);
+        $validator = $this->validator($request, $blog);
 
         if ($validator->fails()) {
             return redirect()
@@ -189,12 +189,18 @@ class BlogController extends Controller
     /**
      * Validator
      */
-    protected function validator(Request $request)
+    protected function validator(Request $request, $blog = NULL)
     {
+        if (isset($blog)) {
+            $requiredRule = 'nullable';
+        } else {
+            $requiredRule = 'required';
+        }
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:191',
             'description' => 'required',
-            'img' => 'required|file'
+            'img' => array($requiredRule, 'file', 'mimetypes:image/jpeg,image/jpg,image/png')
         ]);
 
         return $validator;

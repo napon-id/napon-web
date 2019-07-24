@@ -14,6 +14,7 @@ use DB;
 use App\Order;
 use App\Topup;
 use App\Simulation;
+use App\BankList;
 
 class GeneralController extends Controller
 {
@@ -270,6 +271,33 @@ class GeneralController extends Controller
                 'company_website' => Setting::where('key', 'contact_website')->first()->value
             ]
         ]);
+    }
+
+    /**
+     * get bank lists
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function getBankLists()
+    {
+        $bankLists = BankList::get([
+            'bank_name AS bank_name',
+            'full_bank_name AS bank_display_name'
+        ]);
+
+        if (isset($bankLists)) {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 4,
+                'list_bank' => $bankLists
+            ]);
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 9,
+                'message' => 'There is no data'
+            ]);
+        }
     }
 
     /**

@@ -38,6 +38,11 @@ class Order extends Model
         return $this->belongsTo('App\Location');
     }
 
+    public function transaction()
+    {
+        return $this->hasOne('App\Transaction');
+    }
+
     public static function boot()
     {
         parent::boot();
