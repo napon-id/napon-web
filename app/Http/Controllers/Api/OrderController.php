@@ -13,6 +13,7 @@ use DB;
 use App\Http\Controllers\Traits\MidTrans;
 use App\ProductReplicate;
 use App\SimulationReplicate;
+use App\Transaction;
 
 class OrderController extends Controller
 {
@@ -234,6 +235,81 @@ class OrderController extends Controller
     }
 
     /**
+     * create transaction to check existing user transaction
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function orderTransaction(Request $request)
+    {
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail($request->user_key);
+
+            if ($email != '') {
+                $user = User::where('email', $email)->first();
+
+                if ($request->has('user_order') && $request->user_order != '') {
+                    $product = Product::where('name', $request->user_order)->first();
+
+                    if (isset($product)) {
+                        $unfinishedOrder = Order::where('status', 1)
+                            ->where('user_id', $user->id)
+                            ->get();
+
+                        if ($unfinishedOrder->count() < 1) {
+                            $transaction = Transaction::create([
+                                'user_id' => $user->id,
+                                'queue' => 'NAPON-' . (2019 + Transaction::get()->count())
+                            ]);
+
+                            return response()->json([
+                                'request_code' => 200,
+                                'result_code' => 4,
+                                'transaction_data' => [
+                                    'transaction_number' => $transaction->queue,
+                                    'transaction_key' => md5($transaction->id),
+                                    'transaction_total_payment' => $product->price
+                                ]
+                            ]);
+                        } else {
+                            return response()->json([
+                                'request_code' => 200,
+                                'result_code' => 7,
+                                'message' => 'Please finish existing transaction'
+                            ]);
+                        }
+                    }  else {
+                        return response()->json([
+                            'request_code' => 200,
+                            'result_code' => 7,
+                            'message' => 'Bad request'
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 9,
+                        'message' => 'There is no data'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2,
+                    'message' => 'User not found'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'message' => 'User not found'
+            ]);
+        }
+    }
+
+    /**
      * create user order process
      *
      * @param Illuminate\Http\Request
@@ -261,7 +337,9 @@ class OrderController extends Controller
 
             if ($productQuery) {
                 $replicatedProduct = $this->replicateProductAndSimulation($productQuery);
-                $unfinishedOrder = Order::where('status', 1)->first();
+                $unfinishedOrder = Order::where('status', 1)
+                    ->where('user_id', $user->id)
+                    ->first();
 
                 if (isset($unfinishedOrder)) {
                     return response()->json([
@@ -276,6 +354,23 @@ class OrderController extends Controller
                         'product_id' => $replicatedProduct->id,
                         'buy_price' => $replicatedProduct->price
                     ]);
+
+                    $transaction = Transaction::where('user_id', $user->id)
+                        ->whereNull('order_id')
+                        ->latest()
+                        ->first();
+                    
+                    if (!isset($transaction)) {
+                        $transaction = Transaction::create([
+                            'user_id' => $user->id,
+                            'queue' => 'NAPON-' . (2019 + Transaction::get()->count()),
+                            'order_id' => $order->id
+                        ]);
+                    } else {
+                        $transaction->update([
+                            'order_id' => $order->id
+                        ]);
+                    }
     
                     $res = $this->orderMidTrans($order);
     
@@ -285,7 +380,7 @@ class OrderController extends Controller
                         $resultCode = 4;
                         $message = 'Order success';
                         $transaction_data = [
-                            'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                            'transaction_number' => $order->transaction->queue,
                             'transaction_key' => $order->token,
                             'transaction_total_payment' => (double) $replicatedProduct->price,
                             'transaction_va_number' => $result->va_numbers[0]->va_number
@@ -366,6 +461,24 @@ class OrderController extends Controller
     
                         // decrement user balance
                         $user->balance->decrement('balance', $needPaid);
+
+                        $transaction = Transaction::where('user_id', $user->id)
+                            ->whereNull('order_id')
+                            ->latest()
+                            ->first();
+
+                        if (!isset($transaction)) {
+                            $transaction = Transaction::create([
+                                'user_id' => $user->id,
+                                'queue' => 'NAPON-' . (2019 + Transaction::get()->count()),
+                                'order_id' => $order->id
+                            ]);
+                        } else {
+                            $transaction->update([
+                                'order_id' => $order->id
+                            ]);
+                        }
+
                     }
                 } else {
                     return response()->json([
@@ -382,7 +495,7 @@ class OrderController extends Controller
                     $resultCode = 4;
                     $message = 'Order success';
                     $transaction_data = [
-                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $order->id),
+                        'transaction_number' => $order->transaction->queue,
                         'transaction_key' => $order->token,
                         'transaction_total_payment' => (double) $replicatedProduct->price
                     ];
