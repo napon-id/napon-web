@@ -368,28 +368,11 @@ class UserController extends Controller
 
         $data = $this->getUserData($user);
 
-        if ($data['user_email_verified']) {
-            if ($data['user_data_filled']) {
-                return response()->json([
-                    'request_code' => 200,
-                    'result_code' => 4,
-                    'data' => $data
-                ]);
-            } else {
-                return response()->json([
-                    'request_code' => 200,
-                    'result_code' => 17,
-                    'data' => $data
-                ]);
-            }
-        } else {
-            return response()->json([
-                'request_code' => 200,
-                'result_code' => 16,
-                'data' => $data
-            ]);
-        }
-
+        return response()->json([
+            'request_code' => 200,
+            'result_code' => 4,
+            'data' => $data
+        ]);
     }
 
     /**
