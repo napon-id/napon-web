@@ -74,7 +74,10 @@ class RegisterController extends Controller
             'has_created_password' => 1
         ]);
 
-        $user->sendEmailVerificationNotification();
+        if (!isset($user->email_verified_at)) {
+            $user->sendEmailVerificationNotification();
+        }
+
 
         return $user;
     }

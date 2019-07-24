@@ -827,7 +827,7 @@ class UserController extends Controller
                     } else {
                         return response()->json([
                             'request_code' => 200,
-                            'result_code' => 9,
+                            'result_code' => 10,
                             'message' => 'There is no data'
                         ]);
                     }

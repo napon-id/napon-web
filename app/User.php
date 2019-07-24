@@ -17,7 +17,13 @@ class User extends Authenticatable  implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'firebase_uid', 'user_key', 'has_created_password'
+        'name', 
+        'email', 
+        'password', 
+        'firebase_uid', 
+        'user_key', 
+        'has_created_password',
+        'email_verified_at'
     ];
 
     /**

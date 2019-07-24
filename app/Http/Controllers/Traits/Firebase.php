@@ -38,6 +38,7 @@ trait Firebase
             'email' => $email,
             'password' => $password,
             'displayName' => $name,
+            'email_verified_at' => now()
         ];
 
         $createdUser = $auth->createUser($userProperties);

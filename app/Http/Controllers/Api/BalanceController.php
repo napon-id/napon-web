@@ -161,7 +161,7 @@ class BalanceController extends Controller
                     } else {
                         return response()->json([
                             'request_code' => 200,
-                            'result_code' => 7,
+                            'result_code' => 18,
                             'message' => 'Bad request'
                         ]);
                     }   
