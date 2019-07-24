@@ -14,10 +14,11 @@ use App\Http\Controllers\Traits\MidTrans;
 use App\ProductReplicate;
 use App\SimulationReplicate;
 use App\Transaction;
+use App\Http\Controllers\Traits\UserData;
 
 class OrderController extends Controller
 {
-    use Firebase, UserApi, MidTrans;
+    use Firebase, UserApi, MidTrans, UserData;
 
     /**
      * get user orders based on email
@@ -151,9 +152,30 @@ class OrderController extends Controller
             $order->report_list = $report;
         }
 
+        $user = User::where('email', $email)->first();
+
+        $data = $this->getUserData($user);
+        $resultData = 0;
+
+        if ($data['email_verified_at'] && $data['user_data_filled']) {
+            $resultData = 4;
+        }
+
+        if (!$data['email_verified_at']) {
+            $resultData = 16;
+        }
+
+        if (!$data['user_data_filled']) {
+            $resultData = 17;
+        }
+
+        if (!$data['email_verified_at'] && !$data['user_data_filled']) {
+            $resultData = 17;
+        }
+
         return response()->json([
             'request_code' => 200,
-            'result_code' => 4,
+            'result_code' => $resultData,
             'user_product_list' => $orders,
         ]);
     }
@@ -217,8 +239,27 @@ class OrderController extends Controller
                     $order->product = $product_array;
                 }
 
+                $data = $this->getUserData($user);
+                $resultData = 0;
+
+                if ($data['email_verified_at'] && $data['user_data_filled']) {
+                    $resultData = 4;
+                }
+
+                if (!$data['email_verified_at']) {
+                    $resultData = 16;
+                }
+
+                if (!$data['user_data_filled']) {
+                    $resultData = 17;
+                }
+
+                if (!$data['email_verified_at'] && !$data['user_data_filled']) {
+                    $resultData = 17;
+                }
+
                 return response()->json([
-                    'result_code' => 4,
+                    'result_code' => $resultData,
                     'request_code' => 200,
                     'transaction_list' => $orders
                 ]);
@@ -263,9 +304,28 @@ class OrderController extends Controller
                                 'queue' => 'NAPON-' . (2019 + Transaction::get()->count())
                             ]);
 
+                            $data = $this->getUserData($user);
+                            $resultData = 0;
+
+                            if ($data['email_verified_at'] && $data['user_data_filled']) {
+                                $resultData = 4;
+                            }
+
+                            if (!$data['email_verified_at']) {
+                                $resultData = 16;
+                            }
+
+                            if (!$data['user_data_filled']) {
+                                $resultData = 17;
+                            }
+
+                            if (!$data['email_verified_at'] && !$data['user_data_filled']) {
+                                $resultData = 17;
+                            }
+
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 4,
+                                'result_code' => $resultData,
                                 'transaction_data' => [
                                     'transaction_number' => $transaction->queue,
                                     'transaction_key' => md5($transaction->id),
@@ -385,6 +445,27 @@ class OrderController extends Controller
                             'transaction_total_payment' => (double) $replicatedProduct->price,
                             'transaction_va_number' => $result->va_numbers[0]->va_number
                         ];
+
+                        $data = $this->getUserData($user);
+                        $resultData = 0;
+
+                        if ($data['email_verified_at'] && $data['user_data_filled']) {
+                            $resultData = 4;
+                        }
+
+                        if (!$data['email_verified_at']) {
+                            $resultData = 16;
+                        }
+
+                        if (!$data['user_data_filled']) {
+                            $resultData = 17;
+                        }
+
+                        if (!$data['email_verified_at'] && !$data['user_data_filled']) {
+                            $resultData = 17;
+                        }
+
+                        $resultCode = $resultData;
                     }
                 }
             } else {
@@ -499,6 +580,27 @@ class OrderController extends Controller
                         'transaction_key' => $order->token,
                         'transaction_total_payment' => (double) $replicatedProduct->price
                     ];
+
+                    $data = $this->getUserData($user);
+                    $resultData = 0;
+
+                    if ($data['email_verified_at'] && $data['user_data_filled']) {
+                        $resultData = 4;
+                    }
+
+                    if (!$data['email_verified_at']) {
+                        $resultData = 16;
+                    }
+
+                    if (!$data['user_data_filled']) {
+                        $resultData = 17;
+                    }
+
+                    if (!$data['email_verified_at'] && !$data['user_data_filled']) {
+                        $resultData = 17;
+                    }
+                    
+                    $resultCode = $resultData;
                 }
             } else {
                 $resultCode = 9;
