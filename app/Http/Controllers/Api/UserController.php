@@ -319,9 +319,9 @@ class UserController extends Controller
             }
 
             return response()->json([
-                'result_code' => 5,
+                'result_code' => 13,
                 'request_code' => 200,
-                'message' => 'Register success'
+                'message' => 'Register success. Create new password'
             ]);
         } else {
             if (isset( $userData->firebase_uid)) {
