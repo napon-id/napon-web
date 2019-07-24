@@ -48,7 +48,7 @@ class BalanceController extends Controller
                         if ($unfinishedTopup > 0) {
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => 7,
+                                'result_code' => 20,
                                 'message' => 'Please finish existing topup'
                             ]);
                         } else {
@@ -137,18 +137,30 @@ class BalanceController extends Controller
                             $bank = Account::where('token', $request->user_bank_id)->first();
 
                             if (isset($bank)) {
-                                $withdraw = Withdraw::create([
-                                    'user_id' => $user->id,
-                                    'token' => 'Withdraw-' . now(),
-                                    'account_id' => $bank->id,
-                                    'amount' => $request->withdraw_amount
-                                ]);
+                                $unfinishedWithdraw = Withdraw::where('user_id', $user->id)
+                                    ->where('status', 1)
+                                    ->get();
 
-                                if ($withdraw) {
+                                if ($unfinishedWithdraw->count() < 1) {
+                                    $withdraw = Withdraw::create([
+                                        'user_id' => $user->id,
+                                        'token' => 'Withdraw-' . now(),
+                                        'account_id' => $bank->id,
+                                        'amount' => $request->withdraw_amount
+                                    ]);
+    
+                                    if ($withdraw) {
+                                        return response()->json([
+                                            'request_code' => 200,
+                                            'result_code' => 4,
+                                            'message' => 'Withdraw processed'
+                                        ]);
+                                    }
+                                } else {
                                     return response()->json([
                                         'request_code' => 200,
-                                        'result_code' => 4,
-                                        'message' => 'Withdraw processed'
+                                        'result_code' => 20,
+                                        'message' => 'There is still pending withdraw'
                                     ]);
                                 }
                             } else {
