@@ -26,6 +26,7 @@
                 <div class="table-responsive">
                     <table class="datatable table table-hover table-striped" data-url="{{ route('admin.user.order.table', [$user]) }}">
                         <thead>
+                            <th data-field="transaction">{{ __('No. Transaksi') }}</th>
                             <th data-field="token">{{ __('ID') }}</th>
                             <th data-field="product_name">{{ __('Produk') }}</th>
                             <th data-field="buy_price">{{ __('Harga Awal') }}</th>
