@@ -314,10 +314,6 @@ class UserController extends Controller
         if ($userData < 1) {
             $user = $this->registerUserFromFirebase($request->user_key, $email);
 
-            if ($user) {
-                $user->sendEmailVerificationNotification();
-            }
-
             return response()->json([
                 'result_code' => 13,
                 'request_code' => 200,
@@ -329,11 +325,19 @@ class UserController extends Controller
                     'firebase_uid' => $request->user_key
                 ]);
             } else {
-                return response()->json([
-                    'result_code' => 6,
-                    'request_code' => 200,
-                    'message' => 'User already registered'
-                ]);
+                if (!isset($userData->has_created_password)) {
+                    return response()->json([
+                        'result_code' => 13,
+                        'request_code' => 200,
+                        'message' => 'User already registered and need to add password'
+                    ]);
+                } else {
+                    return response()->json([
+                        'result_code' => 6,
+                        'request_code' => 200,
+                        'message' => 'User already registered'
+                    ]);
+                }
             }
         }
     }
