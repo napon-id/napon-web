@@ -66,11 +66,9 @@ class BalanceController extends Controller
                                 return response()->json([
                                     'request_code' => 200,
                                     'result_code' => 4,
-                                    'transaction_data' => [
-                                        'transaction_number' => 'NAPON-' . sprintf("%'03d", $topup->id),
-                                        'transaction_key' => $topup->token,
-                                        'transaction_total_payment' => (double) $topup->amount,
-                                        'transaction_va_number' => $result->va_numbers[0]->va_number
+                                    'top_up_data' => [
+                                        'top_up_id' => $topup->token,
+                                        'top_up_va_number' => $result->va_numbers[0]->va_number
                                     ]
                                 ]);
     
