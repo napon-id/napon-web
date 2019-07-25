@@ -314,6 +314,10 @@ class UserController extends Controller
         if (!isset($userData)) {
             $user = $this->registerUserFromFirebase($request->user_key, $email);
 
+            $user->update([
+                'email_verified_at' => now()
+            ]);
+
             return response()->json([
                 'result_code' => 13,
                 'request_code' => 200,
