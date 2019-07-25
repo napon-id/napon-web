@@ -311,7 +311,7 @@ class UserController extends Controller
         // check if registered user does not have User data
         $userData = User::where('email', $email)->first();
 
-        if ($userData->count() < 1) {
+        if (!isset($userData)) {
             $user = $this->registerUserFromFirebase($request->user_key, $email);
 
             return response()->json([
