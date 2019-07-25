@@ -309,9 +309,9 @@ class UserController extends Controller
         $email = $this->getUserEmail((string)$request->user_key);
 
         // check if registered user does not have User data
-        $userData = User::where('email', $email)->count();
+        $userData = User::where('email', $email)->first();
 
-        if ($userData < 1) {
+        if ($userData->count() < 1) {
             $user = $this->registerUserFromFirebase($request->user_key, $email);
 
             return response()->json([
@@ -320,24 +320,18 @@ class UserController extends Controller
                 'message' => 'Register success. Create new password'
             ]);
         } else {
-            if (isset( $userData->firebase_uid)) {
-                $userData->update([
-                    'firebase_uid' => $request->user_key
+            if (isset($userData->has_created_password)) {
+                return response()->json([
+                    'result_code' => 6,
+                    'request_code' => 200,
+                    'message' => 'User already registered'
                 ]);
             } else {
-                if (!isset($userData->has_created_password)) {
-                    return response()->json([
-                        'result_code' => 13,
-                        'request_code' => 200,
-                        'message' => 'User already registered and need to add password'
-                    ]);
-                } else {
-                    return response()->json([
-                        'result_code' => 6,
-                        'request_code' => 200,
-                        'message' => 'User already registered'
-                    ]);
-                }
+                return response()->json([
+                    'result_code' => 13,
+                    'request_code' => 200,
+                    'message' => 'User already registered and need to add password'
+                ]);
             }
         }
     }
