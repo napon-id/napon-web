@@ -11,7 +11,8 @@ class Topup extends Model
         'user_id',
         'token',
         'amount',
-        'status'
+        'status',
+        'payment_number'
     ];
 
     /**

@@ -19,6 +19,7 @@ class CreateTopupsTable extends Migration
             $table->string('token')->nullable();
             $table->double('amount');
             $table->integer('status')->default(1);
+            $table->string('payment_number')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

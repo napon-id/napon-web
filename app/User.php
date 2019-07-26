@@ -106,6 +106,16 @@ class User extends Authenticatable  implements MustVerifyEmail
     }
 
     /**
+     * get user topups
+     * 
+     * @return HasMany App\Topup
+     */
+    public function topups()
+    {
+        return $this->hasMany('App\Topup');
+    }
+
+    /**
      * retrieve notifications
      */
     public function notifications()

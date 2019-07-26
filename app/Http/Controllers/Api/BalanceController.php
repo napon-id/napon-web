@@ -62,13 +62,19 @@ class BalanceController extends Controller
                                 $res = $this->topUpMidtrans($topup);
     
                                 $result = json_decode($res->getBody());
+
+                                $va_number = $result->va_numbers[0]->va_number;
+
+                                $topup->update([
+                                    'payment_number' => $va_number
+                                ]);
     
                                 return response()->json([
                                     'request_code' => 200,
                                     'result_code' => 4,
                                     'top_up_data' => [
                                         'top_up_id' => $topup->token,
-                                        'top_up_va_number' => $result->va_numbers[0]->va_number
+                                        'top_up_va_number' => $va_number
                                     ]
                                 ]);
     
@@ -142,7 +148,7 @@ class BalanceController extends Controller
                                 if ($unfinishedWithdraw->count() < 1) {
                                     $withdraw = Withdraw::create([
                                         'user_id' => $user->id,
-                                        'token' => 'Withdraw-' . now(),
+                                        'token' => md5('Withdraw-' . now()),
                                         'account_id' => $bank->id,
                                         'amount' => $request->withdraw_amount
                                     ]);
@@ -198,4 +204,116 @@ class BalanceController extends Controller
             ]);
         }
     }
+
+    /**
+     * withdraw list 
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function withdrawList(Request $request)
+    {
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail($request->user_key);
+
+            if ($email == '') {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2,
+                    'message' => 'User not found'
+                ]);
+            } else {
+                $user = User::where('email', $email)->first();
+                $withdrawCount = $user->withdraws()->get()->count();
+
+                if ($withdrawCount < 1) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 9,
+                        'message' => 'There is no data'
+                    ]);
+                } else {
+                    $withdraws = Withdraw::where('user_id', $user->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get([
+                            'token AS withdraw_id',
+                            'created_at AS withdraw_date',
+                            'status AS withdraw_status',
+                            'amount AS withdraw_amount'
+                        ]);
+
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'withdraw_list' => $withdraws
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'message' => 'User not found'
+            ]);
+        }
+    }
+
+    /**
+     * topup list
+     * 
+     * @param Illuminate\Http\Request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function topupList(Request $request)
+    {
+        if ($request->has('user_key') && $request->user_key != '') {
+            $email = $this->getUserEmail($request->user_key);
+
+            if ($email == '') {
+                return response()->json([
+                    'request_code' => 200,
+                    'result_code' => 2,
+                    'message' => 'User not found'
+                ]);
+            } else {
+                $user = User::where('email', $email)->first();
+
+                $topupCount = $user->topups()->get()->count();
+
+                if ($topupCount < 1) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 9,
+                        'message' => 'There is no data'
+                    ]);
+                } else {
+                    $topups = Topup::where('user_id', $user->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get([
+                            'token AS top_up_id',
+                            'created_at AS top_up_date',
+                            'status AS top_up_status',
+                            'amount AS top_up_amount',
+                            'payment_number AS top_up_va_number'
+                        ]);
+
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 4,
+                        'top_up_list' => $topups
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'request_code' => 200,
+                'result_code' => 2,
+                'message' => 'User not found'
+            ]);
+        }
+    }
+
+    // TODO: Add result_code when user has not been verified nor data_filled
 }

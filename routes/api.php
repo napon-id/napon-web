@@ -60,6 +60,8 @@ Route::post('user/order/product_balance', 'Api\OrderController@orderProductByBal
 // User balance
 Route::post('user/topup', 'Api\BalanceController@topup')->name('api.user.topup');
 Route::post('user/withdraw', 'Api\BalanceController@withdraw')->name('api.user.withdraw');
+Route::post('user/topup/list', 'Api\BalanceController@topupList')->name('api.user.topup.list');
+Route::post('user/withdraw/list', 'Api\BalanceController@withdrawList')->name('api.user.withdraw.list');
 
 // MidTrans webhook
 Route::post('midtrans/webhook', 'Api\GeneralController@midtransWebhook')->name('api.midtrans.webhook');
