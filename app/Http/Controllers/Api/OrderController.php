@@ -45,24 +45,6 @@ class OrderController extends Controller
             ]);
         }
 
-        $userData = $this->getUserData(User::where('email', $email)->first());
-
-        if (!$userData['user_email_verified']) {
-            return response()->json([
-                'request_code' => 200,
-                'result_code' => 16,
-                'message' => 'Verify your email address before continue'
-            ]);
-        }
-
-        if (!$userData['user_data_filled']) {
-            return response()->json([
-                'request_code' => 200,
-                'result_code' => 17,
-                'message' => 'Fill all personal information before continue'
-            ]);
-        }
-
         // initialize variables
         $dataPerPage = $offset = 0;
         $page = 1;
@@ -201,25 +183,7 @@ class OrderController extends Controller
                 ]);
             } else {
                 $user = User::where('email', $email)->first();
-
-                $userData = $this->getUserData($user);
-
-                if (!$userData['user_email_verified']) {
-                    return response()->json([
-                        'request_code' => 200,
-                        'result_code' => 16,
-                        'message' => 'Verify your email address before continue'
-                    ]);
-                }
-
-                if (!$userData['user_data_filled']) {
-                    return response()->json([
-                        'request_code' => 200,
-                        'result_code' => 17,
-                        'message' => 'Fill all personal information before continue'
-                    ]);
-                }
-
+                
                 $orders = DB::table('orders')
                     ->select([
                         DB::raw('orders.token AS transaction_id'),
