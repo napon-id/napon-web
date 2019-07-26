@@ -11,10 +11,11 @@ use App\Withdraw;
 use App\Http\Controllers\Traits\Firebase;
 use App\Http\Controllers\Traits\MidTrans;
 use App\Account;
+use App\Http\Controllers\Traits\UserData;
 
 class BalanceController extends Controller
 {
-    use Firebase, UserApi, MidTrans;
+    use Firebase, UserApi, MidTrans, UserData;
 
     /**
      * add deposit to user balance
@@ -36,6 +37,24 @@ class BalanceController extends Controller
                 ]);
             } else {
                 $user = User::where('email', $email)->first();
+                
+                $userData = $this->getUserData($user);
+
+                if (!$userData['user_email_verified']) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 16,
+                        'message' => 'Verify your email address before continue'
+                    ]);
+                }
+
+                if (!$userData['user_data_filled']) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 17,
+                        'message' => 'Fill all personal information before continue'
+                    ]);
+                }
 
                 if ($request->has('topup_amount') && $request->topup_amount != '') {
                     if (is_numeric($request->topup_amount) && $request->topup_amount >= 10000) {
@@ -126,6 +145,24 @@ class BalanceController extends Controller
                 ]);
             } else {
                 $user = User::where('email', $email)->first();
+
+                $userData = $this->getUserData($user);
+
+                if (!$userData['user_email_verified']) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 16,
+                        'message' => 'Verify your email address before continue'
+                    ]);
+                }
+
+                if (!$userData['user_data_filled']) {
+                    return response()->json([
+                        'request_code' => 200,
+                        'result_code' => 17,
+                        'message' => 'Fill all personal information before continue'
+                    ]);
+                }
 
                 if ($request->has('withdraw_amount') && $request->withdraw_amount != '') {
                     if (is_numeric($request->withdraw_amount) && $request->withdraw_amount >= 10000) {
@@ -314,6 +351,4 @@ class BalanceController extends Controller
             ]);
         }
     }
-
-    // TODO: Add result_code when user has not been verified nor data_filled
 }
