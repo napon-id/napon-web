@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('order_id')->nullable();
             $table->string('queue');
+            $table->string('payment_number')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

@@ -271,31 +271,14 @@ class OrderController extends Controller
                         'product_name' => $product->name,
                         'product_image_black' => $product->img_black,
                     ];
-                    $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $order_data->id);
+                    // $order->transaction_number = 'NAPON-' .  sprintf("%'03d", $order_data->id);
+                    $order->transaction_number = $order_data->transaction->queue;
+                    $order->transaction_va_number = $order_data->transaction->payment_number;
                     $order->product = $product_array;
                 }
 
-                $data = $this->getUserData($user);
-                $resultData = 0;
-
-                if ($data['email_verified_at'] && $data['user_data_filled']) {
-                    $resultData = 4;
-                }
-
-                if (!$data['email_verified_at']) {
-                    $resultData = 16;
-                }
-
-                if (!$data['user_data_filled']) {
-                    $resultData = 17;
-                }
-
-                if (!$data['email_verified_at'] && !$data['user_data_filled']) {
-                    $resultData = 17;
-                }
-
                 return response()->json([
-                    'result_code' => $resultData,
+                    'result_code' => 4,
                     'request_code' => 200,
                     'transaction_list' => $orders
                 ]);
@@ -487,6 +470,11 @@ class OrderController extends Controller
                         'buy_price' => $replicatedProduct->price
                     ]);
 
+                    // midrans payment
+                    $res = $this->orderMidTrans($order);
+                    $result = json_decode($res->getBody());
+                    $va_number = $result->va_numbers[0]->va_number;
+
                     $transaction = Transaction::where('user_id', $user->id)
                         ->whereNull('order_id')
                         ->latest()
@@ -496,17 +484,15 @@ class OrderController extends Controller
                         $transaction = Transaction::create([
                             'user_id' => $user->id,
                             'queue' => 'NAPON-' . (2019 + Transaction::get()->count()),
-                            'order_id' => $order->id
+                            'order_id' => $order->id,
+                            'payment_number' => $va_number
                         ]);
                     } else {
                         $transaction->update([
-                            'order_id' => $order->id
+                            'order_id' => $order->id,
+                            'payment_number' => $va_number
                         ]);
                     }
-    
-                    $res = $this->orderMidTrans($order);
-    
-                    $result = json_decode($res->getBody());
     
                     if ($order) {
                         $resultCode = 4;
@@ -515,29 +501,8 @@ class OrderController extends Controller
                             'transaction_number' => $order->transaction->queue,
                             'transaction_key' => $order->token,
                             'transaction_total_payment' => (double) $replicatedProduct->price,
-                            'transaction_va_number' => $result->va_numbers[0]->va_number
+                            'transaction_va_number' => $va_number
                         ];
-
-                        $data = $this->getUserData($user);
-                        $resultData = 0;
-
-                        if ($data['email_verified_at'] && $data['user_data_filled']) {
-                            $resultData = 4;
-                        }
-
-                        if (!$data['email_verified_at']) {
-                            $resultData = 16;
-                        }
-
-                        if (!$data['user_data_filled']) {
-                            $resultData = 17;
-                        }
-
-                        if (!$data['email_verified_at'] && !$data['user_data_filled']) {
-                            $resultData = 17;
-                        }
-
-                        $resultCode = $resultData;
                     }
                 }
             } else {
@@ -670,27 +635,6 @@ class OrderController extends Controller
                         'transaction_key' => $order->token,
                         'transaction_total_payment' => (double) $replicatedProduct->price
                     ];
-
-                    $data = $this->getUserData($user);
-                    $resultData = 0;
-
-                    if ($data['email_verified_at'] && $data['user_data_filled']) {
-                        $resultData = 4;
-                    }
-
-                    if (!$data['email_verified_at']) {
-                        $resultData = 16;
-                    }
-
-                    if (!$data['user_data_filled']) {
-                        $resultData = 17;
-                    }
-
-                    if (!$data['email_verified_at'] && !$data['user_data_filled']) {
-                        $resultData = 17;
-                    }
-                    
-                    $resultCode = $resultData;
                 }
             } else {
                 $resultCode = 9;
