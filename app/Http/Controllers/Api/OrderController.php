@@ -172,28 +172,9 @@ class OrderController extends Controller
 
         $user = User::where('email', $email)->first();
 
-        $data = $this->getUserData($user);
-        $resultData = 0;
-
-        if ($data['email_verified_at'] && $data['user_data_filled']) {
-            $resultData = 4;
-        }
-
-        if (!$data['email_verified_at']) {
-            $resultData = 16;
-        }
-
-        if (!$data['user_data_filled']) {
-            $resultData = 17;
-        }
-
-        if (!$data['email_verified_at'] && !$data['user_data_filled']) {
-            $resultData = 17;
-        }
-
         return response()->json([
             'request_code' => 200,
-            'result_code' => $resultData,
+            'result_code' => 4,
             'user_product_list' => $orders,
         ]);
     }
@@ -341,28 +322,9 @@ class OrderController extends Controller
                                 'queue' => 'NAPON-' . (2019 + Transaction::get()->count())
                             ]);
 
-                            $data = $this->getUserData($user);
-                            $resultData = 0;
-
-                            if ($data['email_verified_at'] && $data['user_data_filled']) {
-                                $resultData = 4;
-                            }
-
-                            if (!$data['email_verified_at']) {
-                                $resultData = 16;
-                            }
-
-                            if (!$data['user_data_filled']) {
-                                $resultData = 17;
-                            }
-
-                            if (!$data['email_verified_at'] && !$data['user_data_filled']) {
-                                $resultData = 17;
-                            }
-
                             return response()->json([
                                 'request_code' => 200,
-                                'result_code' => $resultData,
+                                'result_code' => 4,
                                 'transaction_data' => [
                                     'transaction_number' => $transaction->queue,
                                     'transaction_key' => md5($transaction->id),
