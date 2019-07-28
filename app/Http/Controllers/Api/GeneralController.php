@@ -219,7 +219,7 @@ class GeneralController extends Controller
         $response['result_code'] = 4;
         $response['request_code'] = 200;
         $response['term_data'] = $data;
-        $response['link_term'] = 'https://napon.id'; // link to pdf of T&C
+        $response['link_term'] = 'https://www.antennahouse.com/XSLsample/pdf/sample-link_1.pdf'; // link to pdf of T&C
 
         return response()->json($response);
     }
