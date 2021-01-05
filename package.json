@@ -24,7 +24,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
     "autonumeric": "^4.5.4",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bootstrap-datepicker": "^1.9.0",
     "mdbootstrap": "^4.7.4",
     "slick-carousel": "^1.8.1",
